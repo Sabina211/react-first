@@ -1,0 +1,29 @@
+.constructorBlock {
+	flex-basis: 600px;
+}
+
+.mainsList {
+	scrollbar-color: #8585ad #2f2f37;
+	max-height: 464px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+
+.edgesElements {
+	margin-left: 20px;
+}
+
+.summary {
+	display: flex;
+	justify-content: flex-end;
+	margin-right: 20px;
+	margin-top: 20px;
+	align-items: center;
+}
+
+.total-icon {
+	transform: scale(1.5);
+	transform-origin: top left;
+	width: 36px;
+	height: 32px;
+}

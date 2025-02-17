@@ -1,0 +1,9 @@
+.card {
+	display: flex;
+	width: 272px;
+	flex-direction: column;
+}
+
+.cardText {
+	text-align: center;
+}

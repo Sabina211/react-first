@@ -1,0 +1,36 @@
+.header {
+    background: #1C1C21;
+	height: 88px;
+	border: 2px;
+	justify-content: center;
+	display: flex;
+}
+
+.container {
+	height: 100%;
+	display: flex;
+	align-items: center;
+
+	width: var(--width-outer);
+}
+
+.logo {
+	display: flex;
+
+}
+
+.menu_items{
+	display: flex;
+    justify-content: flex-start;
+	flex-grow: 1;
+	flex-basis: 100px;
+}
+
+.auth_button {
+	display: flex;
+	flex-basis: 100px;
+    display: flex;
+    justify-content: flex-end;
+	flex-grow: 1;
+
+}

@@ -1,16 +1,12 @@
 import styles from './ingredients-group.module.css';
 import IngredientItem from '../ingredient-item/ingredient-item';
 
-function IngredientsGroup({ groups, itemKey }) {
-	const headers = {
-		bun: 'Булочки',
-		sauce: 'Соусы',
-		main: 'Начинки',
-	};
+function IngredientsGroup({ groups, itemKey, headers, headersRef }) {
+
 
 	return (
 		<div  key={itemKey}>
-			<h2>{headers[itemKey]}</h2>
+			<h2 ref={headersRef[itemKey]}>{headers[itemKey]}</h2>
 			<ul className={styles.container}>
 				{groups[itemKey] &&
 					groups[itemKey].map(

@@ -1,0 +1,36 @@
+.modalForm {
+	width: 720px;
+	height: 640px;
+}
+
+.centerElement {
+	display: flex;
+	justify-content: center;
+}
+
+.orderId {
+	text-shadow: 0 0 20px #4c4cff;
+	padding-bottom: 39px;
+	padding-top: 40px;
+}
+
+.img {
+	padding-top: 60px;
+	padding-bottom: 60px;
+	width: 120px;
+	height: 120px;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.bottomText{
+	padding-top: 8px;
+}
+
+@media (max-height: 650px) {
+    .last-p {
+        margin-bottom: 16px;
+    }
+}

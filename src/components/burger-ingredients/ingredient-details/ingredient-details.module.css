@@ -1,0 +1,30 @@
+.modalForm {
+	width: 720px;
+	height: 460px;
+}
+
+.centerElement {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.img {
+	height: 240px;
+	width: 480px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.compound {
+	width: 520px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.content {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}

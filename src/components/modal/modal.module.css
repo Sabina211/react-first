@@ -1,0 +1,29 @@
+.container {
+	display: flex;
+	position: fixed;
+	align-items: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	justify-content: center;
+	background: #1c1c21;
+	z-index: 100;
+	flex-direction: column;
+	border-radius: 40px;
+	border-width: 1px;
+}
+
+.headerBlock {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 40px;
+	padding-left: 40px;
+	padding-right: 40px;
+	box-sizing: border-box;
+}
+
+.closeBtn {
+	margin-top: 10px;
+}

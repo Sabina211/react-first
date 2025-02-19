@@ -4,16 +4,18 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './summary.module.css';
 import { useState } from 'react';
-import OrderInfo from '../order-info/order-info';
+import OrderDetails from '../order-details/order-details';
 
 function Summary({ sum }) {
 	const [show, setShow] = useState(false);
 
 	function showOrder() {
+		console.log("showOrder")
 		setShow(true);
 	}
 
 	function hideOrder() {
+		console.log("hideOrder")
 		setShow(false);
 	}
 
@@ -30,7 +32,7 @@ function Summary({ sum }) {
 				size='medium'>
 				Оформить заказ
 			</Button>
-			{show && <OrderInfo isOpen={show}/>}
+			{show && <OrderDetails isOpen={show} onClose={hideOrder} />}
 		</div>
 	);
 }

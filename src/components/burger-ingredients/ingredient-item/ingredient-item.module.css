@@ -7,3 +7,9 @@
 .cardText {
 	text-align: center;
 }
+
+.count {
+	position: relative;
+	width: 32px;
+	padding: 0%;
+}

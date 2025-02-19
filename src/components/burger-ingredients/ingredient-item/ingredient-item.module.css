@@ -9,7 +9,14 @@
 }
 
 .count {
-	position: relative;
+	position: absolute;
 	width: 32px;
 	padding: 0%;
+	top: -8px;
+
+}
+
+.imageWrapper {
+	position: relative; /* Контейнер с img становится позицией для Counter */
+	display: inline-block;
 }

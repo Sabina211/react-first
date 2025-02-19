@@ -1,4 +1,3 @@
-import ReactDOM from 'react-dom';
 import styles from './order-details.module.css';
 import Modal from '../modal/modal';
 import img from '../../images/done.png';

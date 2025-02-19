@@ -5,22 +5,21 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-;
 }
 
-.main{
+.main {
 	display: flex;
-	width: var(--width-outer);;
+	width: var(--width-outer);
 	justify-content: center;
 	margin: 0 auto;
 }
 
-.ingredientsBlock{
+.ingredientsBlock {
 	flex-basis: 600px;
 }
 
-.groupContainer{
-	scrollbar-color: #8585AD #2F2F37;
+.groupContainer {
+	scrollbar-color: #8585ad #2f2f37;
 	max-height: 664px;
 	overflow-y: auto;
 	scrollbar-width: thin;

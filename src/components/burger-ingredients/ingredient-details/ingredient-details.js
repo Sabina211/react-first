@@ -6,7 +6,7 @@ function IngredientDetails({ isOpen, onClose, ingredient }) {
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} header='Детали ингредиента'>
-			<div className={`${styles.modalForm} ${styles.centerElement}`} >
+			<div className={`${styles.modalForm} ${styles.centerElement}`}>
 				<div className={styles.content}>
 					<img className={`${styles.img}`} src={ingredient.image}></img>
 					<p className={`${styles.centerElement} text text_type_main-medium`}>

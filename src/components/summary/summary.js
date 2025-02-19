@@ -10,12 +10,10 @@ function Summary({ sum }) {
 	const [show, setShow] = useState(false);
 
 	function showOrder() {
-		console.log("showOrder")
 		setShow(true);
 	}
 
 	function hideOrder() {
-		console.log("hideOrder")
 		setShow(false);
 	}
 

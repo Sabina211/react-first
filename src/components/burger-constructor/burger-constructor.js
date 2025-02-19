@@ -91,7 +91,7 @@ function BurgerConstructor({ ingredients }) {
 					/>
 				</div>
 			</div>
-			<Summary sum='4561'/>
+			<Summary sum='4561' />
 		</section>
 	);
 }

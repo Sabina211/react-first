@@ -1,7 +1,7 @@
 import styles from './modal-overplay.module.css';
 import { useEffect } from 'react';
 
-function ModalOverplay({onClose}) {
+function ModalOverplay({ onClose }) {
 	useEffect(() => {
 		const handleKeyDown = (event) => {
 			if (event.key === 'Escape') {
@@ -14,7 +14,7 @@ function ModalOverplay({onClose}) {
 			document.removeEventListener('keydown', handleKeyDown);
 		};
 	}, [onClose]);
-	return (<div className={styles.modalOverplay} onClick={onClose}></div>);
+	return <div className={styles.modalOverplay} onClick={onClose}></div>;
 }
 
 export default ModalOverplay;

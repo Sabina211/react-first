@@ -9,15 +9,12 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 function IngredientItem({ ingredient }) {
 	const [show, setShow] = useState(false);
 	const count = Math.floor(Math.random() * 2);
-	console.log(count);
 
 	function showDetails() {
-		console.log(ingredient.name);
 		setShow(true);
 	}
 
 	function hideDetails() {
-		console.log('hideDetails');
 		setShow(false);
 	}
 	return (
@@ -25,11 +22,13 @@ function IngredientItem({ ingredient }) {
 			<li className={styles.card} onClick={showDetails}>
 				<div className={styles.imageWrapper}>
 					<img src={ingredient.image} alt={ingredient.name} />
-					{count && count > 0 ? <Counter
-						count={count}
-						size='default'
-						extraClass={`${styles.count} "m-1"`}
-					/> : undefined}
+					{count && count > 0 ? (
+						<Counter
+							count={count}
+							size='default'
+							extraClass={`${styles.count} "m-1"`}
+						/>
+					) : undefined}
 				</div>
 				<div className={`${styles.cardText}`}>
 					<span className='text text_type_digits-default mr-2'>

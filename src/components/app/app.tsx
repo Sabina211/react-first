@@ -20,11 +20,9 @@ function App() {
 	useEffect(() => {
 		apiData()
 			.then((data) => {
-				console.log(data);
 				setResult({ ingredients: data, isLoading: false, isError: false });
 			})
-			.catch((err) => {
-				console.log('не получилось получить данные об ингредиентах', err);
+			.catch(() => {
 				setResult({ ingredients: null, isLoading: false, isError: true });
 			});
 	}, []);
@@ -42,7 +40,9 @@ function App() {
 							</div>
 						</main>
 					</div>
-				) : <p>Что-то упало, напишите в техподдержку</p>}
+				) : (
+					<p>Что-то упало, напишите в техподдержку</p>
+				)}
 			</BrowserRouter>
 		</DndProvider>
 	);

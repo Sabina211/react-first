@@ -20,17 +20,16 @@
 	width: 120px;
 	height: 120px;
 	display: block;
-    margin-left: auto;
-    margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-
-.bottomText{
+.bottomText {
 	padding-top: 8px;
 }
 
 @media (max-height: 650px) {
-    .last-p {
-        margin-bottom: 16px;
-    }
+	.last-p {
+		margin-bottom: 16px;
+	}
 }

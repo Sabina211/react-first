@@ -11,7 +11,6 @@ function Modal({ isOpen, onClose, children, header }) {
 		<>
 			<div className={styles.container} onClick={(e) => e.stopPropagation()}>
 				<div className={styles.headerBlock}>
-
 					<h2 className='text text_type_main-large'>{header}</h2>
 					<div className={styles.closeBtn}>
 						<CloseIcon onClick={onClose} type='primary' />

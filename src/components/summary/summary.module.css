@@ -1,0 +1,14 @@
+.summary {
+	display: flex;
+	justify-content: flex-end;
+	margin-right: 20px;
+	margin-top: 20px;
+	align-items: center;
+}
+
+.totalIcon {
+	transform: scale(1.5);
+	transform-origin: top left;
+	width: 36px;
+	height: 32px;
+}

@@ -1,0 +1,21 @@
+.card {
+	display: flex;
+	width: 272px;
+	flex-direction: column;
+}
+
+.cardText {
+	text-align: center;
+}
+
+.count {
+	position: absolute;
+	width: 32px;
+	padding: 0%;
+	top: -8px;
+}
+
+.imageWrapper {
+	position: relative;
+	display: inline-block;
+}

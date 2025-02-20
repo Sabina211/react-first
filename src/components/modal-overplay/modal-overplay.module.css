@@ -1,0 +1,8 @@
+.modalOverplay {
+	background: rgba(0, 0, 0, 0.5);
+	inset: 0;
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

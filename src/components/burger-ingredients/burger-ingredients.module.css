@@ -1,0 +1,26 @@
+.container {
+	width: var(--width-outer);
+	margin-left: 20px;
+	margin-right: 20px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.main {
+	display: flex;
+	width: var(--width-outer);
+	justify-content: center;
+	margin: 0 auto;
+}
+
+.ingredientsBlock {
+	flex-basis: 600px;
+}
+
+.groupContainer {
+	scrollbar-color: #8585ad #2f2f37;
+	max-height: 664px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}

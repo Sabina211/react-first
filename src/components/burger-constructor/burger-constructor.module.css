@@ -1,0 +1,14 @@
+.constructorBlock {
+	flex-basis: 600px;
+}
+
+.mainsList {
+	scrollbar-color: #8585ad #2f2f37;
+	max-height: 464px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+
+.edgesElements {
+	margin-left: 20px;
+}

@@ -1,0 +1,16 @@
+.button {
+	background-color: #1c1c21;
+	border: 1px solid #1c1c21;
+	border-radius: 40px;
+	color: white;
+	padding: 16px 20px;
+	height: 56px;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+}
+
+.button:hover {
+	background: var(--background-element);
+}

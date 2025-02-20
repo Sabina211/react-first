@@ -11,6 +11,7 @@
 	flex-direction: column;
 	border-radius: 40px;
 	border-width: 1px;
+	width: 720px;
 }
 
 .headerBlock {

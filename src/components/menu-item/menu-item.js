@@ -1,9 +1,10 @@
+import { bool } from 'prop-types';
 import styles from './menu-item.module.css';
+import PropTypes from 'prop-types';
 
-function MenuItem({ icon: Icon, text, href, isActive }) {
+function MenuItem({ icon: Icon, text, isActive }) {
 	return (
 		<button
-			href={href}
 			className={`${styles.button} text text_type_main-default ml-2`}
 			type='button'>
 			<Icon type={isActive ? 'primary' : 'secondary'} />
@@ -16,5 +17,12 @@ function MenuItem({ icon: Icon, text, href, isActive }) {
 		</button>
 	);
 }
+
+MenuItem.propTypes =  {
+	icon: PropTypes.elementType.isRequired,
+	text: PropTypes.string.isRequired,
+	isActive:  PropTypes.bool,
+};
+
 
 export default MenuItem;

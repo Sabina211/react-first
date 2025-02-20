@@ -1,6 +1,7 @@
 import styles from './burger-ingredients-tabs.module.css';
 import { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 function BurgerIngredientsTabs({ tabChange }) {
 	const [tab, setTab] = useState('bun');
@@ -23,5 +24,9 @@ function BurgerIngredientsTabs({ tabChange }) {
 		</div>
 	);
 }
+
+BurgerIngredientsTabs.propTypes = {
+	tabChange: PropTypes.func.isRequired,
+};
 
 export default BurgerIngredientsTabs;

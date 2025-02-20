@@ -5,6 +5,8 @@ import {
 import styles from './summary.module.css';
 import { useState } from 'react';
 import OrderDetails from '../order-details/order-details';
+import Modal from '../modal/modal';
+import PropTypes from 'prop-types';
 
 function Summary({ sum }) {
 	const [show, setShow] = useState(false);
@@ -30,9 +32,17 @@ function Summary({ sum }) {
 				size='medium'>
 				Оформить заказ
 			</Button>
-			{show && <OrderDetails isOpen={show} onClose={hideOrder} />}
+			{show && (
+				<Modal isOpen={show} onClose={hideOrder}>
+					<OrderDetails />
+				</Modal>
+			)}
 		</div>
 	);
 }
+
+Summary.propsType = {
+	sum: PropTypes.number.isRequired,
+};
 
 export default Summary;

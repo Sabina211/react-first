@@ -5,6 +5,8 @@ import {
 import styles from './ingredient-item.module.css';
 import { useState } from 'react';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from '../../modal/modal';
+import { ingredientsPropTypes } from '../../../ingredientsPropTypes';
 
 function IngredientItem({ ingredient }) {
 	const [show, setShow] = useState(false);
@@ -42,14 +44,16 @@ function IngredientItem({ ingredient }) {
 			</li>
 
 			{show && (
-				<IngredientDetails
-					isOpen={show}
-					onClose={hideDetails}
-					ingredient={ingredient}
-				/>
+				<Modal isOpen={show} onClose={hideDetails} header='Детали ингредиента'>
+					<IngredientDetails ingredient={ingredient} />
+				</Modal>
 			)}
 		</>
 	);
 }
+
+IngredientItem.propTypes = {
+	ingredient: ingredientsPropTypes.isRequired,
+};
 
 export default IngredientItem;

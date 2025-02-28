@@ -2,8 +2,7 @@ import AppHeader from '../app-header/app-header';
 import styles from './app.module.scss';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import burgerIngredientsStyles from '../burger-ingredients/burger-ingredients.module.css';
-//import { ingredientsData } from '../../utils/data';
-import { apiData } from '../../utils/api-data';
+import { getIngredientsRequest } from '../../utils/api-data';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { BrowserRouter } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
@@ -11,6 +10,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useEffect, useState } from 'react';
 
 function App() {
+
 	const [result, setResult] = useState({
 		ingredients: null,
 		isLoading: true,
@@ -18,7 +18,7 @@ function App() {
 	});
 
 	useEffect(() => {
-		apiData()
+		getIngredientsRequest()
 			.then((data) => {
 				setResult({ ingredients: data, isLoading: false, isError: false });
 			})

@@ -13,8 +13,10 @@ export function getIngredientsRequest() {
 		})
 		.then((res) => {
 			if (res.data && res.data.length > 0) {
+
 				return Promise.resolve(res.data);
 			} else {
+				console.log("Пали с ошибкой");
 				throw Error('Не получилось распарсить ответ');
 			}
 		});

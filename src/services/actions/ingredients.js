@@ -6,8 +6,13 @@ export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
 export function getIngredients() {
 	return function(dispatch){
 		dispatch({type: GET_INGREDIENTS_REQUEST});
-		getIngredientsRequest().then(res=>{
-			console.log(res);
-		});
+
+		getIngredientsRequest()
+			.then(res => {
+				dispatch({ type: GET_INGREDIENTS_SUCCESS, ingredients: res });
+			})
+			.catch(() => {
+				dispatch({ type: GET_INGREDIENTS_FAILED });
+			});
 	};
 }

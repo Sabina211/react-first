@@ -66,7 +66,7 @@ function DraggableIngredient({ element, index, moveElement }) {
 	const ref = useRef(null);
 
 	const [{ isDragging }, drag] = useDrag({
-		type: ItemType,
+		type: ItemType, //ItemType просто строка, надо только чтобы она совпадала с accept в useDrop
 		item: { index },
 		collect: (monitor) => ({
 			isDragging: monitor.isDragging(),
@@ -75,10 +75,10 @@ function DraggableIngredient({ element, index, moveElement }) {
 
 	const [, drop] = useDrop({
 		accept: ItemType,
-		hover(item, monitor) {
+		hover(item, monitor) { //срабатывает, если наводить один элемент на другой
 			if (!ref.current) return;
-			const dragIndex = item.index;
-			const hoverIndex = index;
+			const dragIndex = item.index;//тот, который тянем
+			const hoverIndex = index; //тот, на который перетаскиванием
 
 			if (dragIndex === hoverIndex) return;
 

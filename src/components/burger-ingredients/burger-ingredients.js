@@ -37,7 +37,6 @@ function BurgerIngredients({ ingredients }) {
 		<section className={styles.ingredientsBlock}>
 			<h1 className='text_type_main-large'>Соберите бургер</h1>
 			<BurgerIngredientsTabs tabChange={tabChange} />
-			{/* Временно отключаем tabChange */}
 			<div className={`${styles.groupContainer} custom-scroll`}>
 				{Object.keys(groups).map((key) => (
 					<IngredientsGroup

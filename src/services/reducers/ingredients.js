@@ -1,34 +1,39 @@
-import {
-	GET_INGREDIENTS_REQUEST,
-	GET_INGREDIENTS_SUCCESS,
-	GET_INGREDIENTS_FAILED,
-} from '../actions/ingredients';
+import { getIngredients } from '../actions/ingredients';
 import { combineReducers } from 'redux';
+import { createSlice, createAsyncThunk, combineSlices } from '@reduxjs/toolkit';
 
 const initialState = {
 	ingredients: [],
-	ingredientsRequest: false,
-	ingredientsFailed: false,
+	isLoading: false,
+	isFailed: false,
+	error: '',
 };
 
+export const ingredientSlice = createSlice({
+	name: 'ingredients',
+	initialState,
+	reducers: {},
+	//selectors: {getIngredients: state.ingredients}, // можно селекторы дописать,но тогда надо еще экспорт добавить на них
+	extraReducers: (builder) => {
+		builder
+			.addCase(getIngredients.pending, (state) => {
+				state.isLoading = true;
+				state.isFailed = false;
+			})
+			.addCase(getIngredients.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.ingredients = action.payload; // Данные из API
+			})
+			.addCase(getIngredients.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isFailed = true;
+				state.error = action.error?.message;
+			});
+	},
+});
+export const ingredientsReducer = ingredientSlice.reducer;
 
-
-export const ingredientsReducer = (state = initialState, action) => {
-	switch(action.type){
-		case GET_INGREDIENTS_REQUEST: {
-			return { ...state, ingredientsFailed: false,  ingredientsRequest: true };
-		  }
-		  case GET_INGREDIENTS_SUCCESS: {
-			return { ...state, ingredientsFailed: false, ingredientsRequest: false, ingredients: action.ingredients };
-		  }
-		  case GET_INGREDIENTS_FAILED: {
-			return { ...state, ingredientsFailed: true, ingredientsRequest: false };
-		  }
-		  default:
-			return state;
-	}
-};
-
-export const rootReducer = combineReducers({
-	ingredients: ingredientsReducer
-  });
+/*export const rootReducer = combineReducers({
+	ingredients: ingredientsReducer,
+});*/
+export const rootReducer = combineSlices(ingredientSlice);

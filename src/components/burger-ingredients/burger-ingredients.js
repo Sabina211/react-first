@@ -4,7 +4,7 @@ import IngredientsGroup from './ingredients-group/ingredients-group';
 import styles from './burger-ingredients.module.css';
 import PropTypes from 'prop-types';
 import { ingredientsPropTypes } from '../../ingredientsPropTypes';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 function BurgerIngredients({ ingredients }) {
 	function tabChange(value) {
@@ -33,11 +33,46 @@ function BurgerIngredients({ ingredients }) {
 		main: useRef(null),
 	};
 
+	const containerRef = useRef(null); // Контейнер с ингредиентами
+	const [activeTab, setActiveTab] = useState('bun');
+	useEffect(() => {
+		const handleScroll = () => {
+			if (!containerRef.current) return;
+
+			const containerTop = containerRef.current.getBoundingClientRect().top;
+			const sections = Object.keys(headersRef).map((key) => {
+				const section = headersRef[key].current;
+				if (!section) return { key, offset: Infinity };
+
+				return { key, offset: Math.abs(section.getBoundingClientRect().top - containerTop) };
+			});
+
+			// Находим ближайший к верху контейнера заголовок
+			const nearest = sections.sort((a, b) => a.offset - b.offset)[0].key;
+
+			// Обновляем активный таб
+			setActiveTab(nearest);
+		};
+
+		const container = containerRef.current;
+		if (container) {
+			container.addEventListener('scroll', handleScroll);
+		}
+
+		// Убираем обработчик при размонтировании
+		return () => {
+			if (container) {
+				container.removeEventListener('scroll', handleScroll);
+			}
+		};
+	}, []);
+
+
 	return (
 		<section className={styles.ingredientsBlock}>
 			<h1 className='text_type_main-large'>Соберите бургер</h1>
-			<BurgerIngredientsTabs tabChange={tabChange} />
-			<div className={`${styles.groupContainer} custom-scroll`}>
+			<BurgerIngredientsTabs tabChange={tabChange}  activeTab={activeTab} />
+			<div ref={containerRef}  className={`${styles.groupContainer} custom-scroll`}>
 				{Object.keys(groups).map((key) => (
 					<IngredientsGroup
 						headersRef={headersRef}

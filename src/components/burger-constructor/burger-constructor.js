@@ -8,121 +8,119 @@ import { ingredientsPropTypes } from '../../ingredientsPropTypes';
 import Summary from '../summary/summary';
 import { useState, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-
-const ItemType = 'ITEM';
+import { PlugElement } from '../plug-element/plug-element';
+import { DraggableSortIngredient } from './draggable-sort-ingredient/draggable-sort-ingredient';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	addBun,
+	addIngredient,
+	mainsOrderChanged,
+} from '../../services/reducers/burger-constructor';
 
 function BurgerConstructor({ ingredients }) {
-	const bun = ingredients.find((item) => item.type === 'bun');
-	const [mains, setMains] = useState(
-		ingredients.filter((item) => item.type !== 'bun')
-	);
+	const dispatch = useDispatch();
+	const bun = useSelector((state) => state.constructor.bun);
+	const mains = useSelector((state) => state.constructor.mains);
 
 	const moveElement = (draggedIndex, targetIndex) => {
 		if (draggedIndex === targetIndex) return; // Исключаем ненужные обновления
 		const updatedMains = [...mains];
 		const [draggedElement] = updatedMains.splice(draggedIndex, 1);
 		updatedMains.splice(targetIndex, 0, draggedElement);
-		setMains(updatedMains);
+		dispatch(mainsOrderChanged(updatedMains));
 	};
+
+	//перетягивание ингредиента в конструктор
+	const [{ canDrop, itemType }, drop] = useDrop(() => ({
+		accept: 'ingredientItem',
+		drop: (item) => {
+			if (item.type === 'bun') {
+				dispatch(addBun(item));
+			} else {
+				dispatch(addIngredient(item));
+			}
+			return { name: 'Burger Constructor' };
+		},
+		collect: (monitor) => ({
+			canDrop: monitor.canDrop(),
+			itemType: monitor.getItem()?.type,
+		}),
+	}));
+
+	const bunStyle = { backgroundColor: '#2f2f37' };
+	const mainsStyle = { backgroundColor: '#2f2f37' };
+
+	if (canDrop && itemType === 'bun') {
+		bunStyle.backgroundColor = '#4c4c73';
+		bunStyle.borderStyle = 'dashed solid';
+	} else if (canDrop) {
+		mainsStyle.backgroundColor = '#4c4c73';
+		mainsStyle.borderStyle = 'dashed solid';
+	}
 
 	return (
 		<section className={styles.constructorBlock}>
-			<div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className='mt-25 ml-4'>
-				<div className={styles.edgesElements}>
-					<ConstructorElement
-						type='top'
-						isLocked={true}
-						text={`${bun.name} (верх)`}
-						price={bun.price}
-						thumbnail={bun.image}
-					/>
-				</div>
-				<div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} className={styles.mainsList}>
-					{mains.map((element, index) => (
-						<DraggableIngredient
-							key={element._id}
-							index={index}
-							element={element}
-							moveElement={moveElement}
+			<div
+				ref={drop}
+				style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+				className='mt-25 ml-4'>
+				{bun ? (
+					<div className={styles.edgesElements}>
+						<ConstructorElement
+							type='top'
+							isLocked={true}
+							text={`${bun.name} (верх)`}
+							price={bun.price}
+							thumbnail={bun.image}
 						/>
-					))}
-				</div>
-				<div className={styles.edgesElements}>
-					<ConstructorElement
-						type='bottom'
-						isLocked={true}
-						text={`${bun.name} (низ)`}
-						price={bun.price}
-						thumbnail={bun.image}
-					/>
-				</div>
+					</div>
+				) : (
+					<PlugElement
+						style={bunStyle}
+						text='Перетяните сюда булку из списка справа'
+						position='top'></PlugElement>
+				)}
+
+				{mains?.length > 0 ? (
+					<div
+						style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+						className={styles.mainsList}>
+						{mains.map((element, index) => (
+							<DraggableSortIngredient
+								key={element._id}
+								index={index}
+								element={element}
+								moveElement={moveElement}
+							/>
+						))}
+					</div>
+				) : (
+					<PlugElement
+						style={mainsStyle}
+						text='Перетяните сюда начинки из списка справа'
+						position='middle'></PlugElement>
+				)}
+				{bun ? (
+					<div className={styles.edgesElements}>
+						<ConstructorElement
+							type='bottom'
+							isLocked={true}
+							text={`${bun.name} (низ)`}
+							price={bun.price}
+							thumbnail={bun.image}
+						/>
+					</div>
+				) : (
+					<PlugElement
+						style={bunStyle}
+						text='Перетяните сюда булку из списка справа'
+						position='bottom'></PlugElement>
+				)}
 			</div>
 			<Summary sum='4561' />
 		</section>
 	);
 }
-
-function DraggableIngredient({ element, index, moveElement }) {
-	const ref = useRef(null);
-
-	const [{ isDragging }, drag] = useDrag({
-		type: ItemType, //ItemType просто строка, надо только чтобы она совпадала с accept в useDrop
-		item: { index },
-		collect: (monitor) => ({
-			isDragging: monitor.isDragging(),
-		}),
-	});
-
-	const [, drop] = useDrop({
-		accept: ItemType,
-		hover(item, monitor) { //срабатывает, если наводить один элемент на другой
-			if (!ref.current) return;
-			const dragIndex = item.index;//тот, который тянем
-			const hoverIndex = index; //тот, на который перетаскиванием
-
-			if (dragIndex === hoverIndex) return;
-
-			const hoverBoundingRect = ref.current.getBoundingClientRect();
-			const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-			const clientOffset = monitor.getClientOffset();
-			const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-			if ((dragIndex < hoverIndex && hoverClientY < hoverMiddleY) ||
-				(dragIndex > hoverIndex && hoverClientY > hoverMiddleY)) {
-				return;
-			}
-
-			moveElement(dragIndex, hoverIndex);
-			item.index = hoverIndex;
-		},
-	});
-
-	drag(drop(ref));
-
-	return (
-		<div
-			ref={ref}
-			style={{
-				opacity: isDragging ? 0 : 1,
-				cursor: 'move',
-			}}>
-			<span className={styles.draggable}>
-				<DragIcon type='primary' />
-			</span>
-			<ConstructorElement
-				text={element.name}
-				price={element.price}
-				thumbnail={element.image}
-			/>
-		</div>
-	);
-}
-
-DraggableIngredient.propTypes = {
-	element: PropTypes.object.isRequired,
-	index: PropTypes.number.isRequired,
-	moveElement: PropTypes.func.isRequired,
-};
 
 BurgerConstructor.propTypes = {
 	ingredients: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired,

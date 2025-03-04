@@ -18,7 +18,7 @@ import {
 	addIngredient,
 	mainsOrderChanged,
 	getTotalPrice,
-	removeIngredient
+	removeIngredient,
 } from '../../services/reducers/burger-constructor';
 
 function BurgerConstructor() {
@@ -59,9 +59,9 @@ function BurgerConstructor() {
 	}));
 
 	const removeIngridient = (ingridient) => {
-        dispatch(removeIngredient(ingridient));
+		dispatch(removeIngredient(ingridient));
 		dispatch(getTotalPrice());
-    }
+	};
 
 	const bunStyle = { backgroundColor: '#2f2f37' };
 	const mainsStyle = { backgroundColor: '#2f2f37' };
@@ -103,7 +103,7 @@ function BurgerConstructor() {
 						className={styles.mainsList}>
 						{mains.map((element, index) => (
 							<DraggableSortIngredient
-								key={element.uuid + index}
+								key={element.uuid}
 								index={index}
 								element={element}
 								moveElement={moveElement}
@@ -139,8 +139,4 @@ function BurgerConstructor() {
 	);
 }
 
-/*BurgerConstructor.propTypes = {
-	ingredients: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired,
-};
-*/
 export default BurgerConstructor;

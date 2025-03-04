@@ -13,7 +13,6 @@ export const ingredientSlice = createSlice({
 	name: 'ingredients',
 	initialState,
 	reducers: {},
-	//selectors: {getIngredients: state.ingredients}, // можно селекторы дописать,но тогда надо еще экспорт добавить на них
 	extraReducers: (builder) => {
 		builder
 			.addCase(getIngredients.pending, (state) => {
@@ -22,7 +21,7 @@ export const ingredientSlice = createSlice({
 			})
 			.addCase(getIngredients.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.ingredients = action.payload; // Данные из API
+				state.ingredients = action.payload;
 			})
 			.addCase(getIngredients.rejected, (state, action) => {
 				state.isLoading = false;
@@ -33,7 +32,4 @@ export const ingredientSlice = createSlice({
 });
 export const ingredientsReducer = ingredientSlice.reducer;
 
-/*export const rootReducer = combineReducers({
-	ingredients: ingredientsReducer,
-});*/
 export const rootReducer = combineSlices(ingredientSlice, constructorSlice);

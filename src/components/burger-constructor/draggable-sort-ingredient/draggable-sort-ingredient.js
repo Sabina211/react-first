@@ -5,10 +5,14 @@ import {
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef } from 'react';
 
-export function DraggableSortIngredient({ element, index, moveElement, removeElement}) {
+export function DraggableSortIngredient({
+	element,
+	index,
+	moveElement,
+	removeElement,
+}) {
 	const ref = useRef(null);
 	const [{ isDragging }, drag] = useDrag({
 		type: 'sortedItem',

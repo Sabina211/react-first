@@ -9,11 +9,18 @@ import Modal from '../../modal/modal';
 import { ingredientsPropTypes } from '../../../ingredientsPropTypes';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-
+import React from 'react';
 function IngredientItem({ ingredient }) {
-	const dispatch = useDispatch();
+	const mains = useSelector((state) => state.constructor.mains);
+	const bun = useSelector((state) => state.constructor.bun);
 	const [show, setShow] = useState(false);
-	const count = Math.floor(Math.random() * 2);
+
+	const count = React.useMemo(() => {
+		if (ingredient.type === 'bun') {
+			return bun?._id === ingredient._id ? 2 : 0;
+		}
+		return mains?.find((item) => item._id === ingredient._id)?.count || 0;
+	}, [ingredient, bun, mains]);
 
 	function showDetails() {
 		setShow(true);
@@ -27,17 +34,22 @@ function IngredientItem({ ingredient }) {
 		type: 'ingredientItem',
 		item: ingredient,
 		collect: (monitor) => ({
-		  isDragging: monitor.isDragging(),
-		  handlerId: monitor.getHandlerId(),
+			isDragging: monitor.isDragging(),
+			handlerId: monitor.getHandlerId(),
 		}),
-	  }))
-	  const opacity = isDragging ? 0.4 : 1
+	}));
+	const opacity = isDragging ? 0.4 : 1;
 
 	return (
 		<>
-			<li className={styles.card} onClick={showDetails} >
+			<li className={styles.card} onClick={showDetails}>
 				<div className={styles.imageWrapper}>
-					<img src={ingredient.image} alt={ingredient.name} ref={drag} style={{ cursor: 'move', opacity }}/>
+					<img
+						src={ingredient.image}
+						alt={ingredient.name}
+						ref={drag}
+						style={{ cursor: 'move', opacity }}
+					/>
 					{count && count > 0 ? (
 						<Counter
 							count={count}

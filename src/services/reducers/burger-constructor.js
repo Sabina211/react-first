@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk, combineSlices } from '@reduxjs/toolkit';
-import { v4 as uuidv4 } from 'uuid';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	bun: null,
@@ -21,6 +20,19 @@ const calculateTotalPrice = (bun, mains) => {
 	return totalPrice;
 };
 
+function updateIngredientCounts(mains) {
+	const countMap = {};
+
+	mains.forEach((item) => {
+		countMap[item._id] = (countMap[item._id] || 0) + 1;
+	});
+
+	return mains.map((item) => ({
+		...item,
+		count: countMap[item._id] || 0,
+	}));
+}
+
 export const constructorSlice = createSlice({
 	name: 'constructor',
 	initialState,
@@ -32,10 +44,13 @@ export const constructorSlice = createSlice({
 		addIngredient(state, action) {
 			if (!state.mains) state.mains = new Array();
 			state.mains.push(action.payload);
+			state.mains = updateIngredientCounts(state.mains);
 			return state;
 		},
 		mainsOrderChanged(state, action) {
-			state.mains = [...action.payload];
+			if (JSON.stringify(state.mains) !== JSON.stringify(action.payload)) {
+				state.mains = action.payload; // Изменяем только если порядок изменился
+			}
 			return state;
 		},
 		getTotalPrice(state) {
@@ -44,12 +59,20 @@ export const constructorSlice = createSlice({
 			return state;
 		},
 		removeIngredient(state, action) {
-			const mainsToRemove = state.mains.filter(x=>x.uuid !== action.payload.uuid);
-			return {...state, mains: mainsToRemove};
+			const mainsToRemove = state.mains.filter(
+				(x) => x.uuid !== action.payload.uuid
+			);
+			const updatedMains = updateIngredientCounts(mainsToRemove);
+			return { ...state, mains: updatedMains };
 		},
 	},
 });
-export const { addBun, addIngredient, mainsOrderChanged, getTotalPrice, removeIngredient } =
-	constructorSlice.actions;
+export const {
+	addBun,
+	addIngredient,
+	mainsOrderChanged,
+	getTotalPrice,
+	removeIngredient,
+} = constructorSlice.actions;
 
 export const constructorReducer = constructorSlice.reducer;

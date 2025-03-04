@@ -20,58 +20,29 @@ import {
 	getTotalPrice,
 } from '../../services/reducers/burger-constructor';
 
-function BurgerConstructor({ ingredients }) {
+function BurgerConstructor() {
 	const dispatch = useDispatch();
 	const bun = useSelector((state) => state.constructor.bun);
-	//const mains2 = useSelector((state) => state.constructor.mains);
 	const mains = useSelector((state) => state.constructor.mains);
-	/*const [mains, setMains] = useState(
-		ingredients?.filter((item) => item.type !== 'bun')
-	);*/
 
 	const totalPrice = useSelector((state) => state.constructor.totalPrice);
 
-	/*const moveElement = useCallback((draggedIndex, targetIndex) => {
-		console.log(`Перемещение ${draggedIndex} → ${targetIndex}`);
-		if (draggedIndex === targetIndex) return;
-
-		const updatedMains = [...mains];
-		const [draggedElement] = updatedMains.splice(draggedIndex, 1);
-		updatedMains.splice(targetIndex, 0, draggedElement);
-		setMains(updatedMains);
-		//dispatch(mainsOrderChanged([...updatedMains])); // Передаём новый массив
-	});*/
-
-	/*const moveElement = useCallback(
+	const moveElement = useCallback(
 		(draggedIndex, targetIndex) => {
 			if (draggedIndex === targetIndex) return;
 
-			const updatedMains = [...mains];
+			const updatedMains = [...mains].map((item) => ({ ...item }));
 			const [draggedElement] = updatedMains.splice(draggedIndex, 1);
 			updatedMains.splice(targetIndex, 0, draggedElement);
-
-			dispatch(mainsOrderChanged([...updatedMains])); // Обновляем Redux
+			console.log(`Перемещение ${draggedIndex} → ${targetIndex}`);
+			console.log('старый');
+			console.log(mains);
+			console.log('новый');
+			console.log(updatedMains);
+			dispatch(mainsOrderChanged(updatedMains));
 		},
 		[mains, dispatch]
 	);
-*/
-const moveElement = useCallback(
-    (draggedIndex, targetIndex) => {
-        if (draggedIndex === targetIndex) return;
-
-		const updatedMains = [...mains].map((item) => ({ ...item }));
-        const [draggedElement] = updatedMains.splice(draggedIndex, 1);
-        updatedMains.splice(targetIndex, 0, draggedElement);
-		console.log(`Перемещение ${draggedIndex} → ${targetIndex}`);
-		console.log("старый");
-		console.log(mains);
-		console.log("новый");
-		console.log(updatedMains);
-		//dispatch(mainsOrderChanged([...updatedMains.map((item) => ({ ...item }))]));
-		dispatch(mainsOrderChanged(updatedMains));
-    },
-    [mains, dispatch]
-);
 
 	//перетягивание ингредиента в конструктор
 	const [{ canDrop, itemType }, drop] = useDrop(() => ({
@@ -132,7 +103,7 @@ const moveElement = useCallback(
 						className={styles.mainsList}>
 						{mains.map((element, index) => (
 							<DraggableSortIngredient
-							key={element.uuid + index}
+								key={element.uuid + index}
 								index={index}
 								element={element}
 								moveElement={moveElement}
@@ -167,8 +138,8 @@ const moveElement = useCallback(
 	);
 }
 
-BurgerConstructor.propTypes = {
+/*BurgerConstructor.propTypes = {
 	ingredients: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired,
 };
-
+*/
 export default BurgerConstructor;

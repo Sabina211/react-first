@@ -35,8 +35,7 @@ export const constructorSlice = createSlice({
 			return state;
 		},
 		mainsOrderChanged(state, action) {
-			//state.mains = [...action.payload];
-			state.mains = [...action.payload].map((item) => ({ ...item, uuid: uuidv4() })); // Создаём новые объекты
+			state.mains = [...action.payload];
 			return state;
 		},
 		getTotalPrice(state) {

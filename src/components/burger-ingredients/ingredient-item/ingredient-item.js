@@ -9,7 +9,6 @@ import Modal from '../../modal/modal';
 import { ingredientsPropTypes } from '../../../ingredientsPropTypes';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { addBun } from '../../../services/reducers/burger-constructor';
 
 function IngredientItem({ ingredient }) {
 	const dispatch = useDispatch();

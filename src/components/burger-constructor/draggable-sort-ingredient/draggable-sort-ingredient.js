@@ -7,20 +7,13 @@ import {
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useEffect, useCallback } from 'react';
-import {
-	addBun,
-	addIngredient,
-	mainsOrderChanged,
-	getTotalPrice,
-} from '../../../services/reducers/burger-constructor';
-import { v4 as uuidv4 } from 'uuid';
 
 export function DraggableSortIngredient({ element, index, moveElement  }) {
 	const ref = useRef(null);
 	console.log(element.uuid, index)
 
 	const [{ isDragging }, drag] = useDrag({
-		type:  'sortedItem', //ItemType просто строка, надо только чтобы она совпадала с accept в useDrop
+		type:  'sortedItem',
 		item: { uuid: element.uuid, index, dragType: 'sortedItem' },
 		collect: (monitor) => ({
 			isDragging: monitor.isDragging(),

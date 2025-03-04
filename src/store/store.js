@@ -4,6 +4,8 @@
 
 	export const store = configureStore({
 		reducer: rootReducer,
-		middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+		middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+			serializableCheck: false,
+		  }).concat(thunk),
 		devTools: process.env.NODE_ENV !== 'production', // Включает DevTools только в режиме разработки
 	  });

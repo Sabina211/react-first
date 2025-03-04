@@ -29,7 +29,7 @@ function App() {
 						<main className={burgerIngredientsStyles.main}>
 							<div className={burgerIngredientsStyles.container}>
 								<BurgerIngredients ingredients={ingredients} />
-								<BurgerConstructor ingredients={ingredients} />
+								<BurgerConstructor ingredients={ingredients}/>
 							</div>
 						</main>
 					</div>

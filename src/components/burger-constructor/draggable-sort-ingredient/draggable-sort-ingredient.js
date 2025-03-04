@@ -1,19 +1,20 @@
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
 import styles from '../burger-constructor.module.css';
 import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
+import { useRef, useEffect, useCallback } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 const ItemType = 'ITEM';
 
-export function DraggableSortIngredient({ element, index, moveElement }) {
+export function DraggableSortIngredient({ element, index, moveElement  }) {
 	const ref = useRef(null);
 
 	const [{ isDragging }, drag] = useDrag({
 		type: ItemType, //ItemType просто строка, надо только чтобы она совпадала с accept в useDrop
-		item: { index },
+		item: { index  },
 		collect: (monitor) => ({
 			isDragging: monitor.isDragging(),
 		}),
@@ -22,8 +23,10 @@ export function DraggableSortIngredient({ element, index, moveElement }) {
 	const [, drop] = useDrop({
 		accept: ItemType,
 		hover(item, monitor) {
+			console.log('Перетаскивание: ', item.index, ' -> ', index);
 			//срабатывает, если наводить один элемент на другой
-			if (!ref.current) return;
+			if (!ref.current)
+				return;
 			const dragIndex = item.index; //тот, который тянем
 			const hoverIndex = index; //тот, на который перетаскиванием
 

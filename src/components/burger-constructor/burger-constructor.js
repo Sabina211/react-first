@@ -11,24 +11,36 @@ import { useDrag, useDrop } from 'react-dnd';
 import { PlugElement } from '../plug-element/plug-element';
 import { DraggableSortIngredient } from './draggable-sort-ingredient/draggable-sort-ingredient';
 import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { useCallback, useEffect } from 'react';
 import {
 	addBun,
 	addIngredient,
 	mainsOrderChanged,
+	getTotalPrice,
 } from '../../services/reducers/burger-constructor';
 
 function BurgerConstructor({ ingredients }) {
 	const dispatch = useDispatch();
 	const bun = useSelector((state) => state.constructor.bun);
-	const mains = useSelector((state) => state.constructor.mains);
+	//const mains2 = useSelector((state) => state.constructor.mains);
+	//const mains1 = useSelector((state) => state.constructor.mains);
+	const [mains, setMains] = useState(
+		ingredients?.filter((item) => item.type !== 'bun')
+	);
 
-	const moveElement = (draggedIndex, targetIndex) => {
-		if (draggedIndex === targetIndex) return; // Исключаем ненужные обновления
+	const totalPrice = useSelector((state) => state.constructor.totalPrice);
+
+	const moveElement = useCallback((draggedIndex, targetIndex) => {
+		console.log(`Перемещение ${draggedIndex} → ${targetIndex}`);
+		if (draggedIndex === targetIndex) return;
+
 		const updatedMains = [...mains];
 		const [draggedElement] = updatedMains.splice(draggedIndex, 1);
 		updatedMains.splice(targetIndex, 0, draggedElement);
-		dispatch(mainsOrderChanged(updatedMains));
-	};
+		setMains(updatedMains);
+		//dispatch(mainsOrderChanged([...updatedMains])); // Передаём новый массив
+	});
 
 	//перетягивание ингредиента в конструктор
 	const [{ canDrop, itemType }, drop] = useDrop(() => ({
@@ -39,6 +51,7 @@ function BurgerConstructor({ ingredients }) {
 			} else {
 				dispatch(addIngredient(item));
 			}
+			dispatch(getTotalPrice());
 			return { name: 'Burger Constructor' };
 		},
 		collect: (monitor) => ({
@@ -117,7 +130,7 @@ function BurgerConstructor({ ingredients }) {
 						position='bottom'></PlugElement>
 				)}
 			</div>
-			<Summary sum='4561' />
+			<Summary sum={totalPrice} />
 		</section>
 	);
 }

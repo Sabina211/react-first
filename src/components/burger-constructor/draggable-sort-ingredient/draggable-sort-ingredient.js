@@ -5,37 +5,43 @@ import {
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useEffect, useCallback } from 'react';
+import {
+	addBun,
+	addIngredient,
+	mainsOrderChanged,
+	getTotalPrice,
+} from '../../../services/reducers/burger-constructor';
 import { v4 as uuidv4 } from 'uuid';
-const ItemType = 'ITEM';
 
 export function DraggableSortIngredient({ element, index, moveElement  }) {
 	const ref = useRef(null);
+	console.log(element.uuid, index)
 
 	const [{ isDragging }, drag] = useDrag({
-		type: ItemType, //ItemType просто строка, надо только чтобы она совпадала с accept в useDrop
-		item: { index  },
+		type:  'sortedItem', //ItemType просто строка, надо только чтобы она совпадала с accept в useDrop
+		item: { uuid: element.uuid, index, dragType: 'sortedItem' },
 		collect: (monitor) => ({
 			isDragging: monitor.isDragging(),
 		}),
 	});
 
 	const [, drop] = useDrop({
-		accept: ItemType,
+		accept: 'sortedItem',
 		hover(item, monitor) {
-			console.log('Перетаскивание: ', item.index, ' -> ', index);
-			//срабатывает, если наводить один элемент на другой
-			if (!ref.current)
-				return;
-			const dragIndex = item.index; //тот, который тянем
-			const hoverIndex = index; //тот, на который перетаскиванием
+			if (!ref.current) return;
+
+			const dragIndex = item.index;
+			const hoverIndex = index;
 
 			if (dragIndex === hoverIndex) return;
 
 			const hoverBoundingRect = ref.current.getBoundingClientRect();
-			const hoverMiddleY =
-				(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 			const clientOffset = monitor.getClientOffset();
+			if (!clientOffset) return; // Защита от ошибки
+
+			const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 			const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
 			if (
@@ -44,9 +50,7 @@ export function DraggableSortIngredient({ element, index, moveElement  }) {
 			) {
 				return;
 			}
-
 			moveElement(dragIndex, hoverIndex);
-			item.index = hoverIndex;
 		},
 	});
 

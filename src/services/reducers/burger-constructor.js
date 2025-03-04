@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, combineSlices } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
 	bun: null,
@@ -34,7 +35,8 @@ export const constructorSlice = createSlice({
 			return state;
 		},
 		mainsOrderChanged(state, action) {
-			state.mains = [...action.payload];
+			//state.mains = [...action.payload];
+			state.mains = [...action.payload].map((item) => ({ ...item, uuid: uuidv4() })); // Создаём новые объекты
 			return state;
 		},
 		getTotalPrice(state) {

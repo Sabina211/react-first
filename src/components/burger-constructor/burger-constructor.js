@@ -18,6 +18,7 @@ import {
 	addIngredient,
 	mainsOrderChanged,
 	getTotalPrice,
+	removeIngredient
 } from '../../services/reducers/burger-constructor';
 
 function BurgerConstructor() {
@@ -30,15 +31,9 @@ function BurgerConstructor() {
 	const moveElement = useCallback(
 		(draggedIndex, targetIndex) => {
 			if (draggedIndex === targetIndex) return;
-
-			const updatedMains = [...mains].map((item) => ({ ...item }));
+			const updatedMains = [...mains];
 			const [draggedElement] = updatedMains.splice(draggedIndex, 1);
 			updatedMains.splice(targetIndex, 0, draggedElement);
-			console.log(`Перемещение ${draggedIndex} → ${targetIndex}`);
-			console.log('старый');
-			console.log(mains);
-			console.log('новый');
-			console.log(updatedMains);
 			dispatch(mainsOrderChanged(updatedMains));
 		},
 		[mains, dispatch]
@@ -62,6 +57,11 @@ function BurgerConstructor() {
 			itemType: monitor.getItem()?.type,
 		}),
 	}));
+
+	const removeIngridient = (ingridient) => {
+        dispatch(removeIngredient(ingridient));
+		dispatch(getTotalPrice());
+    }
 
 	const bunStyle = { backgroundColor: '#2f2f37' };
 	const mainsStyle = { backgroundColor: '#2f2f37' };
@@ -107,6 +107,7 @@ function BurgerConstructor() {
 								index={index}
 								element={element}
 								moveElement={moveElement}
+								removeElement={removeIngridient}
 							/>
 						))}
 					</div>

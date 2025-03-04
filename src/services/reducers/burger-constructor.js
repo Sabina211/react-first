@@ -43,9 +43,13 @@ export const constructorSlice = createSlice({
 			state.totalPrice = totalPrice;
 			return state;
 		},
+		removeIngredient(state, action) {
+			const mainsToRemove = state.mains.filter(x=>x.uuid !== action.payload.uuid);
+			return {...state, mains: mainsToRemove};
+		},
 	},
 });
-export const { addBun, addIngredient, mainsOrderChanged, getTotalPrice } =
+export const { addBun, addIngredient, mainsOrderChanged, getTotalPrice, removeIngredient } =
 	constructorSlice.actions;
 
 export const constructorReducer = constructorSlice.reducer;

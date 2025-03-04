@@ -8,12 +8,10 @@ import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useEffect, useCallback } from 'react';
 
-export function DraggableSortIngredient({ element, index, moveElement  }) {
+export function DraggableSortIngredient({ element, index, moveElement, removeElement}) {
 	const ref = useRef(null);
-	console.log(element.uuid, index)
-
 	const [{ isDragging }, drag] = useDrag({
-		type:  'sortedItem',
+		type: 'sortedItem',
 		item: { uuid: element.uuid, index, dragType: 'sortedItem' },
 		collect: (monitor) => ({
 			isDragging: monitor.isDragging(),
@@ -34,7 +32,8 @@ export function DraggableSortIngredient({ element, index, moveElement  }) {
 			const clientOffset = monitor.getClientOffset();
 			if (!clientOffset) return; // Защита от ошибки
 
-			const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+			const hoverMiddleY =
+				(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 			const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
 			if (
@@ -49,7 +48,6 @@ export function DraggableSortIngredient({ element, index, moveElement  }) {
 
 	drag(drop(ref));
 
-
 	return (
 		<div
 			ref={ref}
@@ -61,6 +59,7 @@ export function DraggableSortIngredient({ element, index, moveElement  }) {
 				<DragIcon type='primary' />
 			</span>
 			<ConstructorElement
+				handleClose={() => removeElement(element)}
 				text={element.name}
 				price={element.price}
 				thumbnail={element.image}
@@ -73,4 +72,5 @@ DraggableSortIngredient.propTypes = {
 	element: PropTypes.object.isRequired,
 	index: PropTypes.number.isRequired,
 	moveElement: PropTypes.func.isRequired,
+	removeElement: PropTypes.func.isRequired,
 };

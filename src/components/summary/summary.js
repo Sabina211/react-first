@@ -13,9 +13,9 @@ import { cleanConstructor } from '../../services/reducers/burger-constructor';
 function Summary() {
 	const dispatch = useDispatch();
 	const [show, setShow] = useState(false);
-	var selectedBun = useSelector((state) => state.constructor.bun);
-	var selectedMains = useSelector((state) => state.constructor.mains);
-	var totalPrice = useSelector((state) => state.constructor.totalPrice);
+	var selectedBun = useSelector((state) => state.burgerConstructor.bun);
+	var selectedMains = useSelector((state) => state.burgerConstructor.mains);
+	var totalPrice = useSelector((state) => state.burgerConstructor.totalPrice);
 	var ingredientsIds = selectedMains?.map((x) => x._id);
 	var orderState = useSelector((state) => state.order);
 

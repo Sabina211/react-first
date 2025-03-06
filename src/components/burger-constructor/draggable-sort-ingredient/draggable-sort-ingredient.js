@@ -47,6 +47,7 @@ export function DraggableSortIngredient({
 				return;
 			}
 			moveElement(dragIndex, hoverIndex);
+			item.index = hoverIndex;
 		},
 	});
 

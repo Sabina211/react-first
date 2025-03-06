@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { postOrderRequest } from '../../utils/api-data';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
 	bun: null,
@@ -36,7 +34,7 @@ function updateIngredientCounts(mains) {
 }
 
 export const constructorSlice = createSlice({
-	name: 'constructor',
+	name: 'burgerConstructor',
 	initialState,
 	reducers: {
 		addBun(state, action) {

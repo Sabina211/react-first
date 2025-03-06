@@ -20,10 +20,10 @@ import {
 
 function BurgerConstructor() {
 	const dispatch = useDispatch();
-	const bun = useSelector((state) => state.constructor.bun);
-	const mains = useSelector((state) => state.constructor.mains);
+	const bun = useSelector((state) => state.burgerConstructor.bun);
+	const mains = useSelector((state) => state.burgerConstructor.mains);
 
-	const totalPrice = useSelector((state) => state.constructor.totalPrice);
+	const totalPrice = useSelector((state) => state.burgerConstructor.totalPrice);
 
 	const moveElement = useCallback(
 		(draggedIndex, targetIndex) => {

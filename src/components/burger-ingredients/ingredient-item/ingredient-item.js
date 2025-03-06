@@ -11,8 +11,8 @@ import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import React from 'react';
 function IngredientItem({ ingredient }) {
-	const mains = useSelector((state) => state.constructor.mains);
-	const bun = useSelector((state) => state.constructor.bun);
+	const mains = useSelector((state) => state.burgerConstructor.mains);
+	const bun = useSelector((state) => state.burgerConstructor.bun);
 	const [show, setShow] = useState(false);
 
 	const count = React.useMemo(() => {

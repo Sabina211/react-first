@@ -3,10 +3,7 @@ import {
 	ConstructorElement,
 	DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
-import { ingredientsPropTypes } from '../../ingredientsPropTypes';
 import Summary from '../summary/summary';
-import { useState, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { PlugElement } from '../plug-element/plug-element';
 import { DraggableSortIngredient } from './draggable-sort-ingredient/draggable-sort-ingredient';
@@ -134,7 +131,7 @@ function BurgerConstructor() {
 						position='bottom'></PlugElement>
 				)}
 			</div>
-			<Summary sum={totalPrice} />
+			<Summary/>
 		</section>
 	);
 }

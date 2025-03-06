@@ -2,7 +2,7 @@ import AppHeader from '../app-header/app-header';
 import styles from './app.module.scss';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import burgerIngredientsStyles from '../burger-ingredients/burger-ingredients.module.css';
-import { getIngredients, getIngredients2 } from '../../services/actions/ingredients';
+import { getIngredients } from '../../services/actions/ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { BrowserRouter } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
@@ -28,8 +28,8 @@ function App() {
 						<AppHeader />
 						<main className={burgerIngredientsStyles.main}>
 							<div className={burgerIngredientsStyles.container}>
-								<BurgerIngredients ingredients={ingredients} />
-								<BurgerConstructor ingredients={ingredients}/>
+								<BurgerIngredients />
+								<BurgerConstructor />
 							</div>
 						</main>
 					</div>

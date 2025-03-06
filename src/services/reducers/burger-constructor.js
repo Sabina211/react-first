@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { postOrderRequest } from '../../utils/api-data';
+import {  createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
 	bun: null,

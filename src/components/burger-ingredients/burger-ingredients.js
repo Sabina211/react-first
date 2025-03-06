@@ -2,11 +2,13 @@ import BurgerIngredientsTabs from './burger-ingredients-tabs/burger-ingredients-
 import React from 'react';
 import IngredientsGroup from './ingredients-group/ingredients-group';
 import styles from './burger-ingredients.module.css';
-import PropTypes from 'prop-types';
-import { ingredientsPropTypes } from '../../ingredientsPropTypes';
 import { useRef, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-function BurgerIngredients({ ingredients }) {
+function BurgerIngredients() {
+	const { ingredients } = useSelector(
+		(store) => store.ingredients
+	);
 	function tabChange(value) {
 		headersRef[value].current.scrollIntoView({ behavior: 'smooth' });
 	}
@@ -86,8 +88,5 @@ function BurgerIngredients({ ingredients }) {
 		</section>
 	);
 }
-BurgerIngredients.propTypes = {
-	ingredients: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired,
-};
 
 export default BurgerIngredients;

@@ -1,6 +1,7 @@
 import { getIngredients } from '../actions/ingredients';
 import { constructorSlice } from '../reducers/burger-constructor';
 import { createSlice, createAsyncThunk, combineSlices } from '@reduxjs/toolkit';
+import { orderSlice } from './order';
 
 const initialState = {
 	ingredients: [],
@@ -32,4 +33,4 @@ export const ingredientSlice = createSlice({
 });
 export const ingredientsReducer = ingredientSlice.reducer;
 
-export const rootReducer = combineSlices(ingredientSlice, constructorSlice);
+export const rootReducer = combineSlices(ingredientSlice, constructorSlice, orderSlice);

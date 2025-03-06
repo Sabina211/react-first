@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { postOrderRequest } from '../../utils/api-data';
-import {  createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
 	bun: null,
@@ -67,14 +67,20 @@ export const constructorSlice = createSlice({
 			const updatedMains = updateIngredientCounts(mainsToRemove);
 			return { ...state, mains: updatedMains };
 		},
+		cleanConstructor(state) {
+			state = initialState;
+			return state;
+		},
 	},
 });
+
 export const {
 	addBun,
 	addIngredient,
 	mainsOrderChanged,
 	getTotalPrice,
 	removeIngredient,
+	cleanConstructor,
 } = constructorSlice.actions;
 
 export const constructorReducer = constructorSlice.reducer;

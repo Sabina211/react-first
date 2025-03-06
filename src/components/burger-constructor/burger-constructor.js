@@ -75,7 +75,6 @@ function BurgerConstructor() {
 		<section className={styles.constructorBlock}>
 			<div
 				ref={drop}
-				//style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
 				className={`${styles.constructorBlockContent} mt-25 ml-4`}>
 				{bun ? (
 					<div className={styles.edgesElements}>
@@ -96,7 +95,6 @@ function BurgerConstructor() {
 
 				{mains?.length > 0 ? (
 					<div
-						//style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
 						className={`${styles.constructorBlockContent} ${styles.mainsList}`}>
 						{mains.map((element, index) => (
 							<DraggableSortIngredient

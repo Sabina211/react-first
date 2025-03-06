@@ -8,8 +8,10 @@ import Modal from '../modal/modal';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { postOrder } from '../../services/reducers/order';
+import { cleanConstructor } from '../../services/reducers/burger-constructor';
 
 function Summary() {
+	const dispatch = useDispatch();
 	const [show, setShow] = useState(false);
 	var selectedBun = useSelector((state) => state.constructor.bun);
 	var selectedMains = useSelector((state) => state.constructor.mains);
@@ -39,8 +41,12 @@ function Summary() {
 
 	function hideOrder() {
 		setShow(false);
+		cleanConstructorAfterOrder();
 	}
-	const dispatch = useDispatch();
+
+	function cleanConstructorAfterOrder() {
+		dispatch(cleanConstructor());
+	}
 
 	return (
 		<div className={styles.summary}>

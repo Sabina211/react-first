@@ -53,11 +53,10 @@ export function DraggableSortIngredient({
 	drag(drop(ref));
 
 	return (
-		<div
+		<div className={styles.draggableBlock}
 			ref={ref}
 			style={{
-				opacity: isDragging ? 0 : 1,
-				cursor: 'move',
+				opacity: isDragging ? 0 : 1
 			}}>
 			<span className={styles.draggable}>
 				<DragIcon type='primary' />

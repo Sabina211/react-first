@@ -19,3 +19,7 @@
 	position: relative;
 	display: inline-block;
 }
+
+.draggableBlock{
+	cursor: move,
+}

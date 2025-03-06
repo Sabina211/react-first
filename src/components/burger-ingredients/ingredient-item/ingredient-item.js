@@ -48,7 +48,8 @@ function IngredientItem({ ingredient }) {
 						src={ingredient.image}
 						alt={ingredient.name}
 						ref={drag}
-						style={{ cursor: 'move', opacity }}
+						style={{ opacity }}
+						className={styles.draggableBlock}
 					/>
 					{count && count > 0 ? (
 						<Counter

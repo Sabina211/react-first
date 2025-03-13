@@ -1,15 +1,16 @@
 import styles from './order-details.module.css';
 import img from '../../images/done.png';
+import PropTypes from 'prop-types';
 
-function OrderDetails() {
+function OrderDetails({ title, number }) {
 	return (
 		<div className={styles.modalForm}>
 			<p
 				className={`${styles.orderId} ${styles.centerElement} text text_type_digits-large`}>
-				034536
+				{number}
 			</p>
 			<p className={`${styles.centerElement} text text_type_main-medium`}>
-				идентификатор заказа
+				{title}
 			</p>
 
 			<img className={`${styles.img}`} src={img}></img>
@@ -24,5 +25,10 @@ function OrderDetails() {
 		</div>
 	);
 }
+
+OrderDetails.propTypes = {
+	title: PropTypes.string,
+	number: PropTypes.number,
+};
 
 export default OrderDetails;

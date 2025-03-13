@@ -7,10 +7,20 @@ import { useState } from 'react';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../../modal/modal';
 import { ingredientsPropTypes } from '../../../ingredientsPropTypes';
-
+import { useDrag } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 function IngredientItem({ ingredient }) {
+	const mains = useSelector((state) => state.burgerConstructor.mains);
+	const bun = useSelector((state) => state.burgerConstructor.bun);
 	const [show, setShow] = useState(false);
-	const count = Math.floor(Math.random() * 2);
+
+	const count = React.useMemo(() => {
+		if (ingredient.type === 'bun') {
+			return bun?._id === ingredient._id ? 2 : 0;
+		}
+		return mains?.find((item) => item._id === ingredient._id)?.count || 0;
+	}, [ingredient, bun, mains]);
 
 	function showDetails() {
 		setShow(true);
@@ -19,11 +29,28 @@ function IngredientItem({ ingredient }) {
 	function hideDetails() {
 		setShow(false);
 	}
+
+	const [{ isDragging }, drag] = useDrag(() => ({
+		type: 'ingredientItem',
+		item: ingredient,
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+			handlerId: monitor.getHandlerId(),
+		}),
+	}));
+	const opacity = isDragging ? 0.4 : 1;
+
 	return (
 		<>
 			<li className={styles.card} onClick={showDetails}>
 				<div className={styles.imageWrapper}>
-					<img src={ingredient.image} alt={ingredient.name} />
+					<img
+						src={ingredient.image}
+						alt={ingredient.name}
+						ref={drag}
+						style={{ opacity }}
+						className={styles.draggableBlock}
+					/>
 					{count && count > 0 ? (
 						<Counter
 							count={count}

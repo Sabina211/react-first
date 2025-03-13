@@ -17,7 +17,7 @@ function IngredientsGroup({ groups, itemKey, headers, headersRef }) {
 	);
 }
 
-IngredientsGroup.propTypes  = {
+IngredientsGroup.propTypes = {
 	groups: PropTypes.objectOf(PropTypes.arrayOf(ingredientsPropTypes))
 		.isRequired,
 	itemKey: PropTypes.string.isRequired,

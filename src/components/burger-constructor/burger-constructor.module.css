@@ -12,3 +12,9 @@
 .edgesElements {
 	margin-left: 20px;
 }
+
+.constructorBlockContent {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}

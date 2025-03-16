@@ -11,6 +11,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const AppHeader = () => {
+	const auth = true;
 	return (
 		<header className={styles.header}>
 			<div className={styles.container}>
@@ -26,9 +27,15 @@ const AppHeader = () => {
 					<Logo />
 				</div>
 				<div className={styles.auth_button}>
-					<Link to='/auth'>
-						<MenuItem icon={ProfileIcon} text='Личный кабинет' />
-					</Link>
+					{auth ? (
+						<Link to='/profile'>
+							<MenuItem icon={ProfileIcon} text='Личный кабинет' />
+						</Link>
+					) : (
+						<Link to='/login'>
+							<MenuItem icon={ProfileIcon} text='Личный кабинет' />
+						</Link>
+					)}
 				</div>
 			</div>
 		</header>

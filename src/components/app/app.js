@@ -10,6 +10,7 @@ import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password'
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilePage } from '../../pages/profile/profile';
 import { IngredientPage } from '../../pages/ingredient-page/ingredient-page';
+import { ErrorPage } from '../../pages/error-page/error-page';
 
 
 function App() {
@@ -43,6 +44,9 @@ function App() {
 							<IngredientPage/>
 						}
 					/>
+				</Routes>
+				<Routes>
+					<Route path='*' element={<ErrorPage />} />
 				</Routes>
 			</BrowserRouter>
 		</DndProvider>

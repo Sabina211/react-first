@@ -1,8 +1,7 @@
 import AppHeader from '../app-header/app-header';
-
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import {  Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { LoginPage } from '../../pages/login-page/login-page';
 import { HomePage } from '../../pages/home-page/home-page';
 import { RegisterPage } from '../../pages/register-page/register-page';
@@ -11,21 +10,46 @@ import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilePage } from '../../pages/profile/profile';
 import { IngredientPage } from '../../pages/ingredient-page/ingredient-page';
 import { ErrorPage } from '../../pages/error-page/error-page';
+import Modal from '../modal/modal';
+import IngredientDetails from '../burger-ingredients/ingredient-details/ingredient-details';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function App() {
+	const location = useLocation();
+	const navigate = useNavigate();
+	const background = location.state && location.state.background;
+	console.log(background);
+	console.log(location);
 	return (
 		<DndProvider backend={HTML5Backend}>
 			<AppHeader />
-			<Routes>
+			<Routes location={background || location}>
 				<Route path='/' element={<HomePage />} />
 				<Route path='/login' element={<LoginPage />} />
 				<Route path='/register' element={<RegisterPage />} />
 				<Route path='/forgot-password' element={<ForgotPasswordPage />} />
 				<Route path='/reset-password' element={<ResetPasswordPage />} />
 				<Route path='/profile' element={<ProfilePage />} />
-				<Route path='/1' element={<IngredientPage />} />
+				<Route path='/ingredients/:id' element={<IngredientPage />} />
 				<Route path='*' element={<ErrorPage />} />
 			</Routes>
+
+			{background && (
+				<Routes>
+					<Route
+						path='/ingredients/:id'
+						element={
+							<Modal
+								isOpen={true}
+								onClose={() => navigate('/')}
+								header='Детали ингредиента'>
+								<IngredientDetails />
+							</Modal>
+						}
+					/>
+				</Routes>
+			)}
 		</DndProvider>
 	);
 }

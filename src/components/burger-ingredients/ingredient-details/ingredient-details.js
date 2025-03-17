@@ -1,7 +1,34 @@
 import styles from './ingredient-details.module.css';
-import { ingredientsPropTypes } from '../../../ingredientsPropTypes';
+import { useParams } from 'react-router-dom';
+import { ErrorPage } from '../../../pages/error-page/error-page';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredients } from '../../../services/actions/ingredients';
 
-function IngredientDetails({ ingredient }) {
+function IngredientDetails() {
+	const { id } = useParams();
+	const dispatch = useDispatch();
+	const { ingredients, isLoading, isFailed } = useSelector(
+		(store) => store.ingredients
+	);
+	const [ingredient, setIngredient] = useState(null);
+	useEffect(() => {
+		if (!ingredients.length) {
+			dispatch(getIngredients());
+		} else {
+			const foundIngredient = ingredients.find((item) => item._id === id);
+			setIngredient(foundIngredient);
+		}
+	},  [dispatch, ingredients, id]);
+
+	if (isFailed) {
+		return <ErrorPage />;
+	}
+
+	if (isLoading || !ingredient) {
+		return <p>Загрузка...</p>;
+	  }
+
 	return (
 		<div className={`${styles.modalForm} ${styles.centerElement}`}>
 			<div className={styles.content}>
@@ -47,9 +74,5 @@ function IngredientDetails({ ingredient }) {
 		</div>
 	);
 }
-
-IngredientDetails.propTypes = {
-	ingredient: ingredientsPropTypes.isRequired,
-};
 
 export default IngredientDetails;

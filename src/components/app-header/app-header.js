@@ -11,7 +11,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const AppHeader = () => {
-	const auth = true;
+	const auth = false;
 	return (
 		<header className={styles.header}>
 			<div className={styles.container}>

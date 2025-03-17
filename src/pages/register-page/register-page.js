@@ -3,14 +3,12 @@ import {
 	Input,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
 
 export function RegisterPage() {
-	//const [value, setValue] = React.useState('value');
-	//const inputRef = React.useRef(null);
-	/*const onIconClick = () => {
-		setTimeout(() => inputRef.current.focus(), 0);
-		alert('Icon Click Callback');
-	};*/
+	//const { formValues, handleInputsChange } = useForm({ name: "", email: "", password: "", });
+
+    const dispatch = useDispatch();
 	return (
 		<main className={styles.main}>
 			<div className={styles.сontainer}>
@@ -18,12 +16,13 @@ export function RegisterPage() {
 				<Input
 					type={'text'}
 					placeholder={'Имя'}
-					value=""
+					//value={formValues.name}
 					name={'name'}
 					error={false}
 					errorText={'Ошибка'}
 					size={'default'}
 					extraClass={`${styles.input} ml-1`}
+					//onChange = {handleInputsChange}
 				/>
 				<Input
 					type={'text'}

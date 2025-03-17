@@ -19,15 +19,15 @@ function IngredientDetails() {
 			const foundIngredient = ingredients.find((item) => item._id === id);
 			setIngredient(foundIngredient);
 		}
-	},  [dispatch, ingredients, id]);
+	}, [dispatch, ingredients, id]);
 
-	if (isFailed) {
+	if (isFailed || (!isLoading && !ingredient && ingredients.length > 0)) {
 		return <ErrorPage />;
 	}
 
 	if (isLoading || !ingredient) {
 		return <p>Загрузка...</p>;
-	  }
+	}
 
 	return (
 		<div className={`${styles.modalForm} ${styles.centerElement}`}>

@@ -4,8 +4,15 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import ProfileLink from './profile-link/profile-link'
+import { useDispatch } from 'react-redux'
+import { logout } from '../../services/reducers/user';
 
 export function ProfilePage() {
+	const dispatch = useDispatch();
+
+    const logOut = () => {
+        dispatch(logout())
+    }
 	return (
 		<main className={styles.main}>
 			<div className={styles.container}>
@@ -21,7 +28,7 @@ export function ProfilePage() {
                     <ProfileLink
                         path='/login'
                         text="Выход"
-
+						onClick={logOut}
                     />
                     <p className={`${styles.text} text text_type_main-default text_color_inactive`}>
                         В этом разделе вы можете

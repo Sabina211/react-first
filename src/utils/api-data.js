@@ -5,6 +5,7 @@ const POST_FORGOT_PASSWORD = '/api/password-reset';
 const POST_RESET_PASSWORD = '/api/password-reset/reset';
 const REGISTER_USER = '/api/auth/register';
 const LOGIN = '/api/auth/login';
+const LOGOUT = '/api/auth/logout';
 
 export const checkResponse = async (res) => {
 	if (!res.ok) {
@@ -80,6 +81,30 @@ export function resetPasswordRequest(data) {
 			return res.json();
 		})
 		.then((res) => {
+			return res;
+		});
+}
+
+export function logoutRequest() {
+	const token = localStorage.getItem('refreshToken');
+	return fetch(`${ROOT_URL}${LOGOUT}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({token}),
+	})
+		.then((res) => {
+			if (!res.ok) {
+				return res.json().then((error) => {
+					throw new Error(error.message || 'Ошибка при обращении к апи');
+				});
+			}
+			return res.json();
+		})
+		.then((res) => {
+			localStorage.removeItem('refreshToken');
+			localStorage.removeItem('accessToken');
 			return res;
 		});
 }

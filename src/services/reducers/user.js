@@ -4,6 +4,7 @@ import {
 	loginRequest,
 	forgotPasswordRequest,
 	resetPasswordRequest,
+	logoutRequest,
 } from '../../utils/api-data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -43,6 +44,11 @@ export const forgotPassword = createAsyncAction(
 export const resetPassword = createAsyncAction(
 	'resetPassword',
 	resetPasswordRequest
+);
+
+export const logout = createAsyncAction(
+	'logout',
+	logoutRequest
 );
 
 /*export const registerUser = createAsyncThunk(

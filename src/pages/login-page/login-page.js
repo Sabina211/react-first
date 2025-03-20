@@ -3,56 +3,98 @@ import {
 	Input,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
+import { useForm } from '../../hooks/useForm';
+import { login } from '../../services/reducers/user';
+import { useState } from 'react';
 
 export function LoginPage() {
-	//const [value, setValue] = React.useState('value');
-	//const inputRef = React.useRef(null);
-	/*const onIconClick = () => {
-		setTimeout(() => inputRef.current.focus(), 0);
-		alert('Icon Click Callback');
-	};*/
+	const [commonError, setCommonError] = useState(null);
+	const [emailError, setEmailError] = useState(null);
+	const [passwordError, setPasswordError] = useState(null);
+	const { formValues, handleInputsChange } = useForm({
+		email: '',
+		password: '',
+	});
+
+	const dispatch = useDispatch();
+
+	const onSubmit = async (event) => {
+		event.preventDefault(); // предотвращаем перезагрузку страницы при отправке формы
+		setCommonError(null);
+		if (formValues.email === '' || formValues.password === '') {
+			if (formValues.email === '')
+				setEmailError('Необходимо заполнить поле Email');
+
+			if (formValues.password === '')
+				setPasswordError('Необходимо заполнить поле Пароль');
+
+			return;
+		}
+
+		try {
+			const res = await dispatch(login(formValues));
+			if (res.error) setCommonError(res.payload);
+		} catch (error) {
+			setCommonError(error.message || 'Ошибка при логине');
+		}
+	};
+
+	const onChange = (e) => {
+		handleInputsChange(e);
+		if (formValues.email !== '')
+			setEmailError(null);
+		if (formValues.password !== '')
+			setPasswordError(null);
+	};
+
 	return (
 		<main className={styles.main}>
-			<div className={styles.loginContainer}>
+			<form onSubmit={onSubmit} className={styles.loginContainer}>
 				<h1 className={`text text_type_main-medium ${styles.header}`}>Вход</h1>
 				<Input
-					type={'text'}
+					type={'email'}
 					placeholder={'E-mail'}
-					//onChange={(e) => setValue(e.target.value)}
-					value=""
-					name={'name'}
-					error={false}
-					//ref={inputRef}
-					//onIconClick={onIconClick}
-					errorText={'Ошибка'}
+					onChange={onChange}
+					value={formValues.email}
+					name={'email'}
+					error={emailError !== null}
+					errorText={emailError}
 					size={'default'}
 					extraClass={`${styles.input} ml-1`}
 				/>
 				<Input
-					type={'text'}
+					type={'password'}
 					placeholder={'Пароль'}
 					icon={'ShowIcon'}
-					name={'name'}
-					value=""
-					error={false}
-					errorText={'Ошибка'}
+					name={'password'}
+					value={formValues.password}
+					error={passwordError !== null}
+					errorText={passwordError}
 					size={'default'}
 					extraClass={`${styles.input} ml-1`}
+					onChange={onChange}
 				/>
+				{commonError && <p className={styles.errorText}>{commonError}</p>}
 				<div className={styles.button}>
-					<Button htmlType='button' type='primary' size='medium'>
+					<Button htmlType='submit' type='primary' size='medium'>
 						Войти
 					</Button>
 				</div>
-				<div className={`${styles.textBlock} text text_type_main-default text_color_inactive`}>
+				<div
+					className={`${styles.textBlock} text text_type_main-default text_color_inactive`}>
 					Вы новый пользователь?{' '}
-					<a className={styles.linkText} href='/register'>Зарегистрироваться</a>
+					<a className={styles.linkText} href='/register'>
+						Зарегистрироваться
+					</a>
 				</div>
 				<div className='text text_type_main-default text_color_inactive'>
 					Забыли пароль?{' '}
-					<a className={styles.linkText} href='/forgot-password'>Восстановить пароль</a>
+					<a className={styles.linkText} href='/forgot-password'>
+						Восстановить пароль
+					</a>
 				</div>
-			</div>
+			</form>
 		</main>
 	);
 }

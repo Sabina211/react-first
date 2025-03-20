@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUserRequest } from '../../utils/api-data';
+import {
+	registerUserRequest,
+	loginRequest,
+	forgotPasswordRequest,
+	resetPasswordRequest,
+} from '../../utils/api-data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -9,17 +14,84 @@ const initialState = {
 	error: '',
 };
 
-export const registerUser = createAsyncThunk(
+const createAsyncAction = (actionName, apiRequest) => {
+	return createAsyncThunk(
+		`user/${actionName}`,
+		async (data, { rejectWithValue }) => {
+			try {
+				const response = await apiRequest(data);
+				return response;
+			} catch (error) {
+				return rejectWithValue(error.message);
+			}
+		}
+	);
+};
+
+export const registerUser = createAsyncAction(
+	'registerUser',
+	registerUserRequest
+);
+
+export const login = createAsyncAction('login', loginRequest);
+
+export const forgotPassword = createAsyncAction(
+	'forgotPassword',
+	forgotPasswordRequest
+);
+
+export const resetPassword = createAsyncAction(
+	'resetPassword',
+	resetPasswordRequest
+);
+
+/*export const registerUser = createAsyncThunk(
 	'user/registerUser',
-	async (_, { rejectWithValue }) => {
+	async (data, { rejectWithValue }) => {
 		try {
-			const response = await registerUserRequest();
+			const response = await registerUserRequest(data);
 			return response;
 		} catch (error) {
 			return rejectWithValue(error.message);
 		}
 	}
 );
+
+export const login = createAsyncThunk(
+	'user/login',
+	async (data, { rejectWithValue }) => {
+		try {
+			const response = await loginRequest(data);
+			return response;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
+export const forgotPassword = createAsyncThunk(
+	'user/forgotPassword',
+	async (data, { rejectWithValue }) => {
+		try {
+			const response = await forgotPasswordRequest(data);
+			return response;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);
+
+export const resetPassword = createAsyncThunk(
+	'user/resetPassword',
+	async (data, { rejectWithValue }) => {
+		try {
+			const response = await resetPasswordRequest(data);
+			return response;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
+);*/
 
 export const userSlice = createSlice({
 	name: 'user',

@@ -1,12 +1,14 @@
 const ROOT_URL = 'https://norma.nomoreparties.space';
 const GET_INGREDIENTS = '/api/ingredients';
 const POST_ORDER = '/api/orders';
-const POST_FORGOT_PASSWORD= '/api/password-reset';
-const POST_RESET_PASSWORD= '/api/password-reset/reset';
+const POST_FORGOT_PASSWORD = '/api/password-reset';
+const POST_RESET_PASSWORD = '/api/password-reset/reset';
 const REGISTER_USER = '/api/auth/register';
+const LOGIN = '/api/auth/login';
 
 export const checkResponse = async (res) => {
 	if (!res.ok) {
+		console.log(await res.json());
 		const errorText = `Ошибка при обращении к ${res.url} ${res.status}: ${res.statusText}`;
 		console.error(errorText);
 		throw new Error(errorText);
@@ -46,46 +48,90 @@ export function forgotPasswordRequest(email) {
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ email }),
+		body: JSON.stringify(email),
 	})
-		.then(checkResponse)
+		.then((res) => {
+			if (!res.ok) {
+				return res.json().then((error) => {
+					throw new Error(error.message || 'Ошибка при обращении к апи');
+				});
+			}
+			return res.json();
+		})
 		.then((res) => {
 			return res;
 		});
 }
 
-export function resetPasswordRequest(password, token) {
-	console.log(JSON.stringify({ password }));
+export function resetPasswordRequest(data) {
 	return fetch(`${ROOT_URL}${POST_RESET_PASSWORD}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
-
-		body: JSON.stringify({ password }),
+		body: JSON.stringify(data),
 	})
-		.then(checkResponse)
+		.then((res) => {
+			if (!res.ok) {
+				return res.json().then((error) => {
+					throw new Error(error.message || 'Ошибка при обращении к апи');
+				});
+			}
+			return res.json();
+		})
 		.then((res) => {
 			return res;
 		});
 }
 
-export function registerUserRequest() {
-	const user = {
-		"email": "test-data@yandex.ru",
-		"password": "password",
-		"name": "Username"
-		};
-
+export function registerUserRequest(user) {
 	return fetch(`${ROOT_URL}${REGISTER_USER}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ user }),
+		body: JSON.stringify(user),
 	})
-		.then(checkResponse)
 		.then((res) => {
+			if (!res.ok) {
+				return res.json().then((error) => {
+					throw new Error(error.message || 'Ошибка при обращении к апи');
+				});
+			}
+			return res.json();
+		})
+		.then((res) => {
+			let accessToken = res.accessToken.split('Bearer ')[1];
+			let refreshToken = res.refreshToken;
+
+			localStorage.setItem('accessToken', accessToken);
+			localStorage.setItem('refreshToken', refreshToken);
+			return res;
+		});
+}
+
+export function loginRequest(user) {
+	return fetch(`${ROOT_URL}${LOGIN}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(user),
+	})
+		.then((res) => {
+			if (!res.ok) {
+				return res.json().then((error) => {
+					throw new Error(error.message || 'Ошибка при логине');
+				});
+			}
+			return res.json();
+		})
+		.then((res) => {
+			let accessToken = res.accessToken.split('Bearer ')[1];
+			let refreshToken = res.refreshToken;
+
+			localStorage.setItem('accessToken', accessToken);
+			localStorage.setItem('refreshToken', refreshToken);
 			return res;
 		});
 }

@@ -37,3 +37,8 @@
 	text-decoration: none;
 	color: #4C4CFF;
 }
+
+.errorText{
+	color: #eb6666;
+	padding-top: 15px;
+}

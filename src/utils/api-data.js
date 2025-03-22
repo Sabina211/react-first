@@ -6,10 +6,10 @@ const POST_RESET_PASSWORD = '/api/password-reset/reset';
 const REGISTER_USER = '/api/auth/register';
 const LOGIN = '/api/auth/login';
 const LOGOUT = '/api/auth/logout';
+const USER = '/api/auth/user';
 
 export const checkResponse = async (res) => {
 	if (!res.ok) {
-		console.log(await res.json());
 		const errorText = `Ошибка при обращении к ${res.url} ${res.status}: ${res.statusText}`;
 		console.error(errorText);
 		throw new Error(errorText);
@@ -160,3 +160,67 @@ export function loginRequest(user) {
 			return res;
 		});
 }
+
+export const refreshToken = () => {
+	return fetch(`${ROOT_URL}/auth/token`, {
+	  method: "POST",
+	  headers: {
+		"Content-Type": "application/json;charset=utf-8",
+	  },
+	  body: JSON.stringify({
+		token: localStorage.getItem("refreshToken"),
+	  }),
+	})
+	.then(checkResponse)
+	.then((refreshData) => {
+
+	  if (!refreshData.success) {
+		  return Promise.reject(refreshData);
+		}
+	  localStorage.setItem("refreshToken", refreshData.refreshToken);
+	  localStorage.setItem("accessToken", refreshData.accessToken);
+	  return refreshData;
+	});
+  };
+
+  export const fetchWithRefresh = async (url, options) => {
+	try {
+	  const res = await fetch(url, options);
+	  return await checkResponse(res);
+	} catch (err) {
+	  if (err.message === "jwt expired") {
+		const refreshData = await refreshToken(); //обновляем токен
+		options.headers.authorization = refreshData.accessToken;
+		const res = await fetch(url, options); //повторяем запрос
+		return await checkResponse(res);
+	  } else {
+		return Promise.reject(err);
+	  }
+	}
+  };
+
+  export function getUserRequest() {
+	const token = localStorage.getItem("accessToken");
+
+	return fetchWithRefresh(`${ROOT_URL}${USER}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
+		}
+	});
+}
+
+export function postUserRequest(user) {
+	const token = localStorage.getItem("accessToken");
+
+	return fetchWithRefresh(`${ROOT_URL}${USER}`, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
+		},
+		body: JSON.stringify(user),
+	});
+}
+

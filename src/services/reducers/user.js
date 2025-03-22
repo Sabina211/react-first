@@ -1,15 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, isPending, isRejected } from '@reduxjs/toolkit';
 import {
 	registerUserRequest,
 	loginRequest,
 	forgotPasswordRequest,
 	resetPasswordRequest,
 	logoutRequest,
+	getUserRequest,
+	postUserRequest
 } from '../../utils/api-data';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-	user: null,
+	user: {
+        email: null,
+        name: null,
+        isLogedIn: false,
+    },
 	isLoading: false,
 	isFailed: false,
 	error: '',
@@ -51,53 +56,15 @@ export const logout = createAsyncAction(
 	logoutRequest
 );
 
-/*export const registerUser = createAsyncThunk(
-	'user/registerUser',
-	async (data, { rejectWithValue }) => {
-		try {
-			const response = await registerUserRequest(data);
-			return response;
-		} catch (error) {
-			return rejectWithValue(error.message);
-		}
-	}
+export const getUser = createAsyncAction(
+	'getUser',
+	getUserRequest
 );
 
-export const login = createAsyncThunk(
-	'user/login',
-	async (data, { rejectWithValue }) => {
-		try {
-			const response = await loginRequest(data);
-			return response;
-		} catch (error) {
-			return rejectWithValue(error.message);
-		}
-	}
+export const postUser = createAsyncAction(
+	'postUser',
+	postUserRequest
 );
-
-export const forgotPassword = createAsyncThunk(
-	'user/forgotPassword',
-	async (data, { rejectWithValue }) => {
-		try {
-			const response = await forgotPasswordRequest(data);
-			return response;
-		} catch (error) {
-			return rejectWithValue(error.message);
-		}
-	}
-);
-
-export const resetPassword = createAsyncThunk(
-	'user/resetPassword',
-	async (data, { rejectWithValue }) => {
-		try {
-			const response = await resetPasswordRequest(data);
-			return response;
-		} catch (error) {
-			return rejectWithValue(error.message);
-		}
-	}
-);*/
 
 export const userSlice = createSlice({
 	name: 'user',
@@ -105,19 +72,36 @@ export const userSlice = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder
-			.addCase(registerUser.pending, (state) => {
-				state.isLoading = true;
-				state.isFailed = false;
-			})
 			.addCase(registerUser.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = action.payload;
+				console.log("Регистарция пользователя прошло успешно");
 			})
-			.addCase(registerUser.rejected, (state, action) => {
+			.addCase(login.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.user = action.payload.user;
+				console.log("Авторизация пользователя прошла успешно");
+			})
+			.addCase(getUser.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.user = action.payload.user;
+				console.log("ПОлучение пользователя прошло успешно");
+			})
+			.addCase(postUser.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.user = action.payload.user;
+				console.log("Изменение пользователя прошло успешно");
+			})
+			.addMatcher(isPending, (state) => {
+				state.isLoading = true;
+				state.isFailed = false;
+				state.error = '';
+			})
+			.addMatcher(isRejected, (state, action) => {
 				state.isLoading = false;
 				state.isFailed = true;
-				state.error = action.error?.message;
-			});
+				state.error = action.error?.message || 'Что-то пошло не так';
+			});;
 	},
 });
 

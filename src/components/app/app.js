@@ -19,8 +19,6 @@ function App() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
-	console.log(background);
-	console.log(location);
 	return (
 		<DndProvider backend={HTML5Backend}>
 			<AppHeader />

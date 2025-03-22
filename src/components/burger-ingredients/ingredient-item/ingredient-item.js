@@ -14,7 +14,6 @@ import React from 'react';
 
 function IngredientItem({ ingredient }) {
 	const location = useLocation();
-	console.log(location);
 	const mains = useSelector((state) => state.burgerConstructor.mains);
 	const bun = useSelector((state) => state.burgerConstructor.bun);
 

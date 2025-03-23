@@ -30,17 +30,16 @@ export function getIngredientsRequest() {
 }
 
 export function postOrderRequest(ingredients) {
-	return fetch(`${ROOT_URL}${POST_ORDER}`, {
+	const token = localStorage.getItem("accessToken");
+
+	return fetchWithRefresh(`${ROOT_URL}${POST_ORDER}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${token}`
 		},
 		body: JSON.stringify({ ingredients }),
-	})
-		.then(checkResponse)
-		.then((res) => {
-			return res;
-		});
+	});
 }
 
 export function forgotPasswordRequest(email) {

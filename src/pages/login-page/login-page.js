@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { login } from '../../services/reducers/user';
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function LoginPage() {
 	const [commonError, setCommonError] = useState(null);
@@ -16,6 +17,9 @@ export function LoginPage() {
 		email: '',
 		password: '',
 	});
+	const location = useLocation();
+	const navigate = useNavigate();
+	const pathFrom = location.state?.path?.pathname || '/';
 
 	const dispatch = useDispatch();
 
@@ -35,6 +39,7 @@ export function LoginPage() {
 		try {
 			const res = await dispatch(login(formValues));
 			if (res.error) setCommonError(res.payload);
+			else navigate(pathFrom, { replace: true });
 		} catch (error) {
 			setCommonError(error.message || 'Ошибка при логине');
 		}
@@ -42,10 +47,8 @@ export function LoginPage() {
 
 	const onChange = (e) => {
 		handleInputsChange(e);
-		if (formValues.email !== '')
-			setEmailError(null);
-		if (formValues.password !== '')
-			setPasswordError(null);
+		if (formValues.email !== '') setEmailError(null);
+		if (formValues.password !== '') setPasswordError(null);
 	};
 
 	return (

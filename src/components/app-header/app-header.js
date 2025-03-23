@@ -3,15 +3,17 @@ import React from 'react';
 import styles from './app-header.module.css';
 import MenuItem from '../menu-item/menu-item';
 import itemStyles from '../menu-item/menu-item.module.css';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import {
 	BurgerIcon,
 	ListIcon,
 	ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AppHeader = () => {
-	const auth = false;
+	const user = useSelector((state) => state.user.user);
+	//const auth = false;
 	return (
 		<header className={styles.header}>
 			<div className={styles.container}>
@@ -27,15 +29,12 @@ const AppHeader = () => {
 					<Logo />
 				</div>
 				<div className={styles.auth_button}>
-					{auth ? (
-						<Link to='/profile'>
-							<MenuItem icon={ProfileIcon} text='Личный кабинет' />
-						</Link>
-					) : (
-						<Link to='/login'>
-							<MenuItem icon={ProfileIcon} text='Личный кабинет' />
-						</Link>
-					)}
+					<NavLink to='/profile'>
+						<MenuItem
+							icon={ProfileIcon}
+							text={!user.name ? 'Личный кабинет' : user.name}
+						/>
+					</NavLink>
 				</div>
 			</div>
 		</header>

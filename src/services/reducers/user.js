@@ -13,8 +13,8 @@ const initialState = {
 	user: {
         email: null,
         name: null,
-        isLogedIn: false,
     },
+	isAuth: false,
 	isLoading: false,
 	isFailed: false,
 	error: '',
@@ -80,7 +80,14 @@ export const userSlice = createSlice({
 			.addCase(login.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = action.payload.user;
+				state.isAuth = true;
 				console.log("Авторизация пользователя прошла успешно");
+			})
+			.addCase(logout.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.user = initialState.user;
+				state.isAuth = false;
+				console.log("Разлогирование пользователя прошло успешно");
 			})
 			.addCase(getUser.fulfilled, (state, action) => {
 				state.isLoading = false;

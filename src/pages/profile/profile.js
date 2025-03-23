@@ -2,8 +2,10 @@ import styles from './profile.module.css';
 import ProfileLink from './profile-link/profile-link';
 import { logout } from '../../services/reducers/user';
 import { Outlet } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function ProfilePage() {
+	const dispatch = useDispatch();
 	const logOut = () => {
 		dispatch(logout());
 	};

@@ -14,8 +14,9 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../burger-ingredients/ingredient-details/ingredient-details';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {ProfileUserPage} from '../../pages/profile/profile-user/profile-user';
-import {ProfileOrdersHistory} from '../../pages/profile/profile-orders-history/profile-orders-history';
+import { ProfileUserPage } from '../../pages/profile/profile-user/profile-user';
+import { ProfileOrdersHistory } from '../../pages/profile/profile-orders-history/profile-orders-history';
+import { ElementForAuthorized } from '../element-for-authorized/element-for-authorized';
 
 function App() {
 	const location = useLocation();
@@ -32,7 +33,9 @@ function App() {
 				<Route path='/reset-password' element={<ResetPasswordPage />} />
 				<Route path='/profile' element={<ProfilePage />} />
 
-				<Route path='/profile' element={<ProfilePage />}>
+				<Route
+					path='/profile'
+					element={<ElementForAuthorized element={<ProfilePage />} />}>
 					<Route index element={<ProfileUserPage />} />
 					<Route path='orders-history' element={<ProfileOrdersHistory />} />
 				</Route>

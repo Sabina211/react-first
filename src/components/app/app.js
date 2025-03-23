@@ -20,6 +20,7 @@ import { ElementForAuthorized } from '../element-for-authorized/element-for-auth
 import OrderDetails from '../order-details/order-details';
 import { useSelector, useDispatch } from 'react-redux';
 import { cleanConstructor } from '../../services/reducers/burger-constructor';
+import { ElementForUnauthorized } from '../element-for-unauthorized/element-for-unauthorized';
 
 function App() {
 	const location = useLocation();
@@ -40,10 +41,22 @@ function App() {
 			<AppHeader />
 			<Routes location={background || location}>
 				<Route path='/' element={<HomePage />} />
-				<Route path='/login' element={<LoginPage />} />
-				<Route path='/register' element={<RegisterPage />} />
-				<Route path='/forgot-password' element={<ForgotPasswordPage />} />
-				<Route path='/reset-password' element={<ResetPasswordPage />} />
+				<Route
+					path='/login'
+					element={<ElementForUnauthorized element={<LoginPage />} />}
+				/>
+				<Route
+					path='/register'
+					element={<ElementForUnauthorized element={<RegisterPage />} />}
+				/>
+				<Route
+					path='/forgot-password'
+					element={<ElementForUnauthorized element={<ForgotPasswordPage />} />}
+				/>
+				<Route
+					path='/reset-password'
+					element={<ElementForUnauthorized element={<ResetPasswordPage />} />}
+				/>
 				<Route path='/profile' element={<ProfilePage />} />
 
 				<Route

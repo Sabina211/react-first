@@ -28,6 +28,12 @@
 	padding-top: 8px;
 }
 
+.loader{
+	display: flex;
+	justify-content: center;
+
+}
+
 @media (max-height: 650px) {
 	.last-p {
 		margin-bottom: 16px;

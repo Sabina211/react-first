@@ -32,24 +32,10 @@ function Summary() {
 			alert('Нужно выбрать начинку для бургера');
 			return;
 		}
+		navigate('/order', { state: { background: location } });
 		await dispatch(postOrder([...ingredientsIds, selectedBun._id]));
 		console.log("навигация");
-		navigate('/order', { state: { background: location } });
-	}
 
-	/*useEffect(() => {
-		if (!orderState.isLoading && orderState.order != null) {
-			console.log(orderState);
-			setShow(true);
-		}
-	}, [orderState]);*/
-
-	function hideOrder() {
-		cleanConstructorAfterOrder();
-	}
-
-	function cleanConstructorAfterOrder() {
-		dispatch(cleanConstructor());
 	}
 
 	return (

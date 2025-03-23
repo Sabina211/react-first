@@ -88,7 +88,8 @@ export const userSlice = createSlice({
 		builder
 			.addCase(registerUser.fulfilled, (state, action) => {
 				state.isLoading = false;
-				state.user = action.payload;
+				state.user = action.payload.user;
+				state.isAuth = true;
 				console.log("Регистарция пользователя прошло успешно");
 			})
 			.addCase(login.fulfilled, (state, action) => {
@@ -113,6 +114,14 @@ export const userSlice = createSlice({
 				state.isLoading = false;
 				state.user = action.payload.user;
 				console.log("Изменение пользователя прошло успешно");
+			})
+			.addCase(forgotPassword.fulfilled, (state) => {
+				state.isLoading = false;
+				console.log("Запрос resetPassword прошел успешно");
+			})
+			.addCase(resetPassword.fulfilled, (state) => {
+				state.isLoading = false;
+				console.log("Запрос resetPassword прошел успешно");
 			})
 			.addMatcher(isPending, (state) => {
 				state.isLoading = true;

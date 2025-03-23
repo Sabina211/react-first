@@ -59,6 +59,7 @@ export function forgotPasswordRequest(email) {
 			return res.json();
 		})
 		.then((res) => {
+			localStorage.setItem("accessToResetPassword", true);
 			return res;
 		});
 }
@@ -80,6 +81,7 @@ export function resetPasswordRequest(data) {
 			return res.json();
 		})
 		.then((res) => {
+			localStorage.removeItem("accessToResetPassword");
 			return res;
 		});
 }

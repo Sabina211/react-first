@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { resetPassword } from '../../services/reducers/user';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export function ResetPasswordPage() {
 	const [commonError, setCommonError] = useState(null);
@@ -16,6 +18,14 @@ export function ResetPasswordPage() {
 		token: '',
 		password: '',
 	});
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const hasAccess = localStorage.getItem('accessToResetPassword');
+		if (!hasAccess) {
+			navigate('/', { replace: true });
+		}
+	}, [navigate]);
 
 	const dispatch = useDispatch();
 

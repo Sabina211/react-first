@@ -9,7 +9,7 @@ export const ElementForUnauthorized = ({ element }) => {
 	const dispatch = useDispatch();
 	const location = useLocation();
 
-	const { isLoading, isAuth } = useSelector((state) => state.user);
+	const { isLoading, isAuth} = useSelector((state) => state.user);
 
 	useEffect(() => {
 		dispatch(getUser());

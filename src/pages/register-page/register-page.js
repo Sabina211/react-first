@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { registerUser } from '../../services/reducers/user';
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function RegisterPage() {
 	const [commonError, setCommonError] = useState(null);
@@ -18,6 +19,9 @@ export function RegisterPage() {
 		email: '',
 		password: '',
 	});
+	const location = useLocation();
+	const navigate = useNavigate();
+	const pathFrom = location.state?.from?.pathname || '/';
 
 	const dispatch = useDispatch();
 
@@ -40,6 +44,9 @@ export function RegisterPage() {
 		try {
 			const res = await dispatch(registerUser(formValues));
 			if (res.error) setCommonError(res.payload);
+			else{
+				navigate(pathFrom, { replace: true });
+			}
 		} catch (error) {
 			setCommonError(error.message || 'Ошибка при запросе');
 		}

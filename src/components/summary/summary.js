@@ -9,15 +9,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { postOrder } from '../../services/reducers/order';
 import { cleanConstructor } from '../../services/reducers/burger-constructor';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Summary() {
 	const dispatch = useDispatch();
-	const [show, setShow] = useState(false);
+	//const [show, setShow] = useState(false);
 	var selectedBun = useSelector((state) => state.burgerConstructor.bun);
 	var selectedMains = useSelector((state) => state.burgerConstructor.mains);
 	var totalPrice = useSelector((state) => state.burgerConstructor.totalPrice);
 	var ingredientsIds = selectedMains?.map((x) => x._id);
 	var orderState = useSelector((state) => state.order);
+	const location = useLocation();
+	const navigate = useNavigate();
 
 	async function showOrder() {
 		if (!selectedBun) {
@@ -30,17 +33,18 @@ function Summary() {
 			return;
 		}
 		await dispatch(postOrder([...ingredientsIds, selectedBun._id]));
+		console.log("навигация");
+		navigate('/order', { state: { background: location } });
 	}
 
-	useEffect(() => {
+	/*useEffect(() => {
 		if (!orderState.isLoading && orderState.order != null) {
 			console.log(orderState);
 			setShow(true);
 		}
-	}, [orderState]);
+	}, [orderState]);*/
 
 	function hideOrder() {
-		setShow(false);
 		cleanConstructorAfterOrder();
 	}
 
@@ -61,14 +65,7 @@ function Summary() {
 				size='medium'>
 				Оформить заказ
 			</Button>
-			{show && (
-				<Modal isOpen={show} onClose={hideOrder}>
-					<OrderDetails
-						title={orderState.order.name}
-						number={orderState.order.order.number}
-					/>
-				</Modal>
-			)}
+
 		</div>
 	);
 }

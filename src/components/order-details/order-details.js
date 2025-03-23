@@ -1,16 +1,26 @@
 import styles from './order-details.module.css';
 import img from '../../images/done.png';
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-function OrderDetails({ title, number }) {
+
+export function OrderDetails() {
+	var orderState = useSelector((state) => state.order);
+	useEffect(() => {
+		if (!orderState.isLoading && orderState.order != null) {
+			console.log(orderState);
+		}
+	}, [orderState]);
+
 	return (
 		<div className={styles.modalForm}>
 			<p
 				className={`${styles.orderId} ${styles.centerElement} text text_type_digits-large`}>
-				{number}
+				{orderState.order.order.number}
 			</p>
 			<p className={`${styles.centerElement} text text_type_main-medium`}>
-				{title}
+			{orderState.order.name}
 			</p>
 
 			<img className={`${styles.img}`} src={img}></img>
@@ -25,10 +35,5 @@ function OrderDetails({ title, number }) {
 		</div>
 	);
 }
-
-OrderDetails.propTypes = {
-	title: PropTypes.string,
-	number: PropTypes.number,
-};
 
 export default OrderDetails;

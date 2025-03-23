@@ -17,11 +17,24 @@ import { useNavigate } from 'react-router-dom';
 import { ProfileUserPage } from '../../pages/profile/profile-user/profile-user';
 import { ProfileOrdersHistory } from '../../pages/profile/profile-orders-history/profile-orders-history';
 import { ElementForAuthorized } from '../element-for-authorized/element-for-authorized';
+import OrderDetails from '../order-details/order-details';
+import { useSelector, useDispatch } from 'react-redux';
+import { cleanConstructor } from '../../services/reducers/burger-constructor';
 
 function App() {
 	const location = useLocation();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
+
+	function hideOrder() {
+		navigate(-1);
+		cleanConstructorAfterOrder();
+	}
+
+	function cleanConstructorAfterOrder() {
+		dispatch(cleanConstructor());
+	}
 	return (
 		<DndProvider backend={HTML5Backend}>
 			<AppHeader />
@@ -41,6 +54,19 @@ function App() {
 				</Route>
 
 				<Route path='/ingredients/:id' element={<IngredientPage />} />
+				<Route
+					//path='/order'
+					element={
+						<ElementForAuthorized
+							path='/order'
+							element={
+								<Modal isOpen={true} onClose={hideOrder}>
+									<OrderDetails />
+								</Modal>
+							}
+						/>
+					}
+				/>
 				<Route path='*' element={<ErrorPage />} />
 			</Routes>
 
@@ -55,6 +81,18 @@ function App() {
 								header='Детали ингредиента'>
 								<IngredientDetails />
 							</Modal>
+						}
+					/>
+					<Route
+						path='/order'
+						element={
+							<ElementForAuthorized
+								element={
+									<Modal isOpen={true} onClose={hideOrder}>
+										<OrderDetails />
+									</Modal>
+								}
+							/>
 						}
 					/>
 				</Routes>

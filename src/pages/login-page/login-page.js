@@ -19,7 +19,10 @@ export function LoginPage() {
 	});
 	const location = useLocation();
 	const navigate = useNavigate();
-	const pathFrom = location.state?.path?.pathname || '/';
+	const pathFrom =
+		location.state?.from?.pathname === '/order'
+			? '/'
+			: location.state?.from?.pathname || '/';
 
 	const dispatch = useDispatch();
 

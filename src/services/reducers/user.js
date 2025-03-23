@@ -51,14 +51,28 @@ export const resetPassword = createAsyncAction(
 	resetPasswordRequest
 );
 
-export const logout = createAsyncAction(
-	'logout',
-	logoutRequest
+export const logout = createAsyncThunk(
+	'user/logout',
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await logoutRequest();
+			return response;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
 );
 
-export const getUser = createAsyncAction(
-	'getUser',
-	getUserRequest
+export const getUser = createAsyncThunk(
+	'user/getUser',
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await getUserRequest();
+			return response;
+		} catch (error) {
+			return rejectWithValue(error.message);
+		}
+	}
 );
 
 export const postUser = createAsyncAction(
@@ -92,6 +106,7 @@ export const userSlice = createSlice({
 			.addCase(getUser.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = action.payload.user;
+				state.isAuth = true;
 				console.log("ПОлучение пользователя прошло успешно");
 			})
 			.addCase(postUser.fulfilled, (state, action) => {

@@ -8,6 +8,7 @@ import { useForm } from '../../hooks/useForm';
 import { login } from '../../services/reducers/user';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export function LoginPage() {
 	const [commonError, setCommonError] = useState(null);
@@ -90,15 +91,15 @@ export function LoginPage() {
 				<div
 					className={`${styles.textBlock} text text_type_main-default text_color_inactive`}>
 					Вы новый пользователь?{' '}
-					<a className={styles.linkText} href='/register'>
+					<Link className={styles.linkText} to='/register'>
 						Зарегистрироваться
-					</a>
+					</Link>
 				</div>
 				<div className='text text_type_main-default text_color_inactive'>
 					Забыли пароль?{' '}
-					<a className={styles.linkText} href='/forgot-password'>
+					<Link className={styles.linkText} to='/forgot-password'>
 						Восстановить пароль
-					</a>
+					</Link>
 				</div>
 			</form>
 		</main>

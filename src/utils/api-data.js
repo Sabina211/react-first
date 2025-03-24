@@ -30,13 +30,13 @@ export function getIngredientsRequest() {
 }
 
 export function postOrderRequest(ingredients) {
-	const token = localStorage.getItem("accessToken");
+	const token = localStorage.getItem('accessToken');
 
 	return fetchWithRefresh(`${ROOT_URL}${POST_ORDER}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
+			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify({ ingredients }),
 	});
@@ -50,16 +50,9 @@ export function forgotPasswordRequest(email) {
 		},
 		body: JSON.stringify(email),
 	})
+		.then(checkResponse)
 		.then((res) => {
-			if (!res.ok) {
-				return res.json().then((error) => {
-					throw new Error(error.message || 'Ошибка при обращении к апи');
-				});
-			}
-			return res.json();
-		})
-		.then((res) => {
-			localStorage.setItem("accessToResetPassword", true);
+			localStorage.setItem('accessToResetPassword', true);
 			return res;
 		});
 }
@@ -72,16 +65,9 @@ export function resetPasswordRequest(data) {
 		},
 		body: JSON.stringify(data),
 	})
+		.then(checkResponse)
 		.then((res) => {
-			if (!res.ok) {
-				return res.json().then((error) => {
-					throw new Error(error.message || 'Ошибка при обращении к апи');
-				});
-			}
-			return res.json();
-		})
-		.then((res) => {
-			localStorage.removeItem("accessToResetPassword");
+			localStorage.removeItem('accessToResetPassword');
 			return res;
 		});
 }
@@ -93,16 +79,9 @@ export function logoutRequest() {
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({token}),
+		body: JSON.stringify({ token }),
 	})
-		.then((res) => {
-			if (!res.ok) {
-				return res.json().then((error) => {
-					throw new Error(error.message || 'Ошибка при обращении к апи');
-				});
-			}
-			return res.json();
-		})
+		.then(checkResponse)
 		.then((res) => {
 			localStorage.removeItem('refreshToken');
 			localStorage.removeItem('accessToken');
@@ -118,14 +97,7 @@ export function registerUserRequest(user) {
 		},
 		body: JSON.stringify(user),
 	})
-		.then((res) => {
-			if (!res.ok) {
-				return res.json().then((error) => {
-					throw new Error(error.message || 'Ошибка при обращении к апи');
-				});
-			}
-			return res.json();
-		})
+		.then(checkResponse)
 		.then((res) => {
 			let accessToken = res.accessToken.split('Bearer ')[1];
 			let refreshToken = res.refreshToken;
@@ -144,14 +116,7 @@ export function loginRequest(user) {
 		},
 		body: JSON.stringify(user),
 	})
-		.then((res) => {
-			if (!res.ok) {
-				return res.json().then((error) => {
-					throw new Error(error.message || 'Ошибка при логине');
-				});
-			}
-			return res.json();
-		})
+		.then(checkResponse)
 		.then((res) => {
 			let accessToken = res.accessToken.split('Bearer ')[1];
 			let refreshToken = res.refreshToken;
@@ -164,64 +129,62 @@ export function loginRequest(user) {
 
 export const refreshToken = () => {
 	return fetch(`${ROOT_URL}/auth/token`, {
-	  method: "POST",
-	  headers: {
-		"Content-Type": "application/json;charset=utf-8",
-	  },
-	  body: JSON.stringify({
-		token: localStorage.getItem("refreshToken"),
-	  }),
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json;charset=utf-8',
+		},
+		body: JSON.stringify({
+			token: localStorage.getItem('refreshToken'),
+		}),
 	})
-	.then(checkResponse)
-	.then((refreshData) => {
+		.then(checkResponse)
+		.then((refreshData) => {
+			if (!refreshData.success) {
+				return Promise.reject(refreshData);
+			}
+			localStorage.setItem('refreshToken', refreshData.refreshToken);
+			localStorage.setItem('accessToken', refreshData.accessToken);
+			return refreshData;
+		});
+};
 
-	  if (!refreshData.success) {
-		  return Promise.reject(refreshData);
-		}
-	  localStorage.setItem("refreshToken", refreshData.refreshToken);
-	  localStorage.setItem("accessToken", refreshData.accessToken);
-	  return refreshData;
-	});
-  };
-
-  export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url, options) => {
 	try {
-	  const res = await fetch(url, options);
-	  return await checkResponse(res);
-	} catch (err) {
-	  if (err.message === "jwt expired") {
-		const refreshData = await refreshToken(); //обновляем токен
-		options.headers.authorization = refreshData.accessToken;
-		const res = await fetch(url, options); //повторяем запрос
+		const res = await fetch(url, options);
 		return await checkResponse(res);
-	  } else {
-		return Promise.reject(err);
-	  }
+	} catch (err) {
+		if (err.message === 'jwt expired') {
+			const refreshData = await refreshToken(); //обновляем токен
+			options.headers.authorization = refreshData.accessToken;
+			const res = await fetch(url, options); //повторяем запрос
+			return await checkResponse(res);
+		} else {
+			return Promise.reject(err);
+		}
 	}
-  };
+};
 
-  export function getUserRequest() {
-	const token = localStorage.getItem("accessToken");
+export function getUserRequest() {
+	const token = localStorage.getItem('accessToken');
 
 	return fetchWithRefresh(`${ROOT_URL}${USER}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
-		}
+			Authorization: `Bearer ${token}`,
+		},
 	});
 }
 
 export function postUserRequest(user) {
-	const token = localStorage.getItem("accessToken");
+	const token = localStorage.getItem('accessToken');
 
 	return fetchWithRefresh(`${ROOT_URL}${USER}`, {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
+			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify(user),
 	});
 }
-

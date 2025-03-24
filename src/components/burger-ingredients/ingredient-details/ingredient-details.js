@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { ErrorPage } from '../../../pages/error-page/error-page';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients } from '../../../services/actions/ingredients';
 
 function IngredientDetails() {
 	const { id } = useParams();
@@ -13,12 +12,8 @@ function IngredientDetails() {
 	);
 	const [ingredient, setIngredient] = useState(null);
 	useEffect(() => {
-		if (!ingredients.length) {
-			dispatch(getIngredients());
-		} else {
-			const foundIngredient = ingredients.find((item) => item._id === id);
-			setIngredient(foundIngredient);
-		}
+		const foundIngredient = ingredients.find((item) => item._id === id);
+		setIngredient(foundIngredient);
 	}, [dispatch, ingredients, id]);
 
 	if (isFailed || (!isLoading && !ingredient && ingredients.length > 0)) {

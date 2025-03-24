@@ -13,7 +13,7 @@ const AppHeader = () => {
 	const user = useSelector((state) => state.user.user);
 	const location = useLocation();
 	const currentPath = location.pathname;
-	//const auth = false;
+
 	return (
 		<header className={styles.header}>
 			<div className={styles.container}>
@@ -33,9 +33,9 @@ const AppHeader = () => {
 						/>
 					</Link>
 				</div>
-				<div className={styles.logo}>
+				<Link to='/' className={styles.logo}>
 					<Logo />
-				</div>
+				</Link>
 				<div className={styles.auth_button}>
 					<NavLink to='/profile'>
 						<MenuItem

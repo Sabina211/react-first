@@ -12,7 +12,6 @@ import { IngredientPage } from '../../pages/ingredient-page/ingredient-page';
 import { ErrorPage } from '../../pages/error-page/error-page';
 import Modal from '../modal/modal';
 import IngredientDetails from '../burger-ingredients/ingredient-details/ingredient-details';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ProfileUserPage } from '../../pages/profile/profile-user/profile-user';
 import { ProfileOrdersHistory } from '../../pages/profile/profile-orders-history/profile-orders-history';
@@ -21,12 +20,17 @@ import OrderDetails from '../order-details/order-details';
 import { useSelector, useDispatch } from 'react-redux';
 import { cleanConstructor } from '../../services/reducers/burger-constructor';
 import { ElementForUnauthorized } from '../element-for-unauthorized/element-for-unauthorized';
+import { getIngredients } from '../../services/actions/ingredients';
+import { useEffect, useState } from 'react';
 
 function App() {
 	const location = useLocation();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
+	useEffect(() => {
+		dispatch(getIngredients());
+	}, [dispatch]);
 
 	function hideOrder() {
 		navigate(-1);

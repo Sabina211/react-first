@@ -8,6 +8,7 @@ import { useForm } from '../../hooks/useForm';
 import { registerUser } from '../../services/reducers/user';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export function RegisterPage() {
 	const [commonError, setCommonError] = useState(null);
@@ -107,9 +108,9 @@ export function RegisterPage() {
 				<div
 					className={`${styles.textBlock} text text_type_main-default text_color_inactive`}>
 					Уже зарегистрированы?{' '}
-					<a className={styles.linkText} href='/login'>
+					<Link className={styles.linkText} to='/login'>
 						Войти
-					</a>
+					</Link>
 				</div>
 			</form>
 		</main>

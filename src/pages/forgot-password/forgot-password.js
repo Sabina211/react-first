@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { forgotPassword } from '../../services/reducers/user';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export function ForgotPasswordPage() {
 	const [commonError, setCommonError] = useState(null);
@@ -71,9 +72,9 @@ export function ForgotPasswordPage() {
 				<div
 					className={`${styles.textBlock} text text_type_main-default text_color_inactive`}>
 					Вспомнили пароль?{' '}
-					<a className={styles.linkText} href='/login'>
+					<Link className={styles.linkText} to='/login'>
 						Войти
-					</a>
+					</Link>
 				</div>
 			</form>
 		</main>

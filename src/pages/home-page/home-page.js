@@ -1,19 +1,13 @@
-import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import burgerIngredientsStyles from '../../components/burger-ingredients/burger-ingredients.module.css';
-import { getIngredients } from '../../services/actions/ingredients';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
 
 export function HomePage() {
-	const dispatch = useDispatch();
 	const { ingredients, isLoading, isFailed } = useSelector(
 		(store) => store.ingredients
 	);
 
-	useEffect(() => {
-		dispatch(getIngredients());
-	}, [dispatch]);
 	return (
 		<>
 			{ingredients.length > 0 && !isLoading ? (

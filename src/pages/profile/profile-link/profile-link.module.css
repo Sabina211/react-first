@@ -1,0 +1,22 @@
+.link {
+    min-width: 320px;
+    text-align: start;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 30px;
+    color: #8585AD;
+	text-decoration: none;
+}
+
+.active {
+    color: #fff;
+	text-decoration: none;
+}
+
+p {
+    margin: 0;
+}
+
+.text{
+	text-decoration: none;
+}

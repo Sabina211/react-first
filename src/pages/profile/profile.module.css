@@ -1,0 +1,54 @@
+.main {
+	display: flex;
+	width: 100vw;
+	flex-direction: row;
+	justify-content: center;
+	margin-top: 100px;
+}
+
+.container {
+	width: var(--width-outer);
+	flex-direction: row;
+	margin-left: 20px;
+	display: flex;
+}
+
+.rightContainer {
+	width: 320px;
+
+}
+
+.centerContainer {
+	margin-left: 60px;
+
+}
+
+.text{
+	margin-top: 60px;
+}
+
+.input{
+	padding-top: 24px;
+}
+
+.button {
+	display: flex;
+	justify-content: right;
+	padding-top: 24px;
+	padding-bottom: 80px;
+}
+
+.errorText{
+	color: #eb6666;
+	padding-top: 15px;
+}
+
+.successText{
+	color: #6ea36e;
+	padding-top: 15px;
+	justify-content: center;
+	display: flex;
+}
+
+
+

@@ -23,3 +23,8 @@
 .draggableBlock{
 	cursor: move,
 }
+
+.text{
+	text-decoration: none;
+	color: white;
+}

@@ -1,44 +1,119 @@
 import AppHeader from '../app-header/app-header';
-import styles from './app.module.scss';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import burgerIngredientsStyles from '../burger-ingredients/burger-ingredients.module.css';
-import { getIngredients } from '../../services/actions/ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { BrowserRouter } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useEffect, useState } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { LoginPage } from '../../pages/login-page/login-page';
+import { HomePage } from '../../pages/home-page/home-page';
+import { RegisterPage } from '../../pages/register-page/register-page';
+import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
+import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
+import { ProfilePage } from '../../pages/profile/profile';
+import { IngredientPage } from '../../pages/ingredient-page/ingredient-page';
+import { ErrorPage } from '../../pages/error-page/error-page';
+import Modal from '../modal/modal';
+import IngredientDetails from '../burger-ingredients/ingredient-details/ingredient-details';
+import { useNavigate } from 'react-router-dom';
+import { ProfileUserPage } from '../../pages/profile/profile-user/profile-user';
+import { ProfileOrdersHistory } from '../../pages/profile/profile-orders-history/profile-orders-history';
+import { ElementForAuthorized } from '../element-for-authorized/element-for-authorized';
+import OrderDetails from '../order-details/order-details';
 import { useSelector, useDispatch } from 'react-redux';
+import { cleanConstructor } from '../../services/reducers/burger-constructor';
+import { ElementForUnauthorized } from '../element-for-unauthorized/element-for-unauthorized';
+import { getIngredients } from '../../services/actions/ingredients';
+import { useEffect, useState } from 'react';
 
 function App() {
+	const location = useLocation();
 	const dispatch = useDispatch();
-	const { ingredients, isLoading, isFailed } = useSelector(
-		(store) => store.ingredients
-	);
-
+	const navigate = useNavigate();
+	const background = location.state && location.state.background;
 	useEffect(() => {
 		dispatch(getIngredients());
 	}, [dispatch]);
 
+	function hideOrder() {
+		navigate(-1);
+		cleanConstructorAfterOrder();
+	}
+
+	function cleanConstructorAfterOrder() {
+		dispatch(cleanConstructor());
+	}
 	return (
 		<DndProvider backend={HTML5Backend}>
-			<BrowserRouter>
-				{ingredients.length > 0 && !isLoading ? (
-					<div className={styles.page}>
-						<AppHeader />
-						<main className={burgerIngredientsStyles.main}>
-							<div className={burgerIngredientsStyles.container}>
-								<BurgerIngredients />
-								<BurgerConstructor />
-							</div>
-						</main>
-					</div>
-				) : isFailed ? (
-					<p>Что-то упало, напишите в техподдержку</p>
-				) : (
-					<p>Загрузка</p>
-				)}
-			</BrowserRouter>
+			<AppHeader />
+			<Routes location={background || location}>
+				<Route path='/' element={<HomePage />} />
+				<Route
+					path='/login'
+					element={<ElementForUnauthorized element={<LoginPage />} />}
+				/>
+				<Route
+					path='/register'
+					element={<ElementForUnauthorized element={<RegisterPage />} />}
+				/>
+				<Route
+					path='/forgot-password'
+					element={<ElementForUnauthorized element={<ForgotPasswordPage />} />}
+				/>
+				<Route
+					path='/reset-password'
+					element={<ElementForUnauthorized element={<ResetPasswordPage />} />}
+				/>
+				<Route path='/profile' element={<ProfilePage />} />
+
+				<Route
+					path='/profile'
+					element={<ElementForAuthorized element={<ProfilePage />} />}>
+					<Route index element={<ProfileUserPage />} />
+					<Route path='orders-history' element={<ProfileOrdersHistory />} />
+				</Route>
+
+				<Route path='/ingredients/:id' element={<IngredientPage />} />
+				<Route
+					//path='/order'
+					element={
+						<ElementForAuthorized
+							path='/order'
+							element={
+								<Modal isOpen={true} onClose={hideOrder}>
+									<OrderDetails />
+								</Modal>
+							}
+						/>
+					}
+				/>
+				<Route path='*' element={<ErrorPage />} />
+			</Routes>
+
+			{background && (
+				<Routes>
+					<Route
+						path='/ingredients/:id'
+						element={
+							<Modal
+								isOpen={true}
+								onClose={() => navigate('/')}
+								header='Детали ингредиента'>
+								<IngredientDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path='/order'
+						element={
+							<ElementForAuthorized
+								element={
+									<Modal isOpen={true} onClose={hideOrder}>
+										<OrderDetails />
+									</Modal>
+								}
+							/>
+						}
+					/>
+				</Routes>
+			)}
 		</DndProvider>
 	);
 }

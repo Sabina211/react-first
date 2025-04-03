@@ -9,11 +9,13 @@ import Modal from '../../modal/modal';
 import { ingredientsPropTypes } from '../../../ingredientsPropTypes';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
+
 function IngredientItem({ ingredient }) {
+	const location = useLocation();
 	const mains = useSelector((state) => state.burgerConstructor.mains);
 	const bun = useSelector((state) => state.burgerConstructor.bun);
-	const [show, setShow] = useState(false);
 
 	const count = React.useMemo(() => {
 		if (ingredient.type === 'bun') {
@@ -21,14 +23,6 @@ function IngredientItem({ ingredient }) {
 		}
 		return mains?.find((item) => item._id === ingredient._id)?.count || 0;
 	}, [ingredient, bun, mains]);
-
-	function showDetails() {
-		setShow(true);
-	}
-
-	function hideDetails() {
-		setShow(false);
-	}
 
 	const [{ isDragging }, drag] = useDrag(() => ({
 		type: 'ingredientItem',
@@ -42,39 +36,38 @@ function IngredientItem({ ingredient }) {
 
 	return (
 		<>
-			<li className={styles.card} onClick={showDetails}>
-				<div className={styles.imageWrapper}>
-					<img
-						src={ingredient.image}
-						alt={ingredient.name}
-						ref={drag}
-						style={{ opacity }}
-						className={styles.draggableBlock}
-					/>
-					{count && count > 0 ? (
-						<Counter
-							count={count}
-							size='default'
-							extraClass={`${styles.count} "m-1"`}
+			<Link
+				to={`/ingredients/${ingredient._id}`}
+				state={{ background: location }}
+				className={styles.text}>
+				<li className={styles.card}>
+					<div className={styles.imageWrapper}>
+						<img
+							src={ingredient.image}
+							alt={ingredient.name}
+							ref={drag}
+							style={{ opacity }}
+							className={styles.draggableBlock}
 						/>
-					) : undefined}
-				</div>
-				<div className={`${styles.cardText}`}>
-					<span className='text text_type_digits-default mr-2'>
-						{ingredient.price}
-					</span>
-					<CurrencyIcon type='primary' />
-				</div>
-				<div className={`${styles.cardText} text text_type_main-default`}>
-					{ingredient.name}
-				</div>
-			</li>
-
-			{show && (
-				<Modal isOpen={show} onClose={hideDetails} header='Детали ингредиента'>
-					<IngredientDetails ingredient={ingredient} />
-				</Modal>
-			)}
+						{count && count > 0 ? (
+							<Counter
+								count={count}
+								size='default'
+								extraClass={`${styles.count} "m-1"`}
+							/>
+						) : undefined}
+					</div>
+					<div className={`${styles.cardText}`}>
+						<span className='text text_type_digits-default mr-2'>
+							{ingredient.price}
+						</span>
+						<CurrencyIcon type='primary' />
+					</div>
+					<div className={`${styles.cardText} text text_type_main-default`}>
+						{ingredient.name}
+					</div>
+				</li>
+			</Link>
 		</>
 	);
 }

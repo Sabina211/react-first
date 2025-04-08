@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import styles from '../burger-constructor.module.css';
 import {
 	ConstructorElement,
@@ -6,14 +5,26 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef } from 'react';
+import { Ingredient } from '../../../ingredient';
 
-export function DraggableSortIngredient({
-	element,
-	index,
-	moveElement,
-	removeElement,
-}) {
-	const ref = useRef(null);
+interface DragItem {
+	uuid: string;
+	index: number;
+	dragType: string;
+}
+export type IngredientWithUUID = Ingredient & { uuid: string };
+
+interface DraggableSortIngredientProps {
+	element: IngredientWithUUID;
+	index: number;
+	moveElement: (fromIndex: number, toIndex: number) => void;
+	removeElement: (ingredient: IngredientWithUUID) => void;
+}
+
+export const DraggableSortIngredient: React.FC<
+	DraggableSortIngredientProps
+> = ({ element, index, moveElement, removeElement }) => {
+	const ref = useRef<HTMLDivElement | null>(null);
 	const [{ isDragging }, drag] = useDrag({
 		type: 'sortedItem',
 		item: { uuid: element.uuid, index, dragType: 'sortedItem' },
@@ -22,7 +33,7 @@ export function DraggableSortIngredient({
 		}),
 	});
 
-	const [, drop] = useDrop({
+	const [, drop] = useDrop<DragItem>({
 		accept: 'sortedItem',
 		hover(item, monitor) {
 			if (!ref.current) return;
@@ -71,11 +82,4 @@ export function DraggableSortIngredient({
 			/>
 		</div>
 	);
-}
-
-DraggableSortIngredient.propTypes = {
-	element: PropTypes.object.isRequired,
-	index: PropTypes.number.isRequired,
-	moveElement: PropTypes.func.isRequired,
-	removeElement: PropTypes.func.isRequired,
 };

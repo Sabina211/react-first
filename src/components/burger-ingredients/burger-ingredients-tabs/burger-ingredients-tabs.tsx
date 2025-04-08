@@ -1,10 +1,14 @@
 import styles from './burger-ingredients-tabs.module.css';
-import { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 
-function BurgerIngredientsTabs({ tabChange, activeTab }) {
-	function change(type) {
+interface IBurgerIngredientsTabsProps {
+	tabChange: (type: string) => void;
+	activeTab: string;
+}
+
+const BurgerIngredientsTabs: FC<IBurgerIngredientsTabsProps> = ({ tabChange, activeTab })=>{
+	function change(type: string) {
 		tabChange(type);
 	}
 	return (
@@ -21,10 +25,5 @@ function BurgerIngredientsTabs({ tabChange, activeTab }) {
 		</div>
 	);
 }
-
-BurgerIngredientsTabs.propTypes = {
-	tabChange: PropTypes.func.isRequired,
-	activeTab: PropTypes.string.isRequired,
-};
 
 export default BurgerIngredientsTabs;

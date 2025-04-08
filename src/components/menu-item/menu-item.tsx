@@ -1,8 +1,13 @@
-import { bool } from 'prop-types';
+import { FC } from 'react';
 import styles from './menu-item.module.css';
-import PropTypes from 'prop-types';
 
-function MenuItem({ icon: Icon, text, isActive }) {
+type MenuItemProps = {
+	icon: React.ElementType;
+	text: string;
+	isActive?: boolean;
+};
+
+const MenuItem: FC<MenuItemProps> = ({ icon: Icon, text, isActive = false }) => {
 	return (
 		<button
 			className={`${styles.button} text text_type_main-default ml-2`}
@@ -16,13 +21,6 @@ function MenuItem({ icon: Icon, text, isActive }) {
 			</span>
 		</button>
 	);
-}
-
-MenuItem.propTypes =  {
-	icon: PropTypes.elementType.isRequired,
-	text: PropTypes.string.isRequired,
-	isActive:  PropTypes.bool,
 };
-
 
 export default MenuItem;

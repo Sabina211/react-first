@@ -1,17 +1,20 @@
 import styles from './order-details.module.css';
 import img from '../../images/done.png';
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
-export function OrderDetails() {
-	const orderState = useSelector((state) => state.order);
+
+const OrderDetails: React.FC = () => {
+	const orderState = useSelector<RootState, OrderState>((state) => state.order);
 
 	useEffect(() => {
 		if (!orderState.isLoading && orderState.order != null) {
 			console.log(orderState);
 		}
 	}, [orderState]);
+
+
 
 	return (
 		<div className={styles.modalForm}>
@@ -22,10 +25,10 @@ export function OrderDetails() {
 					{' '}
 					<p
 						className={`${styles.orderId} ${styles.centerElement} text text_type_digits-large`}>
-						{orderState.order.order.number}
+						{orderState.order?.order.number}
 					</p>
 					<p className={`${styles.centerElement} text text_type_main-medium`}>
-						{orderState.order.name}
+						{orderState.order?.name}
 					</p>
 					<img className={`${styles.img}`} src={img}></img>
 					<p className={` ${styles.centerElement} text text_type_main-default`}>
@@ -42,3 +45,15 @@ export function OrderDetails() {
 }
 
 export default OrderDetails;
+
+export interface OrderData {
+	number: number;
+}
+
+export interface OrderState {
+	isLoading: boolean;
+	order: {
+		order: OrderData;
+		name: string;
+	} | null;
+}

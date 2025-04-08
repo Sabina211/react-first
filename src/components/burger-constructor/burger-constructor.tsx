@@ -17,16 +17,22 @@ import {
 	getTotalPrice,
 	removeIngredient,
 } from '../../services/reducers/burger-constructor';
+import { RootState, AppDispatch } from '../../store/store';
+import { Ingredient } from '../../ingredient';
 
-function BurgerConstructor() {
-	const dispatch = useDispatch();
-	const bun = useSelector((state) => state.burgerConstructor.bun);
-	const mains = useSelector((state) => state.burgerConstructor.mains);
+export type IngredientWithUUID = Ingredient & { uuid: string };
 
-	const totalPrice = useSelector((state) => state.burgerConstructor.totalPrice);
+const BurgerConstructor: React.FC = () => {
+	const dispatch = useDispatch<AppDispatch>();
+	const bun =  useSelector((state: RootState) => state.burgerConstructor.bun) as Ingredient | null;
+	const mains =  useSelector((state: RootState) => state.burgerConstructor.mains) as IngredientWithUUID[];
+
+	const totalPrice = useSelector(
+		(state: RootState) => state.burgerConstructor.totalPrice
+	);
 
 	const moveElement = useCallback(
-		(draggedIndex, targetIndex) => {
+		(draggedIndex: number, targetIndex: number) => {
 			if (draggedIndex === targetIndex) return;
 			const updatedMains = [...mains];
 			const [draggedElement] = updatedMains.splice(draggedIndex, 1);
@@ -36,14 +42,25 @@ function BurgerConstructor() {
 		[mains, dispatch]
 	);
 
+	type DragItem = {
+		type: string;
+		uuid?: string;
+		index?: number;
+		_id: string;
+		name: string;
+		price: number;
+		image: string;
+		[key: string]: any;
+	};
+
 	//перетягивание ингредиента в конструктор
 	const [{ canDrop, itemType }, drop] = useDrop(() => ({
 		accept: ['ingredientItem', 'sortedItem'],
-		drop: (item) => {
+		drop: (item: Ingredient) => {
 			if (item.type === 'bun') {
 				dispatch(addBun(item));
 			} else if (item.type === 'sauce' || item.type === 'main') {
-				const newItem = { ...item, uuid: uuidv4() };
+				const newItem: IngredientWithUUID = { ...item, uuid: uuidv4() };
 				dispatch(addIngredient(newItem));
 			}
 			dispatch(getTotalPrice());
@@ -55,13 +72,13 @@ function BurgerConstructor() {
 		}),
 	}));
 
-	const removeIngridient = (ingridient) => {
-		dispatch(removeIngredient(ingridient));
+	const removeIngridient = (ingredient: IngredientWithUUID) => {
+		dispatch(removeIngredient(ingredient));
 		dispatch(getTotalPrice());
 	};
 
-	const bunStyle = { backgroundColor: '#2f2f37' };
-	const mainsStyle = { backgroundColor: '#2f2f37' };
+	const bunStyle: React.CSSProperties = { backgroundColor: '#2f2f37' };
+	const mainsStyle: React.CSSProperties = { backgroundColor: '#2f2f37' };
 
 	if (canDrop && itemType === 'bun') {
 		bunStyle.backgroundColor = '#4c4c73';
@@ -129,9 +146,9 @@ function BurgerConstructor() {
 						position='bottom'></PlugElement>
 				)}
 			</div>
-			<Summary/>
+			<Summary />
 		</section>
 	);
-}
+};
 
 export default BurgerConstructor;

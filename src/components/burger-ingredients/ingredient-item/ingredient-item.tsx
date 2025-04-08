@@ -3,19 +3,27 @@ import {
 	Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-item.module.css';
-import { useState } from 'react';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import Modal from '../../modal/modal';
-import { ingredientsPropTypes } from '../../../ingredientsPropTypes';
+import { Ingredient } from '../../../ingredient';
 import { useDrag } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 
-function IngredientItem({ ingredient }) {
+interface IngredientItemProps {
+	ingredient: Ingredient;
+}
+
+interface RootState {
+	burgerConstructor: {
+		mains: Array<{ _id: string; count: number }>;
+		bun: { _id: string } | null;
+	};
+}
+
+const IngredientItem: React.FC<IngredientItemProps> = ({ ingredient }) => {
 	const location = useLocation();
-	const mains = useSelector((state) => state.burgerConstructor.mains);
-	const bun = useSelector((state) => state.burgerConstructor.bun);
+	const mains = useSelector((state: RootState) => state.burgerConstructor.mains);
+	const bun = useSelector((state: RootState) => state.burgerConstructor.bun);
 
 	const count = React.useMemo(() => {
 		if (ingredient.type === 'bun') {
@@ -71,9 +79,5 @@ function IngredientItem({ ingredient }) {
 		</>
 	);
 }
-
-IngredientItem.propTypes = {
-	ingredient: ingredientsPropTypes.isRequired,
-};
 
 export default IngredientItem;

@@ -1,15 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import { getUser } from '../../services/reducers/user';
 import styles from './element-for-authorized.module.css';
+import { ReactElement } from 'react';
+import { RootState, AppDispatch } from '../../store/store';
 
-export const ElementForAuthorized = ({ element }) => {
-	const dispatch = useDispatch();
+interface ElementForAuthorizedProps {
+	element: ReactElement;
+	path?: string;
+}
+
+export const ElementForAuthorized: FC<ElementForAuthorizedProps> = ({ element }) => {
+	const dispatch = useDispatch<AppDispatch>();
 	const location = useLocation();
 
-	const { isLoading, isFailed, isAuth } = useSelector((state) => state.user);
+	const { isLoading, isFailed, isAuth } = useSelector((state: RootState) => state.user);
 
 	useEffect(() => {
 		dispatch(getUser());
@@ -21,6 +27,3 @@ export const ElementForAuthorized = ({ element }) => {
 	return element;
 };
 
-ElementForAuthorized.propTypes = {
-	element: PropTypes.element,
-};

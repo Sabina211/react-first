@@ -21,11 +21,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { cleanConstructor } from '../../services/reducers/burger-constructor';
 import { ElementForUnauthorized } from '../element-for-unauthorized/element-for-unauthorized';
 import { getIngredients } from '../../services/actions/ingredients';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { RootState, AppDispatch } from '../../store/store';
 
-function App() {
+const App: React.FC = () => {
 	const location = useLocation();
-	const dispatch = useDispatch();
+	const dispatch: AppDispatch = useDispatch();
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
 	useEffect(() => {
@@ -72,7 +73,6 @@ function App() {
 
 				<Route path='/ingredients/:id' element={<IngredientPage />} />
 				<Route
-					//path='/order'
 					element={
 						<ElementForAuthorized
 							path='/order'

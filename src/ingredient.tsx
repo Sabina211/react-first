@@ -1,5 +1,7 @@
 export type IngredientType = 'bun' | 'sauce' | 'main';
 
+export type IngredientWithUUID = Ingredient & { uuid: string };
+
 export interface Ingredient {
 	_id: string;
 	name: string;

@@ -5,14 +5,13 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef } from 'react';
-import { Ingredient } from '../../../ingredient';
+import { Ingredient, IngredientWithUUID } from '../../../ingredient';
 
 interface DragItem {
 	uuid: string;
 	index: number;
 	dragType: string;
 }
-export type IngredientWithUUID = Ingredient & { uuid: string };
 
 interface DraggableSortIngredientProps {
 	element: IngredientWithUUID;

@@ -7,23 +7,26 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { forgotPassword } from '../../services/reducers/user';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AppDispatch } from '../../store/store';
 
-export function ForgotPasswordPage() {
-	const [commonError, setCommonError] = useState(null);
-	const [emailError, setEmailError] = useState(null);
-	const { formValues, handleInputsChange } = useForm({
+interface ForgotPasswordForm {
+	email: string;
+	[key: string]: string;
+}
+
+export const ForgotPasswordPage: React.FC = () => {
+	const [commonError, setCommonError] = useState<string | null>(null);
+	const [emailError, setEmailError] = useState<string | null>(null);
+	const { formValues, handleInputsChange } = useForm<ForgotPasswordForm>({
 		email: '',
 	});
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 
 	const navigate = useNavigate();
-	/*function onClick(){
-		navigate('/reset-password');
-	}*/
 
-	const onSubmit = async (event) => {
+	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		setCommonError(null);
 
@@ -33,15 +36,15 @@ export function ForgotPasswordPage() {
 		}
 
 		try {
-			const res = await dispatch(forgotPassword(formValues));
+			const res = await dispatch(forgotPassword(formValues)).unwrap();;
 			if (res.error) setCommonError(res.payload);
 			navigate('/reset-password');
-		} catch (error) {
+		} catch (error: any) {
 			setCommonError(error.message || 'Ошибка при запросе');
 		}
 	};
 
-	const onChange = (e) => {
+	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		handleInputsChange(e);
 		if (formValues.email !== '') setEmailError(null);
 	};
@@ -58,7 +61,7 @@ export function ForgotPasswordPage() {
 					name={'email'}
 					value={formValues.email}
 					error={emailError !== null}
-					errorText={emailError}
+					errorText={emailError ?? ""}
 					size={'default'}
 					extraClass={`${styles.input} ml-1`}
 					onChange={onChange}

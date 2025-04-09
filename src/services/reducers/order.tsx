@@ -1,21 +1,36 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { postOrderRequest } from '../../utils/api-data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const initialState = {
+interface OrderResponse {
+	order: {
+		number: number;
+		name: string;
+	};
+	success: boolean;
+}
+
+export interface OrderState {
+	order: OrderResponse | null;
+	isLoading: boolean;
+	isFailed: boolean;
+	error: string | null;
+}
+
+const initialState: OrderState = {
 	order: null,
 	isLoading: false,
 	isFailed: false,
-	error: '',
-};
+	error: null,
+}
 
-export const postOrder = createAsyncThunk(
+export const postOrder = createAsyncThunk<OrderResponse, string[], { rejectValue: string }>(
 	'order/postOrder',
 	async (ingredients, { rejectWithValue }) => {
 		try {
 			const response = await postOrderRequest(ingredients);
 			return response;
-		} catch (error) {
+		} catch (error: any) {
 			return rejectWithValue(error.message);
 		}
 	}
@@ -31,14 +46,14 @@ export const orderSlice = createSlice({
 				state.isLoading = true;
 				state.isFailed = false;
 			})
-			.addCase(postOrder.fulfilled, (state, action) => {
+			.addCase(postOrder.fulfilled, (state, action: PayloadAction<OrderResponse>) => {
 				state.isLoading = false;
 				state.order = action.payload;
 			})
 			.addCase(postOrder.rejected, (state, action) => {
 				state.isLoading = false;
 				state.isFailed = true;
-				state.error = action.error?.message;
+				state.error = action.error?.message ?? null;
 			});
 	},
 });

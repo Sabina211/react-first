@@ -1,14 +1,22 @@
 import { getIngredients } from '../actions/ingredients';
-import { constructorSlice } from '../reducers/burger-constructor';
-import { createSlice, createAsyncThunk, combineSlices } from '@reduxjs/toolkit';
+import { constructorSlice } from './burger-constructor';
+import { createSlice, combineSlices } from '@reduxjs/toolkit';
 import { orderSlice } from './order';
 import { userSlice } from './user';
+import { Ingredient } from '../../ingredient';
 
-const initialState = {
+interface IngredientsState {
+	ingredients: Ingredient[];
+	isLoading: boolean;
+	isFailed: boolean;
+	error: string | null;
+}
+
+const initialState: IngredientsState = {
 	ingredients: [],
 	isLoading: false,
 	isFailed: false,
-	error: '',
+	error: null,
 };
 
 export const ingredientSlice = createSlice({
@@ -28,7 +36,7 @@ export const ingredientSlice = createSlice({
 			.addCase(getIngredients.rejected, (state, action) => {
 				state.isLoading = false;
 				state.isFailed = true;
-				state.error = action.error?.message;
+				state.error = action.error?.message ?? null;
 			});
 	},
 });

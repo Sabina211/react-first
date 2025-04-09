@@ -1,12 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Ingredient, IngredientWithUUID } from '../../ingredient';
 
-const initialState = {
+interface ConstructorState {
+	bun: Ingredient | null;
+	mains: IngredientWithUUID[];
+	totalPrice: number;
+}
+
+const initialState: ConstructorState = {
 	bun: null,
 	mains: [],
 	totalPrice: 0,
 };
 
-const calculateTotalPrice = (bun, mains) => {
+const calculateTotalPrice = (bun: Ingredient | null, mains: IngredientWithUUID[]) => {
 	let totalPrice = 0;
 
 	if (bun && bun.price) {
@@ -20,10 +27,10 @@ const calculateTotalPrice = (bun, mains) => {
 	return totalPrice;
 };
 
-function updateIngredientCounts(mains) {
-	const countMap = {};
+function updateIngredientCounts(mains: IngredientWithUUID[]): IngredientWithUUID[] {
+	const countMap: { [key: string]: number } = {};
 
-	mains.forEach((item) => {
+	mains.forEach((item: Ingredient) => {
 		countMap[item._id] = (countMap[item._id] || 0) + 1;
 	});
 

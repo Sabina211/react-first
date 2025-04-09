@@ -3,6 +3,7 @@ import img from '../../images/done.png';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
+import type { OrderState } from '../../services/reducers/order';
 
 
 const OrderDetails: React.FC = () => {
@@ -28,7 +29,7 @@ const OrderDetails: React.FC = () => {
 						{orderState.order?.order.number}
 					</p>
 					<p className={`${styles.centerElement} text text_type_main-medium`}>
-						{orderState.order?.name}
+						{orderState.order?.order.name}
 					</p>
 					<img className={`${styles.img}`} src={img}></img>
 					<p className={` ${styles.centerElement} text text_type_main-default`}>
@@ -45,15 +46,3 @@ const OrderDetails: React.FC = () => {
 }
 
 export default OrderDetails;
-
-export interface OrderData {
-	number: number;
-}
-
-export interface OrderState {
-	isLoading: boolean;
-	order: {
-		order: OrderData;
-		name: string;
-	} | null;
-}

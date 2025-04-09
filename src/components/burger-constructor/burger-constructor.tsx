@@ -18,9 +18,8 @@ import {
 	removeIngredient,
 } from '../../services/reducers/burger-constructor';
 import { RootState, AppDispatch } from '../../store/store';
-import { Ingredient } from '../../ingredient';
+import { Ingredient, IngredientWithUUID } from '../../ingredient';
 
-export type IngredientWithUUID = Ingredient & { uuid: string };
 
 const BurgerConstructor: React.FC = () => {
 	const dispatch = useDispatch<AppDispatch>();

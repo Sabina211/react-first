@@ -3,22 +3,25 @@ import {
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './summary.module.css';
-import OrderDetails from '../order-details/order-details';
-import Modal from '../modal/modal';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
 import { postOrder } from '../../services/reducers/order';
-import { cleanConstructor } from '../../services/reducers/burger-constructor';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { AppDispatch, RootState } from '../../store/store';
+import { Ingredient } from '../../ingredient';
 
-function Summary() {
-	const dispatch = useDispatch();
-	//const [show, setShow] = useState(false);
-	var selectedBun = useSelector((state) => state.burgerConstructor.bun);
-	var selectedMains = useSelector((state) => state.burgerConstructor.mains);
-	var totalPrice = useSelector((state) => state.burgerConstructor.totalPrice);
-	var ingredientsIds = selectedMains?.map((x) => x._id);
-	var orderState = useSelector((state) => state.order);
+const Summary = () => {
+	const dispatch = useDispatch<AppDispatch>();
+	var selectedBun: Ingredient | null = useSelector(
+		(state: RootState) => state.burgerConstructor.bun
+	);
+	var selectedMains: Ingredient[] = useSelector(
+		(state: RootState) => state.burgerConstructor.mains
+	);
+	var totalPrice: number = useSelector(
+		(state: RootState) => state.burgerConstructor.totalPrice
+	);
+	var ingredientsIds = selectedMains?.map((x: Ingredient) => x._id);
+	var orderState = useSelector((state: RootState) => state.order);
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -28,14 +31,15 @@ function Summary() {
 			return;
 		}
 
-		if (selectedMains?.filter((x) => x.type === 'main').length <= 0) {
+		if (
+			selectedMains?.filter((x: Ingredient) => x.type === 'main').length <= 0
+		) {
 			alert('Нужно выбрать начинку для бургера');
 			return;
 		}
 		navigate('/order', { state: { background: location } });
 		await dispatch(postOrder([...ingredientsIds, selectedBun._id]));
-		console.log("навигация");
-
+		console.log('навигация');
 	}
 
 	return (
@@ -51,9 +55,8 @@ function Summary() {
 				size='medium'>
 				Оформить заказ
 			</Button>
-
 		</div>
 	);
-}
+};
 
 export default Summary;

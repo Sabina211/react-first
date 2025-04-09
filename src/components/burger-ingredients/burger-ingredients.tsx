@@ -4,45 +4,52 @@ import IngredientsGroup from './ingredients-group/ingredients-group';
 import styles from './burger-ingredients.module.css';
 import { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { Ingredient, IngredientType } from '../../ingredient';
 
-function BurgerIngredients() {
+const BurgerIngredients= ()=>  {
 	const { ingredients } = useSelector(
-		(store) => store.ingredients
+		(store: RootState) => store.ingredients
 	);
-	function tabChange(value) {
-		headersRef[value].current.scrollIntoView({ behavior: 'smooth' });
+	const headersRef: Record<IngredientType, React.RefObject<HTMLHeadingElement>> = {
+		bun: useRef<HTMLHeadingElement>(null),
+		sauce: useRef<HTMLHeadingElement>(null),
+		main: useRef<HTMLHeadingElement>(null),
+	};
+
+	function tabChange(value: IngredientType){
+		const ref = headersRef[value].current;
+		if(ref)
+		{
+			ref.scrollIntoView({ behavior: 'smooth' });
+		}
 	}
 
 	const groups = React.useMemo(() => {
 		if (!Array.isArray(ingredients)) return { bun: [], sauce: [], main: [] };
 
 		return {
-			bun: ingredients.filter((i) => i.type === 'bun'),
-			sauce: ingredients.filter((i) => i.type === 'sauce'),
-			main: ingredients.filter((i) => i.type === 'main'),
+			bun: ingredients.filter((i: Ingredient) => i.type === 'bun'),
+			sauce: ingredients.filter((i: Ingredient)  => i.type === 'sauce'),
+			main: ingredients.filter((i: Ingredient)  => i.type === 'main'),
 		};
 	}, [ingredients]);
 
-	const headers = {
+	const headers: Record<IngredientType, string> = {
 		bun: 'Булки',
 		sauce: 'Соусы',
 		main: 'Начинки',
 	};
 
-	const headersRef = {
-		bun: useRef(null),
-		sauce: useRef(null),
-		main: useRef(null),
-	};
 
-	const containerRef = useRef(null); // Контейнер с ингредиентами
+	const containerRef = useRef<HTMLDivElement | null>(null); // Контейнер с ингредиентами
 	const [activeTab, setActiveTab] = useState('bun');
 	useEffect(() => {
 		const handleScroll = () => {
 			if (!containerRef.current) return;
 
 			const containerTop = containerRef.current.getBoundingClientRect().top;
-			const sections = Object.keys(headersRef).map((key) => {
+			const sections = (Object.keys(headersRef) as IngredientType[]).map((key) => {
 				const section = headersRef[key].current;
 				if (!section) return { key, offset: Infinity };
 

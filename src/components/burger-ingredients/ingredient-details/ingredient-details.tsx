@@ -3,16 +3,19 @@ import { useParams } from 'react-router-dom';
 import { ErrorPage } from '../../../pages/error-page/error-page';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { Ingredient } from '../../../ingredient';
+import { AppDispatch } from '../../../store/store';
 
-function IngredientDetails() {
-	const { id } = useParams();
-	const dispatch = useDispatch();
+const IngredientDetails = () => {
+	const { id } = useParams<{ id: string }>();
+	const dispatch = useDispatch<AppDispatch>();
 	const { ingredients, isLoading, isFailed } = useSelector(
-		(store) => store.ingredients
+		(store: RootState) => store.ingredients
 	);
-	const [ingredient, setIngredient] = useState(null);
+	const [ingredient, setIngredient] = useState<Ingredient | null>(null);
 	useEffect(() => {
-		const foundIngredient = ingredients.find((item) => item._id === id);
+		const foundIngredient = ingredients.find((item: Ingredient) => item._id === id) || null;;
 		setIngredient(foundIngredient);
 	}, [dispatch, ingredients, id]);
 

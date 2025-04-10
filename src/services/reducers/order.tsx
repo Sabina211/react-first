@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { postOrderRequest } from '../../utils/api-data';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-interface OrderResponse {
+export interface OrderResponse {
+	name: string;
 	order: {
 		number: number;
-		name: string;
 	};
 	success: boolean;
 }

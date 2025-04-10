@@ -6,15 +6,16 @@ import {
 import { useDispatch } from 'react-redux';
 import { useForm } from '../../hooks/useForm';
 import { resetPassword } from '../../services/reducers/user';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { AppDispatch } from '../../store/store';
 
 export function ResetPasswordPage() {
-	const [commonError, setCommonError] = useState(null);
-	const [tokenError, setTokenError] = useState(null);
-	const [passwordError, setPasswordError] = useState(null);
+	const [commonError, setCommonError] = useState<string | null>(null);
+	const [tokenError, setTokenError] = useState<string | null>(null);
+	const [passwordError, setPasswordError] = useState<string | null>(null);
 	const { formValues, handleInputsChange } = useForm({
 		token: '',
 		password: '',
@@ -28,9 +29,9 @@ export function ResetPasswordPage() {
 		}
 	}, [navigate]);
 
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 
-	const onSubmit = async (event) => {
+	const onSubmit = async (event: FormEvent<HTMLFormElement> ) => {
 		event.preventDefault(); // предотвращаем перезагрузку страницы при отправке формы
 		setCommonError(null);
 		if (formValues.token === '' || formValues.password === '') {
@@ -45,13 +46,14 @@ export function ResetPasswordPage() {
 
 		try {
 			const res = await dispatch(resetPassword(formValues));
-			if (res.error) setCommonError(res.payload);
+			if ('error' in res) setCommonError(res.payload as string);
 		} catch (error) {
-			setCommonError(error.message || 'Ошибка при запросе');
+			const err = error as Error;
+			setCommonError(err.message || 'Ошибка при запросе');
 		}
 	};
 
-	const onChange = (e) => {
+	const onChange = (e: ChangeEvent<HTMLInputElement>) => {
 		handleInputsChange(e);
 		if (formValues.token !== '') setTokenError(null);
 		if (formValues.password !== '') setPasswordError(null);
@@ -70,7 +72,7 @@ export function ResetPasswordPage() {
 					icon={'ShowIcon'}
 					value={formValues.password}
 					error={passwordError !== null}
-					errorText={passwordError}
+					errorText={passwordError ?? ''}
 					size={'default'}
 					extraClass={`${styles.input} ml-1`}
 					onChange={onChange}
@@ -81,7 +83,7 @@ export function ResetPasswordPage() {
 					name={'token'}
 					value={formValues.token}
 					error={tokenError !== null}
-					errorText={tokenError}
+					errorText={tokenError ?? ''}
 					size={'default'}
 					extraClass={`${styles.input} ml-1`}
 					onChange={onChange}

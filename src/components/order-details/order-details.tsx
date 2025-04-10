@@ -29,7 +29,7 @@ const OrderDetails: React.FC = () => {
 						{orderState.order?.order.number}
 					</p>
 					<p className={`${styles.centerElement} text text_type_main-medium`}>
-						{orderState.order?.order.name}
+						{orderState.order?.name}
 					</p>
 					<img className={`${styles.img}`} src={img}></img>
 					<p className={` ${styles.centerElement} text text_type_main-default`}>

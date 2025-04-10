@@ -2,10 +2,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import BurgerIngredients from '../../components/burger-ingredients/burger-ingredients';
 import burgerIngredientsStyles from '../../components/burger-ingredients/burger-ingredients.module.css';
 import BurgerConstructor from '../../components/burger-constructor/burger-constructor';
+import { RootState } from '../../store/store';
 
 export function HomePage() {
 	const { ingredients, isLoading, isFailed } = useSelector(
-		(store) => store.ingredients
+		(store:RootState) => store.ingredients
 	);
 
 	return (

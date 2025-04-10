@@ -3,9 +3,10 @@ import ProfileLink from './profile-link/profile-link';
 import { logout } from '../../services/reducers/user';
 import { Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../store/store';
 
 export function ProfilePage() {
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const logOut = () => {
 		dispatch(logout());
 	};

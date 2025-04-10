@@ -1,3 +1,13 @@
+import {
+	ForgotPasswordForm,
+	Login,
+	Register,
+	ResetPassword,
+	User,
+	UserData,
+} from '@services/reducers/user';
+import { Ingredient } from '../ingredient';
+
 const ROOT_URL = 'https://norma.nomoreparties.space';
 const GET_INGREDIENTS = '/api/ingredients';
 const POST_ORDER = '/api/orders';
@@ -8,31 +18,50 @@ const LOGIN = '/api/auth/login';
 const LOGOUT = '/api/auth/logout';
 const USER = '/api/auth/user';
 
-export const checkResponse = async (res) => {
+export interface UserResponse {
+	success: boolean;
+	user: User;
+	accessToken: string;
+	refreshToken: string;
+}
+
+export interface OrderResponse {
+	success: boolean;
+	name: string;
+	order: {
+	  number: number;
+	};
+  }
+
+function checkResponse<T>(res: Response): Promise<T> {
 	if (!res.ok) {
 		const errorText = `Ошибка при обращении к ${res.url} ${res.status}: ${res.statusText}`;
 		console.error(errorText);
 		throw new Error(errorText);
 	}
-	return await res.json();
-};
 
-export function getIngredientsRequest() {
+	return res.json() as Promise<T>;
+}
+
+export { checkResponse };
+
+export function getIngredientsRequest(): Promise<Ingredient[]> {
 	return fetch(`${ROOT_URL}${GET_INGREDIENTS}`)
-		.then(checkResponse)
+		.then((res) => checkResponse<{ data: Ingredient[] }>(res))
 		.then((res) => {
 			if (res.data && res.data.length > 0) {
 				return Promise.resolve(res.data);
 			} else {
 				console.log('Не получилось распарсить ответ');
+				return [];
 			}
 		});
 }
 
-export function postOrderRequest(ingredients) {
+export function postOrderRequest(ingredients: string[]): Promise<OrderResponse> {
 	const token = localStorage.getItem('accessToken');
 
-	return fetchWithRefresh(`${ROOT_URL}${POST_ORDER}`, {
+	return fetchWithRefresh<OrderResponse>(`${ROOT_URL}${POST_ORDER}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -42,7 +71,7 @@ export function postOrderRequest(ingredients) {
 	});
 }
 
-export function forgotPasswordRequest(email) {
+export function forgotPasswordRequest(email: ForgotPasswordForm) {
 	return fetch(`${ROOT_URL}${POST_FORGOT_PASSWORD}`, {
 		method: 'POST',
 		headers: {
@@ -52,12 +81,12 @@ export function forgotPasswordRequest(email) {
 	})
 		.then(checkResponse)
 		.then((res) => {
-			localStorage.setItem('accessToResetPassword', true);
+			localStorage.setItem('accessToResetPassword', 'true');
 			return res;
 		});
 }
 
-export function resetPasswordRequest(data) {
+export function resetPasswordRequest(data: ResetPassword) {
 	return fetch(`${ROOT_URL}${POST_RESET_PASSWORD}`, {
 		method: 'POST',
 		headers: {
@@ -89,7 +118,7 @@ export function logoutRequest() {
 		});
 }
 
-export function registerUserRequest(user) {
+export function registerUserRequest(user: Register) {
 	return fetch(`${ROOT_URL}${REGISTER_USER}`, {
 		method: 'POST',
 		headers: {
@@ -97,7 +126,7 @@ export function registerUserRequest(user) {
 		},
 		body: JSON.stringify(user),
 	})
-		.then(checkResponse)
+		.then(checkResponse<UserResponse>)
 		.then((res) => {
 			let accessToken = res.accessToken.split('Bearer ')[1];
 			let refreshToken = res.refreshToken;
@@ -108,7 +137,7 @@ export function registerUserRequest(user) {
 		});
 }
 
-export function loginRequest(user) {
+export function loginRequest(user: Login) {
 	return fetch(`${ROOT_URL}${LOGIN}`, {
 		method: 'POST',
 		headers: {
@@ -116,7 +145,7 @@ export function loginRequest(user) {
 		},
 		body: JSON.stringify(user),
 	})
-		.then(checkResponse)
+		.then(checkResponse<UserResponse>)
 		.then((res) => {
 			let accessToken = res.accessToken.split('Bearer ')[1];
 			let refreshToken = res.refreshToken;
@@ -137,7 +166,13 @@ export const refreshToken = () => {
 			token: localStorage.getItem('refreshToken'),
 		}),
 	})
-		.then(checkResponse)
+		.then(
+			checkResponse<{
+				success: boolean;
+				accessToken: string;
+				refreshToken: string;
+			}>
+		)
 		.then((refreshData) => {
 			if (!refreshData.success) {
 				return Promise.reject(refreshData);
@@ -148,26 +183,33 @@ export const refreshToken = () => {
 		});
 };
 
-export const fetchWithRefresh = async (url, options) => {
+interface FetchWithAuthOptions extends RequestInit {
+	headers: Record<string, string>;
+  }
+
+  export const fetchWithRefresh = async function <T>(
+	url: string,
+	options: FetchWithAuthOptions
+  ): Promise<T> {
 	try {
 		const res = await fetch(url, options);
-		return await checkResponse(res);
-	} catch (err) {
+		return await checkResponse<T>(res);
+	} catch (err: any) {
 		if (err.message === 'jwt expired') {
 			const refreshData = await refreshToken(); //обновляем токен
 			options.headers.authorization = refreshData.accessToken;
 			const res = await fetch(url, options); //повторяем запрос
-			return await checkResponse(res);
+			return await checkResponse<T>(res);
 		} else {
 			return Promise.reject(err);
 		}
 	}
 };
 
-export function getUserRequest() {
+export function getUserRequest(): Promise<{ success: boolean; user: User }> {
 	const token = localStorage.getItem('accessToken');
 
-	return fetchWithRefresh(`${ROOT_URL}${USER}`, {
+	return fetchWithRefresh<{ success: boolean; user: User }>(`${ROOT_URL}${USER}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -176,10 +218,10 @@ export function getUserRequest() {
 	});
 }
 
-export function postUserRequest(user) {
+export function postUserRequest(user: UserData) : Promise<{ success: boolean; user: User }> {
 	const token = localStorage.getItem('accessToken');
 
-	return fetchWithRefresh(`${ROOT_URL}${USER}`, {
+	return fetchWithRefresh<{ success: boolean; user: User }>(`${ROOT_URL}${USER}`, {
 		method: 'PATCH',
 		headers: {
 			'Content-Type': 'application/json',

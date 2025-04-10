@@ -36,7 +36,7 @@ export const ForgotPasswordPage: React.FC = () => {
 		}
 
 		try {
-			const res = await dispatch(forgotPassword(formValues)).unwrap();;
+			const res = await dispatch(forgotPassword(formValues)).unwrap();
 			if (res.error) setCommonError(res.payload);
 			navigate('/reset-password');
 		} catch (error: any) {

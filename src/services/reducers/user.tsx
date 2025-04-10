@@ -12,9 +12,10 @@ import {
 	logoutRequest,
 	getUserRequest,
 	postUserRequest,
+	UserResponse,
 } from '../../utils/api-data';
 
-interface User {
+export interface User {
 	email: string | null;
 	name: string | null;
 }
@@ -42,7 +43,29 @@ const initialState: UserState = {
 	error: '',
 };
 
-interface ForgotPasswordForm {
+export interface ForgotPasswordForm {
+	email: string;
+}
+
+export interface ResetPassword {
+	password: string;
+	token: string;
+}
+
+export interface Register {
+	password: string;
+	email: string;
+	name: string;
+}
+
+export interface UserData {
+	password: string;
+	email: string;
+	name: string;
+}
+
+export interface Login {
+	password: string;
 	email: string;
 }
 
@@ -63,19 +86,22 @@ const createAsyncAction = <TResponse, TRequest = void>(
 	);
 };
 
-export const registerUser = createAsyncAction(
+export const registerUser = createAsyncAction<UserResponse, Register>(
 	'registerUser',
 	registerUserRequest
 );
 
-export const login = createAsyncAction('login', loginRequest);
+export const login = createAsyncAction<UserResponse, Login>(
+	'login',
+	loginRequest
+);
 
 export const forgotPassword = createAsyncAction<any, ForgotPasswordForm>(
 	'forgotPassword',
 	forgotPasswordRequest
 );
 
-export const resetPassword = createAsyncAction(
+export const resetPassword = createAsyncAction<any, ResetPassword>(
 	'resetPassword',
 	resetPasswordRequest
 );
@@ -92,16 +118,18 @@ export const logout = createAsyncThunk(
 	}
 );
 
-export const getUser = createAsyncThunk(
-	'user/getUser',
-	async (_, { rejectWithValue }) => {
-		try {
-			const response = await getUserRequest();
-			return response;
-		} catch (error: any) {
-			return rejectWithValue(error.message);
-		}
-	}
+type GetUserResponse = { success: boolean; user: User };
+
+export const getUser = createAsyncThunk<GetUserResponse, void, { rejectValue: string }>(
+  'user/getUser',
+  async (_, thunkAPI) => {
+    try {
+      const response = await getUserRequest();
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
 );
 
 export const postUser = createAsyncAction('postUser', postUserRequest);

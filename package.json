@@ -76,7 +76,8 @@
 		"prepare": "husky install",
 		"commit": "npm run check && cz",
 		"test": "jest",
-		"cypress": "cypress open"
+		"cypress": "cypress open",
+		"postinstall": "npm install --save-dev @types/uuid"
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "^2.6.0",

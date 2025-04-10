@@ -9,8 +9,8 @@ interface IBurgerIngredientsTabsProps {
 }
 
 const BurgerIngredientsTabs: FC<IBurgerIngredientsTabsProps> = ({ tabChange, activeTab })=>{
-	function change(type: IngredientType) {
-		tabChange(type);
+	function change(value: string) {
+		tabChange(value as IngredientType);
 	}
 	return (
 		<div className={styles.tabs}>

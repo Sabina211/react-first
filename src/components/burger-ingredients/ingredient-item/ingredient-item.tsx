@@ -3,7 +3,7 @@ import {
 	Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-item.module.css';
-import { Ingredient } from '../../../ingredient';
+import { Ingredient } from '../../../utils/types';
 import { useDrag } from 'react-dnd';
 import {  useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';

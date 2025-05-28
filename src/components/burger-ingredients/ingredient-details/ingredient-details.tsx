@@ -4,7 +4,7 @@ import { ErrorPage } from '../../../pages/error-page/error-page';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
-import { Ingredient } from '../../../ingredient';
+import { Ingredient } from '../../../utils/types';
 import { AppDispatch } from '../../../store/store';
 
 const IngredientDetails = () => {

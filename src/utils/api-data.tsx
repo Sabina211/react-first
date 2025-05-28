@@ -6,7 +6,7 @@ import {
 	User,
 	UserData,
 } from '@services/reducers/user';
-import { Ingredient } from '../ingredient';
+import { Ingredient } from '../utils/types';
 
 const ROOT_URL = 'https://norma.nomoreparties.space';
 const GET_INGREDIENTS = '/api/ingredients';

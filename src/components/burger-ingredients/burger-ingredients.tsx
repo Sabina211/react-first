@@ -5,7 +5,7 @@ import styles from './burger-ingredients.module.css';
 import { useRef, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
-import { Ingredient, IngredientType } from '../../ingredient';
+import { Ingredient, IngredientType } from '../../utils/types';
 
 const BurgerIngredients= ()=>  {
 	const { ingredients } = useSelector(

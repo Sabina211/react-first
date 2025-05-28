@@ -4,7 +4,7 @@ import { createSlice, combineSlices } from '@reduxjs/toolkit';
 import { orderSlice } from './order';
 import { userSlice } from './user';
 import { webSocketSlice } from './websocket';
-import { Ingredient } from '../../ingredient';
+import { Ingredient } from '../../utils/types';
 import { combineReducers } from '@reduxjs/toolkit';
 
 interface IngredientsState {

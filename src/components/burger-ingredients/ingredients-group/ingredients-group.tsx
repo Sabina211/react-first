@@ -1,7 +1,7 @@
 import styles from './ingredients-group.module.css';
 import IngredientItem from '../ingredient-item/ingredient-item';
 
-import { Ingredient } from '../../../ingredient';
+import { Ingredient } from '../../../utils/types';
 import { RefObject, FC } from 'react';
 
 interface IngredientsGroupProps {

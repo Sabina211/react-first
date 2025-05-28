@@ -18,7 +18,7 @@ import {
 	removeIngredient,
 } from '../../services/reducers/burger-constructor';
 import { RootState, AppDispatch } from '../../store/store';
-import { Ingredient, IngredientWithUUID } from '../../ingredient';
+import { Ingredient, IngredientWithUUID } from '../../utils/types';
 
 
 const BurgerConstructor: React.FC = () => {

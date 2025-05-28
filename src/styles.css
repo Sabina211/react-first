@@ -1,3 +1,7 @@
 :root {
     --width-outer: 1280px;
 }
+
+*, *:after, *:before {
+	color: var(--text-primary-light);
+  }

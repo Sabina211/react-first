@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { postOrder } from '../../services/reducers/order';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../store/store';
-import { Ingredient } from '../../ingredient';
+import { Ingredient } from '../../utils/types';
 
 const Summary = () => {
 	const dispatch = useDispatch<AppDispatch>();

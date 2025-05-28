@@ -1,7 +1,7 @@
 import styles from './burger-ingredients-tabs.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { FC } from 'react';
-import { IngredientType } from '../../../ingredient';
+import { IngredientType } from '../../../utils/types';
 
 interface IBurgerIngredientsTabsProps {
 	tabChange: (type: IngredientType) => void;

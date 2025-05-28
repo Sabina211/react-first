@@ -3,27 +3,20 @@ import { FeedList } from '../../components/feed/feed-list/feed-list';
 import styles from './feed-page.module.css';
 import { Orders } from '../../utils/types';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { connect, disconnect } from '../../services/reducers/websocket';
+import { RootState } from '../../store/store';
 
 export const FeedPage = () => {
-	const [orders, setOrders] = useState<Orders>([]);
-	const [socket, setSocket] = useState<WebSocket | null>(null);
+	const dispatch = useDispatch();
+	const orders = useSelector((state: RootState) => state.webSocket.orders);
 
 	useEffect(() => {
-		const ws = new WebSocket('wss://norma.nomoreparties.space/orders/all');
-		setSocket(ws);
-
-		ws.onmessage = (event) => {
-			const data = JSON.parse(event.data);
-			if (data.success && Array.isArray(data.orders)) {
-				setOrders(data.orders);
-				console.log('Полученные заказы:', data.orders); // ← вот здесь!
-			}
-		};
-
+		dispatch(connect(''));
 		return () => {
-			ws.close();
+			dispatch(disconnect());
 		};
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<main className={styles.main}>

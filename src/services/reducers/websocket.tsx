@@ -23,7 +23,7 @@ const initialState: WebSocketStore = {
   error: '',
 };
 
-const webSocketSlice = createSlice({
+export const webSocketSlice = createSlice({
   name: 'webSocket',
   initialState,
   reducers: {
@@ -63,4 +63,5 @@ type webSocketActionCreators = typeof webSocketSlice.actions;
 export type webSocketActions = ReturnType<webSocketActionCreators[keyof webSocketActionCreators]> | ReturnType<typeof wsOpen> | ReturnType<typeof wsClose> | ReturnType<typeof wsMessage> | ReturnType<typeof wsError>;
 
 
-export default webSocketSlice;
+//export default webSocketSlice.reducer;
+export const webSocketReducer = webSocketSlice.reducer;

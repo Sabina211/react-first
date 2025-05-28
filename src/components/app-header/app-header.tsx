@@ -26,7 +26,7 @@ const AppHeader = () => {
 							text='Конструктор'
 						/>
 					</Link>
-					<Link to='/orders'>
+					<Link to='/feed'>
 						<MenuItem
 							isActive={currentPath.startsWith('/orders')}
 							icon={ListIcon}

@@ -17,6 +17,17 @@ export interface OrderState {
 	error: string | null;
 }
 
+export interface IOrder {
+    _id: string;
+    //name: string;
+    ingredients: Array<string>;
+    number: number;
+    status: string;
+    updatedAt: string;
+    createdAt: string;
+    page?: string;
+}
+
 const initialState: OrderState = {
 	order: null,
 	isLoading: false,

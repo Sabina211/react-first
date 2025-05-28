@@ -1,6 +1,7 @@
 import { rootReducer } from '../services/reducers/ingredients';
 import { configureStore } from '@reduxjs/toolkit';
 import { thunk } from 'redux-thunk';
+import {webSocketActions} from '../services/reducers/websocket'
 
 export const store = configureStore({
 	reducer: rootReducer,
@@ -11,5 +12,7 @@ export const store = configureStore({
 	devTools: process.env.NODE_ENV !== 'production', // Включает DevTools только в режиме разработки
 });
 
+export type TApplicationActions = webSocketActions;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type AppActions = TApplicationActions;

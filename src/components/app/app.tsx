@@ -23,6 +23,7 @@ import { ElementForUnauthorized } from '../element-for-unauthorized/element-for-
 import { getIngredients } from '../../services/actions/ingredients';
 import { useEffect } from 'react';
 import { RootState, AppDispatch } from '../../store/store';
+import { FeedPage } from '../../pages/feed-page/feed-page';
 
 const App: React.FC = () => {
 	const location = useLocation();
@@ -46,6 +47,7 @@ const App: React.FC = () => {
 			<AppHeader />
 			<Routes location={background || location}>
 				<Route path='/' element={<HomePage />} />
+				<Route path='/feed' element={<FeedPage />} />
 				<Route
 					path='/login'
 					element={<ElementForUnauthorized element={<LoginPage />} />}

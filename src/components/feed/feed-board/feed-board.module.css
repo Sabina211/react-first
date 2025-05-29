@@ -22,6 +22,7 @@
 	overflow-x: auto;
 	scrollbar-width: thin;
 	scrollbar-color: var(--text-inactive-color) var(--background-element);
+	padding-inline-start: 0;
   }
 
   .list::-webkit-scrollbar {

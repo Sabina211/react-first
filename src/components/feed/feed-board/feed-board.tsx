@@ -13,6 +13,8 @@ export const FeedBoard = () => {
           <ul className={styles.list}>
             {orders
               .filter((order) => order.status === 'done')
+			  .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+			  .slice(0, 5)
               .map((order) => (
                 <li key={order._id} className={`${styles.done} text text_type_digits-default`}>{`0${order.number}`}</li>
               ))}

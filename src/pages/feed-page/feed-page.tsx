@@ -9,7 +9,6 @@ import { RootState } from '../../store/store';
 
 export const FeedPage = () => {
 	const dispatch = useDispatch();
-	//const orders = useSelector((state: RootState) => state.webSocket.orders);
 
 	useEffect(() => {
 		dispatch(connect(''));
@@ -20,11 +19,9 @@ export const FeedPage = () => {
 
 	return (
 		<main className={styles.main}>
+			<h1 className={`${styles.title} text_type_main-large`}>Лента заказов</h1>
 			<div className={styles.container}>
-				<h1 className={`${styles.title} text_type_main-large`}>
-					Лента заказов
-				</h1>
-				<FeedList isShowStatus={false} endpoint='/feed'/>
+				<FeedList isShowStatus={false} endpoint='/feed' />
 				<FeedBoard />
 			</div>
 		</main>

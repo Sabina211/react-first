@@ -29,9 +29,23 @@ export interface OrderResponse {
 	success: boolean;
 	name: string;
 	order: {
-	  number: number;
+		number: number;
 	};
-  }
+}
+
+export interface GetOrderResponse {
+	_id: string;
+	ingredients: string[];
+	owner: string;
+	status: 'done' | 'pending' | 'created';
+	name: string;
+	createdAt: string;
+	updatedAt: string;
+	number: number;
+	__v: number;
+}
+
+export type GetOrdersResponse = GetOrderResponse[];
 
 function checkResponse<T>(res: Response): Promise<T> {
 	if (!res.ok) {
@@ -58,7 +72,9 @@ export function getIngredientsRequest(): Promise<Ingredient[]> {
 		});
 }
 
-export function postOrderRequest(ingredients: string[]): Promise<OrderResponse> {
+export function postOrderRequest(
+	ingredients: string[]
+): Promise<OrderResponse> {
 	const token = localStorage.getItem('accessToken');
 
 	return fetchWithRefresh<OrderResponse>(`${ROOT_URL}${POST_ORDER}`, {
@@ -185,12 +201,12 @@ export const refreshToken = () => {
 
 interface FetchWithAuthOptions extends RequestInit {
 	headers: Record<string, string>;
-  }
+}
 
-  export const fetchWithRefresh = async function <T>(
+export const fetchWithRefresh = async function <T>(
 	url: string,
 	options: FetchWithAuthOptions
-  ): Promise<T> {
+): Promise<T> {
 	try {
 		const res = await fetch(url, options);
 		return await checkResponse<T>(res);
@@ -209,24 +225,50 @@ interface FetchWithAuthOptions extends RequestInit {
 export function getUserRequest(): Promise<{ success: boolean; user: User }> {
 	const token = localStorage.getItem('accessToken');
 
-	return fetchWithRefresh<{ success: boolean; user: User }>(`${ROOT_URL}${USER}`, {
+	return fetchWithRefresh<{ success: boolean; user: User }>(
+		`${ROOT_URL}${USER}`,
+		{
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+		}
+	);
+}
+
+export function postUserRequest(
+	user: UserData
+): Promise<{ success: boolean; user: User }> {
+	const token = localStorage.getItem('accessToken');
+
+	return fetchWithRefresh<{ success: boolean; user: User }>(
+		`${ROOT_URL}${USER}`,
+		{
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify(user),
+		}
+	);
+}
+
+export function getOrderRequest(
+	orderId: number | string
+): Promise<GetOrderResponse | null> {
+	return fetch(`${ROOT_URL}/api/orders/${orderId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
 		},
-	});
-}
-
-export function postUserRequest(user: UserData) : Promise<{ success: boolean; user: User }> {
-	const token = localStorage.getItem('accessToken');
-
-	return fetchWithRefresh<{ success: boolean; user: User }>(`${ROOT_URL}${USER}`, {
-		method: 'PATCH',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
-		},
-		body: JSON.stringify(user),
-	});
+	})
+		.then(checkResponse<{ success: boolean; orders: GetOrderResponse }>)
+		.then((res) => {
+			if (res.success && Array.isArray(res.orders) && res.orders.length > 0) {
+				return res.orders[0];
+			}
+			return null;
+		});
 }

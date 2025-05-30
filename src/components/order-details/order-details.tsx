@@ -10,7 +10,7 @@ const OrderDetails: React.FC = () => {
 	const orderState = useSelector<RootState, OrderState>((state) => state.order);
 
 	useEffect(() => {
-		if (!orderState.isLoading && orderState.order != null) {
+		if (!orderState.isLoading && orderState.createdOrder != null) {
 			console.log(orderState);
 		}
 	}, [orderState]);
@@ -26,10 +26,10 @@ const OrderDetails: React.FC = () => {
 					{' '}
 					<p
 						className={`${styles.orderId} ${styles.centerElement} text text_type_digits-large`}>
-						{orderState.order?.order.number}
+						{orderState.createdOrder?.order.number}
 					</p>
 					<p className={`${styles.centerElement} text text_type_main-medium`}>
-						{orderState.order?.name}
+						{orderState.createdOrder?.name}
 					</p>
 					<img className={`${styles.img}`} src={img}></img>
 					<p className={` ${styles.centerElement} text text_type_main-default`}>

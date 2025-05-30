@@ -24,6 +24,8 @@ import { getIngredients } from '../../services/actions/ingredients';
 import { useEffect } from 'react';
 import { RootState, AppDispatch } from '../../store/store';
 import { FeedPage } from '../../pages/feed-page/feed-page';
+import FeedOrderDetailsPage from '../../pages/feed-order-details-page/feed-order-details-page';
+import FeedOrderDetails from '../feed/feed-order-details/feed-order-details';
 
 const App: React.FC = () => {
 	const location = useLocation();
@@ -74,6 +76,7 @@ const App: React.FC = () => {
 				</Route>
 
 				<Route path='/ingredients/:id' element={<IngredientPage />} />
+				<Route path='/feed/:id' element={<FeedOrderDetailsPage />} />
 				<Route
 					element={
 						<ElementForAuthorized
@@ -114,9 +117,20 @@ const App: React.FC = () => {
 							/>
 						}
 					/>
+					<Route
+						path='/feed/:id'
+						element={
+							<Modal
+								isOpen={true}
+								onClose={() => navigate(-1)}
+								header='Детали заказа'>
+								<FeedOrderDetails />
+							</Modal>
+						}
+					/>
 				</Routes>
 			)}
 		</DndProvider>
 	);
-}
+};
 export { App };

@@ -173,7 +173,7 @@ export function loginRequest(user: Login) {
 }
 
 export const refreshToken = () => {
-	return fetch(`${ROOT_URL}/auth/token`, {
+	return fetch(`${ROOT_URL}/api/auth/token`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json;charset=utf-8',

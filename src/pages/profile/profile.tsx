@@ -16,7 +16,7 @@ export function ProfilePage() {
 		<div className={styles.container}>
 			<div className={styles.rightContainer}>
 				<ProfileLink path='/profile' text='Профиль' />
-				<ProfileLink path='/profile/orders-history' text='История заказов' />
+				<ProfileLink path='/profile/orders' text='История заказов' />
 				<ProfileLink path='/' text='Выход' onClick={logOut} />
 				<p
 					className={`${styles.text} text text_type_main-default text_color_inactive`}>

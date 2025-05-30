@@ -6,7 +6,7 @@ import { middlewareActions } from '../services/reducers/websocket';
 import { createWebSocketMiddleware } from '../services/middleware/createWebSocketMiddleware';
 import type { Middleware } from 'redux';
 
-const wsBaseUrl = 'wss://norma.nomoreparties.space/orders/all';
+const wsBaseUrl = 'wss://norma.nomoreparties.space';
 const wsMiddleware: Middleware = createWebSocketMiddleware(wsBaseUrl, middlewareActions);
 
 export const store = configureStore({

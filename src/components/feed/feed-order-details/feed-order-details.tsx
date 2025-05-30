@@ -9,7 +9,11 @@ import { Order, Statuses } from '../../../utils/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/store';
 import { getUniqIngredientsWithAmount } from '../../../utils/functions';
-import { getOrder, updateOrder, clearOrder } from '../../../services/reducers/order';
+import {
+	getOrder,
+	updateOrder,
+	clearOrder,
+} from '../../../services/reducers/order';
 import { AppDispatch } from '../../../store/store';
 
 export default function FeedOrderDetails() {
@@ -25,39 +29,14 @@ export default function FeedOrderDetails() {
 	const dispatch = useDispatch<AppDispatch>();
 	const location = useLocation();
 
-	/*useEffect(() => {
-		if (!location.state) {
+	useEffect(() => {
+		if (!order || order.number.toString() !== id) {
 			dispatch(getOrder(id!));
-			console.log('Вошли в метод');
 		}
 		return () => {
 			dispatch(clearOrder());
 		};
-	}, []);*/
-
-	useEffect(() => {
-		if (!order || order.number.toString() !== id) {
-		  dispatch(getOrder(id!));
-		}
-		return () => {
-		  dispatch(clearOrder());
-		};
-	  }, [dispatch, id]);
-
-	/*useEffect(() => {
-		console.log('Вошли в метод 2');
-		//dispatch(getOrder(id!));
-		const foundedOrder = orders && orders.number.toString() === id ? orders : null;
-		if (!order) {
-			if (foundedOrder) {
-				dispatch(updateOrder(foundedOrder));
-			}
-		} else {
-			if (foundedOrder && foundedOrder.status !== order.status) {
-				dispatch(updateOrder(foundedOrder));
-			}
-		}
-	}, [dispatch, id, order, orders]);*/
+	}, [dispatch, id]);
 
 	const orderIngredients =
 		order && getUniqIngredientsWithAmount(order.ingredients, ingredients);
@@ -80,7 +59,9 @@ export default function FeedOrderDetails() {
 						}`}>
 						{Statuses[order.status]}
 					</span>
-					<span className='text text_type_main-medium mt-15 text text_type_main-default'>Состав:</span>
+					<span className='text text_type_main-medium mt-15 text text_type_main-default'>
+						Состав:
+					</span>
 					<ul className={`${styles.ingredients} mt-6`}>
 						{orderIngredients?.map((ingredient) => (
 							<li key={ingredient._id} className={styles.ingredient}>
@@ -91,7 +72,9 @@ export default function FeedOrderDetails() {
 										className={styles.preview}
 									/>
 								</div>
-								<span className='text text_type_main-small'>{ingredient.name}</span>
+								<span className='text text_type_main-small'>
+									{ingredient.name}
+								</span>
 								<div className={`${styles.price} ${styles.amount}`}>
 									<span className='text text_type_digits-default'>{`${ingredient.amount} x ${ingredient.price}`}</span>
 									<CurrencyIcon type='primary' />

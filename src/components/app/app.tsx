@@ -72,7 +72,7 @@ const App: React.FC = () => {
 					path='/profile'
 					element={<ElementForAuthorized element={<ProfilePage />} />}>
 					<Route index element={<ProfileUserPage />} />
-					<Route path='orders-history' element={<ProfileOrdersHistory />} />
+					<Route path='/profile/orders' element={<ProfileOrdersHistory />} />
 				</Route>
 
 				<Route path='/ingredients/:id' element={<IngredientPage />} />

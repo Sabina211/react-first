@@ -11,7 +11,7 @@ export const FeedPage = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(connect(''));
+		dispatch(connect('/orders/all'));
 		return () => {
 			dispatch(disconnect());
 		};

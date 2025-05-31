@@ -1,4 +1,4 @@
-import styles from '../profile.module.css';
+import styles from './profile-orders-history.module.css';
 import { useEffect } from 'react';
 import { AppDispatch, RootState } from '../../../store/store';
 import { useSelector, useDispatch } from 'react-redux';

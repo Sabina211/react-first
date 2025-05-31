@@ -23,7 +23,7 @@ export const ElementForAuthorized: FC<ElementForAuthorizedProps> = ({ element })
 
 	if (isLoading) return <h1 className={styles.loader}>Пожайлуста, подождите ...</h1>;
 	if (isFailed || (!isLoading && !isAuth))
-		return <Navigate to='/login' state={{ path: location }} replace />;
+		return <Navigate to='/login' state={{ path: location }} />;
 	return element;
 };
 

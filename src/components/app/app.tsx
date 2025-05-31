@@ -66,15 +66,14 @@ const App: React.FC = () => {
 					path='/reset-password'
 					element={<ElementForUnauthorized element={<ResetPasswordPage />} />}
 				/>
-				<Route path='/profile' element={<ProfilePage />} />
 
 				<Route
 					path='/profile'
 					element={<ElementForAuthorized element={<ProfilePage />} />}>
 					<Route index element={<ProfileUserPage />} />
-					<Route path='/profile/orders' element={<ProfileOrdersHistory />} />
+					<Route path='orders' element={<ProfileOrdersHistory />} />
 				</Route>
-
+				<Route path = '/profile/orders/:id' element={<FeedOrderDetailsPage />} />
 				<Route path='/ingredients/:id' element={<IngredientPage />} />
 				<Route path='/feed/:id' element={<FeedOrderDetailsPage />} />
 				<Route
@@ -119,6 +118,17 @@ const App: React.FC = () => {
 					/>
 					<Route
 						path='/feed/:id'
+						element={
+							<Modal
+								isOpen={true}
+								onClose={() => navigate(-1)}
+								header='Детали заказа'>
+								<FeedOrderDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path='/profile/orders/:id'
 						element={
 							<Modal
 								isOpen={true}

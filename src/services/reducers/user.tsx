@@ -21,11 +21,12 @@ export interface User {
 }
 
 interface UserState {
-	user: User;
+	user: User | null;
 	isAuth: boolean;
 	isLoading: boolean;
 	isFailed: boolean;
 	error: string;
+	isAuthChecked: boolean;
 }
 
 interface AuthResponse {
@@ -33,14 +34,16 @@ interface AuthResponse {
 }
 
 const initialState: UserState = {
-	user: {
+	/*user: {
 		email: null,
 		name: null,
-	},
+	},*/
+	user: null,
 	isAuth: false,
 	isLoading: false,
 	isFailed: false,
 	error: '',
+	isAuthChecked: false,
 };
 
 export interface ForgotPasswordForm {
@@ -120,17 +123,24 @@ export const logout = createAsyncThunk(
 
 type GetUserResponse = { success: boolean; user: User };
 
-export const getUser = createAsyncThunk<GetUserResponse, void, { rejectValue: string }>(
-  'user/getUser',
-  async (_, thunkAPI) => {
-    try {
-      const response = await getUserRequest();
-      return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+export const getUser = createAsyncThunk<GetUserResponse, void,	{ rejectValue: string }>('user/getUser', async (_, thunkAPI) => {
+	try {
+		const response = await getUserRequest();
+		return response;
+	} catch (error: any) {
+		return thunkAPI.rejectWithValue(error.message);
+	}
+});
+
+export const checkUserAuth = createAsyncThunk('profile/checkUserAuth', async (_, thunkAPI) => {
+	console.log("Зашли в checkUserAuth");
+	if (localStorage.getItem('accessToken')) {
+	  await thunkAPI.dispatch(getUser()).unwrap().catch(() => {
+		localStorage.removeItem('accessToken');
+		localStorage.removeItem('refreshToken');
+	  });
+	}
+  });
 
 export const postUser = createAsyncAction('postUser', postUserRequest);
 
@@ -144,12 +154,14 @@ export const userSlice = createSlice({
 				state.isLoading = false;
 				state.user = action.payload.user;
 				state.isAuth = true;
+				state.isAuthChecked = true;
 				console.log('Регистарция пользователя прошло успешно');
 			})
 			.addCase(login.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = action.payload.user;
 				state.isAuth = true;
+				state.isAuthChecked = true;
 				console.log('Авторизация пользователя прошла успешно');
 			})
 			.addCase(logout.fulfilled, (state, action) => {
@@ -177,16 +189,34 @@ export const userSlice = createSlice({
 				state.isLoading = false;
 				console.log('Запрос resetPassword прошел успешно');
 			})
+			.addCase(login.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isAuthChecked = true;
+				state.isFailed = true;
+				state.error = action.error?.message || 'Что-то пошло не так';
+			})
+			.addCase(getUser.rejected, (state, action) => {
+				state.isAuthChecked = true;
+				state.isLoading = false;
+				state.isFailed = true;
+				state.error = action.error?.message || 'Что-то пошло не так';
+			})
+			.addCase(checkUserAuth.fulfilled, (state) => {
+				state.isAuthChecked = true;
+			})
+			.addCase(checkUserAuth.rejected, (state) => {
+				state.isAuthChecked = true;
+			})
 			.addMatcher(isPending, (state) => {
 				state.isLoading = true;
 				state.isFailed = false;
 				state.error = '';
-			})
-			.addMatcher(isRejected, (state, action) => {
+			});
+		/*.addMatcher(isRejected, (state, action) => {
 				state.isLoading = false;
 				state.isFailed = true;
 				state.error = action.error?.message || 'Что-то пошло не так';
-			});
+			});*/
 	},
 });
 

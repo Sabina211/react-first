@@ -42,7 +42,7 @@ const AppHeader = () => {
 						<MenuItem
 							isActive={currentPath.startsWith('/profile')}
 							icon={ProfileIcon}
-							text={!user.name ? 'Личный кабинет' : user.name}
+							text={!user?.name ? 'Личный кабинет' : user.name}
 						/>
 					</NavLink>
 				</div>

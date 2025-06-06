@@ -4,12 +4,11 @@ import {
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks/hooks';
 import { useForm } from '../../hooks/useForm';
 import { forgotPassword } from '../../services/reducers/user';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppDispatch } from '../../store/store';
 
 interface ForgotPasswordForm {
 	email: string;
@@ -22,7 +21,7 @@ export const ForgotPasswordPage: React.FC = () => {
 	const { formValues, handleInputsChange } = useForm<ForgotPasswordForm>({
 		email: '',
 	});
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useDispatch();
 
 	const navigate = useNavigate();
 

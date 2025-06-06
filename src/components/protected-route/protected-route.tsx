@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { RootState } from '../../store/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks/hooks';
 import { User } from '@services/reducers/user';
 
 type Props = {
@@ -13,10 +12,10 @@ const ProtectedRouteElement = ({
 	onlyUnAuth = false,
 }: Props): React.JSX.Element => {
 	const isAuthChecked = useSelector(
-		(state: RootState) => state.user.isAuthChecked
+		(state) => state.user.isAuthChecked
 	);
 	const user = useSelector(
-		(state: RootState) => state.user.user
+		(state) => state.user.user
 	) as User | null;
 	const location = useLocation();
 

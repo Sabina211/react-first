@@ -6,27 +6,24 @@ import {
 	FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Order, Statuses } from '../../../utils/types';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
+import { useDispatch, useSelector } from '../../../services/hooks/hooks';
 import { getUniqIngredientsWithAmount } from '../../../utils/functions';
 import {
 	getOrder,
 	updateOrder,
 	clearOrder,
 } from '../../../services/reducers/order';
-import { AppDispatch } from '../../../store/store';
 
 export default function FeedOrderDetails() {
-	//const { number } = useParams();
 	const { id } = useParams<{ id: string }>();
-	const { ingredients } = useSelector((state: RootState) => state.ingredients);
+	const { ingredients } = useSelector((state) => state.ingredients);
 	const {
 		isLoading: orderLoading,
 		error,
 		getOrder: order,
-	} = useSelector((store: RootState) => store.order);
-	const orders = useSelector((state: RootState) => state.order.getOrder);
-	const dispatch = useDispatch<AppDispatch>();
+	} = useSelector((store) => store.order);
+	const orders = useSelector((state) => state.order.getOrder);
+	const dispatch = useDispatch();
 	const location = useLocation();
 
 	useEffect(() => {

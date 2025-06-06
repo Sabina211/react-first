@@ -3,7 +3,7 @@ import { FeedList } from '../../components/feed/feed-list/feed-list';
 import styles from './feed-page.module.css';
 import { Orders } from '../../utils/types';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks/hooks';
 import { connect, disconnect } from '../../services/reducers/websocket';
 import { RootState } from '../../store/store';
 

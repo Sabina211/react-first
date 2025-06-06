@@ -1,14 +1,13 @@
 import styles from './profile-orders-history.module.css';
 import { useEffect } from 'react';
-import { AppDispatch, RootState } from '../../../store/store';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../../services/hooks/hooks';
 import { FeedList } from '../../../components/feed/feed-list/feed-list';
 import { connect, disconnect } from '../../../services/reducers/websocket';
 import { WebsocketStatus } from '../../../utils/types';
 
 export function ProfileOrdersHistory() {
 	const dispatch = useDispatch();
-	const { status, orders } = useSelector((state: RootState) => state.webSocket);
+	const { status, orders } = useSelector((state) => state.webSocket);
 	useEffect(() => {
 		const token = localStorage.getItem('accessToken');
 		if (token) {

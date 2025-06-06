@@ -3,7 +3,7 @@ import {
 	Input,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../../services/hooks/hooks';
 import {
 	getUser,
 	login,
@@ -11,12 +11,11 @@ import {
 } from '../../../services/reducers/user';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { useForm } from '../../../hooks/useForm';
-import { AppDispatch, RootState } from '../../../store/store';
 
 export function ProfileUserPage() {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useDispatch();
 	const [showButtons, setShowButtons] = useState<boolean>(false);
-	const user = useSelector((state: RootState) => state.user.user);
+	const user = useSelector((state) => state.user.user);
 	const [commonError, setCommonError] = useState<string | null>(null);
 	const [successText, setSuccessText] = useState<string | null>(null);
 	const { formValues, handleInputsChange, setFormValues } = useForm({

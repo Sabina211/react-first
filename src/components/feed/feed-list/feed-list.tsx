@@ -1,9 +1,6 @@
 import styles from './feed-list.module.css';
 import React from 'react';
-import { Orders } from '../../../utils/types';
-import { useDispatch, useSelector } from 'react-redux';
-import { connect, disconnect } from '../../../services/reducers/websocket';
-import { RootState } from '../../../store/store';
+import { useDispatch, useSelector } from '../../../services/hooks/hooks';
 import { Link, useLocation } from 'react-router-dom';
 import {
 	CurrencyIcon,
@@ -23,9 +20,9 @@ export const FeedList: React.FC<FeedListProps> = ({
 	endpoint,
 	isOrdersReverse = false,
 }) => {
-	const orders = useSelector((state: RootState) => state.webSocket.orders);
+	const orders = useSelector((state) => state.webSocket.orders);
 	const { error, ingredients } = useSelector(
-		(state: RootState) => state.ingredients
+		(state) => state.ingredients
 	);
 	const location = useLocation();
 

@@ -211,7 +211,8 @@ export const fetchWithRefresh = async function <T>(
 		const res = await fetch(url, options);
 		return await checkResponse<T>(res);
 	} catch (err: any) {
-		if (err.message === 'jwt expired') {
+		console.log(err.message);
+		if (err.message === 'jwt expired' || err.message.includes('403')) {
 			const refreshData = await refreshToken(); //обновляем токен
 			options.headers.authorization = refreshData.accessToken;
 			const res = await fetch(url, options); //повторяем запрос

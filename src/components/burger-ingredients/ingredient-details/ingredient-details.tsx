@@ -2,16 +2,14 @@ import styles from './ingredient-details.module.css';
 import { useParams } from 'react-router-dom';
 import { ErrorPage } from '../../../pages/error-page/error-page';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
+import { useDispatch, useSelector } from '../../../services/hooks/hooks';
 import { Ingredient } from '../../../utils/types';
-import { AppDispatch } from '../../../store/store';
 
 const IngredientDetails = () => {
 	const { id } = useParams<{ id: string }>();
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useDispatch();
 	const { ingredients, isLoading, isFailed } = useSelector(
-		(store: RootState) => store.ingredients
+		(store) => store.ingredients
 	);
 	const [ingredient, setIngredient] = useState<Ingredient | null>(null);
 	useEffect(() => {

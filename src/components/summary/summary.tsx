@@ -3,25 +3,24 @@ import {
 	CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './summary.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks/hooks';
 import { postOrder } from '../../services/reducers/order';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { AppDispatch, RootState } from '../../store/store';
 import { Ingredient } from '../../utils/types';
 
 const Summary = () => {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useDispatch();
 	var selectedBun: Ingredient | null = useSelector(
-		(state: RootState) => state.burgerConstructor.bun
+		(state) => state.burgerConstructor.bun
 	);
 	var selectedMains: Ingredient[] = useSelector(
-		(state: RootState) => state.burgerConstructor.mains
+		(state) => state.burgerConstructor.mains
 	);
 	var totalPrice: number = useSelector(
-		(state: RootState) => state.burgerConstructor.totalPrice
+		(state) => state.burgerConstructor.totalPrice
 	);
 	var ingredientsIds = selectedMains?.map((x: Ingredient) => x._id);
-	var orderState = useSelector((state: RootState) => state.order);
+	var orderState = useSelector((state) => state.order);
 	const location = useLocation();
 	const navigate = useNavigate();
 

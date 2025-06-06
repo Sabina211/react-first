@@ -1,9 +1,8 @@
 import styles from './feed-board.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../../store/store';
+import { useDispatch, useSelector } from '../../../services/hooks/hooks';
 
 export const FeedBoard = () => {
-	const { orders, total, totalToday } = useSelector((state: RootState) => state.webSocket);
+	const { orders, total, totalToday } = useSelector((state) => state.webSocket);
 
   return (
     <div className={styles.container}>

@@ -8,14 +8,15 @@ import { WebsocketStatus } from '../../../utils/types';
 export function ProfileOrdersHistory() {
 	const dispatch = useDispatch();
 	const { status, orders } = useSelector((state) => state.webSocket);
+	const user = useSelector((state) => state.user.user);
 	useEffect(() => {
 		const token = localStorage.getItem('accessToken');
+		console.log(user);
 		if (token) {
 			const wsUrl = `/orders?token=${token.substring(7)}`;
 			console.log("Connecting to:", wsUrl);
 			dispatch(connect(wsUrl));
 		}
-		if (orders) console.log('123');
 		return () => {
 			dispatch(disconnect());
 		};

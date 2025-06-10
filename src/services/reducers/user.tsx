@@ -133,8 +133,8 @@ export const checkUserAuth = createAsyncThunk('profile/checkUserAuth', async (_,
 		try {
 			await thunkAPI.dispatch(getUser()).unwrap();
 		} catch {
-			localStorage.removeItem('accessToken');
-			localStorage.removeItem('refreshToken');
+			//localStorage.removeItem('accessToken');
+			//.removeItem('refreshToken');
 		}
 	}
 	return;
@@ -166,6 +166,7 @@ export const userSlice = createSlice({
 				console.log('Разлогирование пользователя прошло успешно');
 				localStorage.removeItem('accessToken');
 				localStorage.removeItem('refreshToken');
+				console.log("user reset!", action)
 			})
 			.addCase(getUser.fulfilled, (state, action) => {
 				state.isLoading = false;
@@ -196,10 +197,8 @@ export const userSlice = createSlice({
 				state.isAuthChecked = true;
 				state.isLoading = false;
 				state.isFailed = true;
-				state.user = null;
 				state.error = action.error?.message || 'Что-то пошло не так';
-				localStorage.removeItem('accessToken');
-				localStorage.removeItem('refreshToken');
+				console.log("user reset!", action)
 			})
 			.addCase(checkUserAuth.fulfilled, (state) => {
 				state.isAuthChecked = true;

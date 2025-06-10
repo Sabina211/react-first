@@ -56,6 +56,8 @@ export const createWebSocketMiddleware = (
 
 						if (parsedData.message === 'Invalid or missing token') {
 							refreshToken().then((newTokenData) => {
+								var newTocken = newTokenData.accessToken.replace('Bearer ', '');
+								localStorage.setItem('accessToken', newTocken);
 								const wsUrl = new URL(currentUrl!);
 								wsUrl.searchParams.set(
 									'token',

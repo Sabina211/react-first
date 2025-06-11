@@ -11,12 +11,8 @@ const ProtectedRouteElement = ({
 	element,
 	onlyUnAuth = false,
 }: Props): React.JSX.Element => {
-	const isAuthChecked = useSelector(
-		(state) => state.user.isAuthChecked
-	);
-	const user = useSelector(
-		(state) => state.user.user
-	) as User | null;
+	const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
+	const user = useSelector((state) => state.user.user) as User | null;
 	const location = useLocation();
 
 	console.log('isAuthChecked:', isAuthChecked);
@@ -30,12 +26,15 @@ const ProtectedRouteElement = ({
 	// Пользователь авторизован, но роут предназначен для неавторизованного пользователя
 	// Делаем редирект на главную страницу или на тот адрес, что записан в location.state.from
 	if (onlyUnAuth && user) {
+		if (location.state?.from?.pathname === '/order') {
+			return <Navigate to='/' replace />;
+		}
 		const { from } = location.state || { from: { pathname: '/' } };
 		return <Navigate to={from} />;
 	}
 
 	// !onlyUnAuth && user Пользователь авторизован и роут для авторизованного пользователя
-	if (!onlyUnAuth && !user ) {
+	if (!onlyUnAuth && !user) {
 		return <Navigate to='/login' state={{ from: location }} />;
 	}
 

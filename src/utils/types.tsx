@@ -40,7 +40,7 @@ export type Ingredients = Ingredient[];
 
 export type IngredientType = 'bun' | 'sauce' | 'main';
 
-export type IngredientWithUUID = Ingredient & { uuid: string };
+export type IngredientWithUUID = Ingredient & { uuid: string,  count?: number};
 
 export interface Ingredient {
 	_id: string;

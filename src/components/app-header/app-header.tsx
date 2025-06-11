@@ -7,11 +7,10 @@ import {
 	ListIcon,
 	ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import {  useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import {  useSelector } from '../../services/hooks/hooks';
 
 const AppHeader = () => {
-	const user = useSelector((state: RootState) => state.user.user);
+	const user = useSelector((state) => state.user.user);
 	const location = useLocation();
 	const currentPath = location.pathname;
 

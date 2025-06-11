@@ -3,13 +3,12 @@ import React from 'react';
 import IngredientsGroup from './ingredients-group/ingredients-group';
 import styles from './burger-ingredients.module.css';
 import { useRef, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import {  useSelector } from '../../services/hooks/hooks';
 import { Ingredient, IngredientType } from '../../utils/types';
 
 const BurgerIngredients= ()=>  {
 	const { ingredients } = useSelector(
-		(store: RootState) => store.ingredients
+		(store) => store.ingredients
 	);
 	const headersRef: Record<IngredientType, React.RefObject<HTMLHeadingElement>> = {
 		bun: useRef<HTMLHeadingElement>(null),

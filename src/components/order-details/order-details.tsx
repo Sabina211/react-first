@@ -1,13 +1,11 @@
 import styles from './order-details.module.css';
 import img from '../../images/done.png';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import type { RootState } from '../../store/store';
-import type { OrderState } from '../../services/reducers/order';
+import {  useSelector } from '../../services/hooks/hooks';
 
 
 const OrderDetails: React.FC = () => {
-	const orderState = useSelector<RootState, OrderState>((state) => state.order);
+	const orderState = useSelector((state) => state.order);
 
 	useEffect(() => {
 		if (!orderState.isLoading && orderState.createdOrder != null) {

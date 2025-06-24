@@ -7,11 +7,10 @@ import {
 	ListIcon,
 	ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import {  useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import {  useSelector } from '../../services/hooks/hooks';
 
 const AppHeader = () => {
-	const user = useSelector((state: RootState) => state.user.user);
+	const user = useSelector((state) => state.user.user);
 	const location = useLocation();
 	const currentPath = location.pathname;
 
@@ -26,7 +25,7 @@ const AppHeader = () => {
 							text='Конструктор'
 						/>
 					</Link>
-					<Link to='/orders'>
+					<Link to='/feed'>
 						<MenuItem
 							isActive={currentPath.startsWith('/orders')}
 							icon={ListIcon}
@@ -42,7 +41,7 @@ const AppHeader = () => {
 						<MenuItem
 							isActive={currentPath.startsWith('/profile')}
 							icon={ProfileIcon}
-							text={!user.name ? 'Личный кабинет' : user.name}
+							text={!user?.name ? 'Личный кабинет' : user.name}
 						/>
 					</NavLink>
 				</div>

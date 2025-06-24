@@ -7,7 +7,7 @@ import Summary from '../summary/summary';
 import { useDrag, useDrop } from 'react-dnd';
 import { PlugElement } from '../plug-element/plug-element';
 import { DraggableSortIngredient } from './draggable-sort-ingredient/draggable-sort-ingredient';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks/hooks';
 import { v4 as uuidv4 } from 'uuid';
 import { useCallback, useEffect } from 'react';
 import {
@@ -17,17 +17,16 @@ import {
 	getTotalPrice,
 	removeIngredient,
 } from '../../services/reducers/burger-constructor';
-import { RootState, AppDispatch } from '../../store/store';
-import { Ingredient, IngredientWithUUID } from '../../ingredient';
+import { Ingredient, IngredientWithUUID } from '../../utils/types';
 
 
 const BurgerConstructor: React.FC = () => {
-	const dispatch = useDispatch<AppDispatch>();
-	const bun =  useSelector((state: RootState) => state.burgerConstructor.bun) as Ingredient | null;
-	const mains =  useSelector((state: RootState) => state.burgerConstructor.mains) as IngredientWithUUID[];
+	const dispatch = useDispatch();
+	const bun =  useSelector((state) => state.burgerConstructor.bun) as Ingredient | null;
+	const mains =  useSelector((state) => state.burgerConstructor.mains) as IngredientWithUUID[];
 
 	const totalPrice = useSelector(
-		(state: RootState) => state.burgerConstructor.totalPrice
+		(state) => state.burgerConstructor.totalPrice
 	);
 
 	const moveElement = useCallback(

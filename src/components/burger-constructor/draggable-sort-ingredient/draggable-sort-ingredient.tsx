@@ -5,7 +5,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef } from 'react';
-import { Ingredient, IngredientWithUUID } from '../../../ingredient';
+import { Ingredient, IngredientWithUUID } from '../../../utils/types';
 
 interface DragItem {
 	uuid: string;

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Ingredient, IngredientWithUUID } from '../../ingredient';
+import { Ingredient, IngredientWithUUID } from '../../utils/types';
 
 interface ConstructorState {
 	bun: Ingredient | null;

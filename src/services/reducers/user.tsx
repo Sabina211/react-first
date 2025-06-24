@@ -21,11 +21,11 @@ export interface User {
 }
 
 interface UserState {
-	user: User;
-	isAuth: boolean;
+	user: User | null;
 	isLoading: boolean;
 	isFailed: boolean;
 	error: string;
+	isAuthChecked: boolean;
 }
 
 interface AuthResponse {
@@ -33,14 +33,11 @@ interface AuthResponse {
 }
 
 const initialState: UserState = {
-	user: {
-		email: null,
-		name: null,
-	},
-	isAuth: false,
+	user: null,
 	isLoading: false,
 	isFailed: false,
 	error: '',
+	isAuthChecked: false,
 };
 
 export interface ForgotPasswordForm {
@@ -96,6 +93,7 @@ export const login = createAsyncAction<UserResponse, Login>(
 	loginRequest
 );
 
+
 export const forgotPassword = createAsyncAction<any, ForgotPasswordForm>(
 	'forgotPassword',
 	forgotPasswordRequest
@@ -120,17 +118,27 @@ export const logout = createAsyncThunk(
 
 type GetUserResponse = { success: boolean; user: User };
 
-export const getUser = createAsyncThunk<GetUserResponse, void, { rejectValue: string }>(
-  'user/getUser',
-  async (_, thunkAPI) => {
-    try {
-      const response = await getUserRequest();
-      return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+export const getUser = createAsyncThunk<GetUserResponse, void,	{ rejectValue: string }>('user/getUser', async (_, thunkAPI) => {
+	try {
+		const response = await getUserRequest();
+		return response;
+	} catch (error: any) {
+		return thunkAPI.rejectWithValue(error.message);
+	}
+});
+
+export const checkUserAuth = createAsyncThunk('profile/checkUserAuth', async (_, thunkAPI) => {
+	const accessToken = localStorage.getItem('accessToken');
+	if (accessToken) {
+		try {
+			await thunkAPI.dispatch(getUser()).unwrap();
+		} catch {
+			//localStorage.removeItem('accessToken');
+			//.removeItem('refreshToken');
+		}
+	}
+	return;
+});
 
 export const postUser = createAsyncAction('postUser', postUserRequest);
 
@@ -143,25 +151,27 @@ export const userSlice = createSlice({
 			.addCase(registerUser.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = action.payload.user;
-				state.isAuth = true;
+				state.isAuthChecked = true;
 				console.log('Регистарция пользователя прошло успешно');
 			})
 			.addCase(login.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = action.payload.user;
-				state.isAuth = true;
+				state.isAuthChecked = true;
 				console.log('Авторизация пользователя прошла успешно');
 			})
 			.addCase(logout.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = initialState.user;
-				state.isAuth = false;
 				console.log('Разлогирование пользователя прошло успешно');
+				localStorage.removeItem('accessToken');
+				localStorage.removeItem('refreshToken');
+				console.log("user reset!", action)
 			})
 			.addCase(getUser.fulfilled, (state, action) => {
 				state.isLoading = false;
 				state.user = action.payload.user;
-				state.isAuth = true;
+				state.isAuthChecked = true;
 				console.log('ПОлучение пользователя прошло успешно');
 			})
 			.addCase(postUser.fulfilled, (state, action) => {
@@ -177,12 +187,31 @@ export const userSlice = createSlice({
 				state.isLoading = false;
 				console.log('Запрос resetPassword прошел успешно');
 			})
+			.addCase(login.rejected, (state, action) => {
+				state.isLoading = false;
+				state.isAuthChecked = true;
+				state.isFailed = true;
+				state.error = action.error?.message || 'Что-то пошло не так';
+			})
+			.addCase(getUser.rejected, (state, action) => {
+				state.isAuthChecked = true;
+				state.isLoading = false;
+				state.isFailed = true;
+				state.error = action.error?.message || 'Что-то пошло не так';
+				console.log("user reset!", action)
+			})
+			.addCase(checkUserAuth.fulfilled, (state) => {
+				state.isAuthChecked = true;
+			})
+			.addCase(checkUserAuth.rejected, (state) => {
+				state.isAuthChecked = true;
+			})
 			.addMatcher(isPending, (state) => {
 				state.isLoading = true;
 				state.isFailed = false;
 				state.error = '';
 			})
-			.addMatcher(isRejected, (state, action) => {
+		.addMatcher(isRejected, (state, action) => {
 				state.isLoading = false;
 				state.isFailed = true;
 				state.error = action.error?.message || 'Что-то пошло не так';

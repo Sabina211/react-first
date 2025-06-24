@@ -3,7 +3,9 @@ import { constructorSlice } from './burger-constructor';
 import { createSlice, combineSlices } from '@reduxjs/toolkit';
 import { orderSlice } from './order';
 import { userSlice } from './user';
-import { Ingredient } from '../../ingredient';
+import { webSocketSlice } from './websocket';
+import { Ingredient } from '../../utils/types';
+import { combineReducers } from '@reduxjs/toolkit';
 
 interface IngredientsState {
 	ingredients: Ingredient[];
@@ -42,4 +44,18 @@ export const ingredientSlice = createSlice({
 });
 export const ingredientsReducer = ingredientSlice.reducer;
 
-export const rootReducer = combineSlices(ingredientSlice, constructorSlice, orderSlice, userSlice);
+export const rootReducer = combineSlices(
+	ingredientSlice,
+	constructorSlice,
+	orderSlice,
+	userSlice,
+	webSocketSlice
+);
+
+/*export const rootReducer = combineReducers({
+	ingredients: ingredientsReducer,
+	constructor: constructorSlice.reducer,
+	order: orderSlice.reducer,
+	user: userSlice.reducer,
+	webSocket: webSocketReducer,
+  });*/

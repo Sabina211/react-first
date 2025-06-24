@@ -3,13 +3,12 @@ import {
 	Input,
 	Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks/hooks';
 import { useForm } from '../../hooks/useForm';
 import { login } from '../../services/reducers/user';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { AppDispatch } from '../../store/store';
 
 
 export function LoginPage() {
@@ -22,12 +21,7 @@ export function LoginPage() {
 	});
 	const location = useLocation();
 	const navigate = useNavigate();
-	const pathFrom =
-		location.state?.from?.pathname === '/order'
-			? '/'
-			: location.state?.from?.pathname || '/';
-
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useDispatch();
 
 	const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault(); // предотвращаем перезагрузку страницы при отправке формы
@@ -44,8 +38,8 @@ export function LoginPage() {
 
 		try {
 			const res = await dispatch(login(formValues));
-			if (login.rejected.match(res)) setCommonError(res.payload as string);
-			else navigate(pathFrom, { replace: true });
+			if (login.rejected.match(res))
+				setCommonError(res.payload as string);
 		} catch (error) {
 			const err = error as Error;
 			setCommonError(err.message || 'Ошибка при логине');
@@ -94,7 +88,7 @@ export function LoginPage() {
 				<div
 					className={`${styles.textBlock} text text_type_main-default text_color_inactive`}>
 					Вы новый пользователь?{' '}
-					<Link className={styles.linkText} to='/register'>
+					<Link className={styles.linkText} to='/register' state={{ from: location.state?.from }}>
 						Зарегистрироваться
 					</Link>
 				</div>

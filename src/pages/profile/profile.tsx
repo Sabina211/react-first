@@ -2,11 +2,10 @@ import styles from './profile.module.css';
 import ProfileLink from './profile-link/profile-link';
 import { logout } from '../../services/reducers/user';
 import { Outlet } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../../store/store';
+import { useDispatch, useSelector } from '../../services/hooks/hooks';
 
 export function ProfilePage() {
-	const dispatch = useDispatch<AppDispatch>();
+	const dispatch = useDispatch();
 	const logOut = () => {
 		dispatch(logout());
 	};
@@ -16,7 +15,7 @@ export function ProfilePage() {
 		<div className={styles.container}>
 			<div className={styles.rightContainer}>
 				<ProfileLink path='/profile' text='Профиль' />
-				<ProfileLink path='/profile/orders-history' text='История заказов' />
+				<ProfileLink path='/profile/orders' text='История заказов' />
 				<ProfileLink path='/' text='Выход' onClick={logOut} />
 				<p
 					className={`${styles.text} text text_type_main-default text_color_inactive`}>

@@ -15,21 +15,24 @@ import IngredientDetails from '../burger-ingredients/ingredient-details/ingredie
 import { useNavigate } from 'react-router-dom';
 import { ProfileUserPage } from '../../pages/profile/profile-user/profile-user';
 import { ProfileOrdersHistory } from '../../pages/profile/profile-orders-history/profile-orders-history';
-import { ElementForAuthorized } from '../element-for-authorized/element-for-authorized';
 import OrderDetails from '../order-details/order-details';
-import { useSelector, useDispatch } from 'react-redux';
 import { cleanConstructor } from '../../services/reducers/burger-constructor';
-import { ElementForUnauthorized } from '../element-for-unauthorized/element-for-unauthorized';
 import { getIngredients } from '../../services/actions/ingredients';
 import { useEffect } from 'react';
-import { RootState, AppDispatch } from '../../store/store';
+import { FeedPage } from '../../pages/feed-page/feed-page';
+import FeedOrderDetailsPage from '../../pages/feed-order-details-page/feed-order-details-page';
+import FeedOrderDetails from '../feed/feed-order-details/feed-order-details';
+import ProtectedRouteElement from '../protected-route/protected-route';
+import { checkUserAuth } from '../../services/reducers/user';
+import {useDispatch} from '../../services/hooks/hooks';
 
 const App: React.FC = () => {
 	const location = useLocation();
-	const dispatch: AppDispatch = useDispatch();
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const background = location.state && location.state.background;
 	useEffect(() => {
+		dispatch(checkUserAuth());
 		dispatch(getIngredients());
 	}, [dispatch]);
 
@@ -46,36 +49,68 @@ const App: React.FC = () => {
 			<AppHeader />
 			<Routes location={background || location}>
 				<Route path='/' element={<HomePage />} />
+				<Route path='/feed' element={<FeedPage />} />
 				<Route
 					path='/login'
-					element={<ElementForUnauthorized element={<LoginPage />} />}
+					element={
+						<ProtectedRouteElement onlyUnAuth={true} element={<LoginPage />} />
+					}
 				/>
 				<Route
 					path='/register'
-					element={<ElementForUnauthorized element={<RegisterPage />} />}
+					element={
+						<ProtectedRouteElement
+							onlyUnAuth={true}
+							element={<RegisterPage />}
+						/>
+					}
 				/>
 				<Route
 					path='/forgot-password'
-					element={<ElementForUnauthorized element={<ForgotPasswordPage />} />}
+					element={
+						<ProtectedRouteElement
+							onlyUnAuth={true}
+							element={<ForgotPasswordPage />}
+						/>
+					}
 				/>
 				<Route
 					path='/reset-password'
-					element={<ElementForUnauthorized element={<ResetPasswordPage />} />}
+					element={
+						<ProtectedRouteElement
+							onlyUnAuth={true}
+							element={<ResetPasswordPage />}
+						/>
+					}
 				/>
-				<Route path='/profile' element={<ProfilePage />} />
 
 				<Route
 					path='/profile'
-					element={<ElementForAuthorized element={<ProfilePage />} />}>
-					<Route index element={<ProfileUserPage />} />
-					<Route path='orders-history' element={<ProfileOrdersHistory />} />
-				</Route>
-
-				<Route path='/ingredients/:id' element={<IngredientPage />} />
-				<Route
 					element={
-						<ElementForAuthorized
-							path='/order'
+						<ProtectedRouteElement
+							onlyUnAuth={false}
+							element={<ProfilePage />}
+						/>
+					}>
+					<Route path="/profile" element={<ProfileUserPage />} />
+					<Route path=':orders' element={<ProfileOrdersHistory />} />
+				</Route>
+				<Route
+					path='/profile/orders/:id'
+					element={
+						<ProtectedRouteElement
+							onlyUnAuth={false}
+							element={<FeedOrderDetailsPage />}
+						/>
+					}
+				/>
+				<Route path='/ingredients/:id' element={<IngredientPage />} />
+				<Route path='/feed/:id' element={<FeedOrderDetailsPage />} />
+				<Route
+					path='/order'
+					element={
+						<ProtectedRouteElement
+							onlyUnAuth={false}
 							element={
 								<Modal isOpen={true} onClose={hideOrder}>
 									<OrderDetails />
@@ -103,10 +138,38 @@ const App: React.FC = () => {
 					<Route
 						path='/order'
 						element={
-							<ElementForAuthorized
+							<ProtectedRouteElement
+								onlyUnAuth={false}
 								element={
 									<Modal isOpen={true} onClose={hideOrder}>
 										<OrderDetails />
+									</Modal>
+								}
+							/>
+						}
+					/>
+					<Route
+						path='/feed/:id'
+						element={
+							<Modal
+								isOpen={true}
+								onClose={() => navigate(-1)}
+								header='Детали заказа'>
+								<FeedOrderDetails />
+							</Modal>
+						}
+					/>
+					<Route
+						path='/profile/orders/:id'
+						element={
+							<ProtectedRouteElement
+								onlyUnAuth={false}
+								element={
+									<Modal
+										isOpen={true}
+										onClose={() => navigate(-1)}
+										header='Детали заказа'>
+										<FeedOrderDetails />
 									</Modal>
 								}
 							/>
@@ -116,5 +179,5 @@ const App: React.FC = () => {
 			)}
 		</DndProvider>
 	);
-}
+};
 export { App };

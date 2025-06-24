@@ -3,9 +3,9 @@ import {
 	Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-item.module.css';
-import { Ingredient } from '../../../ingredient';
+import { Ingredient } from '../../../utils/types';
 import { useDrag } from 'react-dnd';
-import {  useSelector } from 'react-redux';
+import { useSelector } from '../../../services/hooks/hooks';
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 
@@ -13,17 +13,11 @@ interface IngredientItemProps {
 	ingredient: Ingredient;
 }
 
-interface RootState {
-	burgerConstructor: {
-		mains: Array<{ _id: string; count: number }>;
-		bun: { _id: string } | null;
-	};
-}
-
 const IngredientItem: React.FC<IngredientItemProps> = ({ ingredient }) => {
 	const location = useLocation();
-	const mains = useSelector((state: RootState) => state.burgerConstructor.mains);
-	const bun = useSelector((state: RootState) => state.burgerConstructor.bun);
+	const mains = useSelector(
+		(state) => state.burgerConstructor.mains);
+	const bun = useSelector((state) => state.burgerConstructor.bun);
 
 	const count = React.useMemo(() => {
 		if (ingredient.type === 'bun') {
@@ -78,6 +72,6 @@ const IngredientItem: React.FC<IngredientItemProps> = ({ ingredient }) => {
 			</Link>
 		</>
 	);
-}
+};
 
 export default IngredientItem;

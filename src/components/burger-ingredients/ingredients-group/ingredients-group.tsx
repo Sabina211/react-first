@@ -18,7 +18,7 @@ const IngredientsGroup: FC<IngredientsGroupProps> = ({
 	headersRef,
 }) => {
 	return (
-		<div>
+		<div data-testid='ingredient-group'>
 			<h2 ref={headersRef[itemKey]}>{headers[itemKey]}</h2>
 			<ul className={styles.container}>
 				{groups[itemKey] &&

@@ -19,15 +19,16 @@ import {
 } from '../../services/reducers/burger-constructor';
 import { Ingredient, IngredientWithUUID } from '../../utils/types';
 
-
 const BurgerConstructor: React.FC = () => {
 	const dispatch = useDispatch();
-	const bun =  useSelector((state) => state.burgerConstructor.bun) as Ingredient | null;
-	const mains =  useSelector((state) => state.burgerConstructor.mains) as IngredientWithUUID[];
+	const bun = useSelector(
+		(state) => state.burgerConstructor.bun
+	) as Ingredient | null;
+	const mains = useSelector(
+		(state) => state.burgerConstructor.mains
+	) as IngredientWithUUID[];
 
-	const totalPrice = useSelector(
-		(state) => state.burgerConstructor.totalPrice
-	);
+	const totalPrice = useSelector((state) => state.burgerConstructor.totalPrice);
 
 	const moveElement = useCallback(
 		(draggedIndex: number, targetIndex: number) => {
@@ -91,44 +92,50 @@ const BurgerConstructor: React.FC = () => {
 			<div
 				ref={drop}
 				className={`${styles.constructorBlockContent} mt-25 ml-4`}>
-				{bun ? (
-					<div className={styles.edgesElements}>
-						<ConstructorElement
-							type='top'
-							isLocked={true}
-							text={`${bun.name} (верх)`}
-							price={bun.price}
-							thumbnail={bun.image}
-						/>
-					</div>
-				) : (
-					<PlugElement
-						style={bunStyle}
-						text='Перетяните сюда булку из списка справа'
-						position='top'></PlugElement>
-				)}
-
-				{mains?.length > 0 ? (
-					<div
-						className={`${styles.constructorBlockContent} ${styles.mainsList}`}>
-						{mains.map((element, index) => (
-							<DraggableSortIngredient
-								key={element.uuid}
-								index={index}
-								element={element}
-								moveElement={moveElement}
-								removeElement={removeIngridient}
+				<div data-testid='bun-drop-target-top'>
+					{bun ? (
+						<div className={styles.edgesElements}>
+							<ConstructorElement
+								type='top'
+								isLocked={true}
+								text={`${bun.name} (верх)`}
+								price={bun.price}
+								thumbnail={bun.image}
 							/>
-						))}
-					</div>
-				) : (
-					<PlugElement
-						style={mainsStyle}
-						text='Перетяните сюда начинки из списка справа'
-						position='middle'></PlugElement>
-				)}
+						</div>
+					) : (
+						<PlugElement
+							style={bunStyle}
+							text='Перетяните сюда булку из списка справа'
+							position='top'></PlugElement>
+					)}
+				</div>
+				<div data-testid='ingredient-drop-target'>
+					{mains?.length > 0 ? (
+						<div
+							className={`${styles.constructorBlockContent} ${styles.mainsList}`}>
+							{mains.map((element, index) => (
+								<DraggableSortIngredient
+									key={element.uuid}
+									index={index}
+									element={element}
+									moveElement={moveElement}
+									removeElement={removeIngridient}
+								/>
+							))}
+						</div>
+					) : (
+						<PlugElement
+							style={mainsStyle}
+							text='Перетяните сюда начинки из списка справа'
+							position='middle'></PlugElement>
+					)}
+				</div>
+				<div data-testid='bun-drop-target-bottom'>
 				{bun ? (
-					<div className={styles.edgesElements}>
+					<div
+						className={styles.edgesElements}
+						>
 						<ConstructorElement
 							type='bottom'
 							isLocked={true}
@@ -143,6 +150,7 @@ const BurgerConstructor: React.FC = () => {
 						text='Перетяните сюда булку из списка справа'
 						position='bottom'></PlugElement>
 				)}
+				</div>
 			</div>
 			<Summary />
 		</section>

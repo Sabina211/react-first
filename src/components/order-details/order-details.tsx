@@ -20,7 +20,7 @@ const OrderDetails: React.FC = () => {
 			{orderState.isLoading ? (
 				<h1 className={styles.loader}>Загрузка...</h1>
 			) : (
-				<div>
+				<div data-testid='order-number'>
 					{' '}
 					<p
 						className={`${styles.orderId} ${styles.centerElement} text text_type_digits-large`}>

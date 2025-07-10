@@ -9,7 +9,7 @@ const production = process.env.NODE_ENV === 'production';
 module.exports = {
 	entry: path.resolve(__dirname, '..', './src/index.tsx'), //точка входа в наше приложение содержит абсолютный путь к index.ts
 	output: {
-		publicPath: "/react-first/",
+		publicPath: production ? '/react-first/' : '/',
 		path: path.resolve(__dirname, '..', './build'), //путь куда будет собираться наш проект
 		filename: production
 			? 'static/scripts/[name].[contenthash].js'

@@ -11,7 +11,7 @@ const root = createRoot(domNode);
 root.render(
 	<Provider store={store}>
 		<StrictMode>
-			<BrowserRouter>
+			<BrowserRouter basename="/react-first">
 				<App />
 			</BrowserRouter>
 		</StrictMode>

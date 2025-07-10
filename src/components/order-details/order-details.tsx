@@ -39,6 +39,8 @@ const OrderDetails: React.FC = () => {
 					</p>
 				</div>
 			)}
+
+
 		</div>
 	);
 }

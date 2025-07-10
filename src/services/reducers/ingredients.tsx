@@ -5,7 +5,6 @@ import { orderSlice } from './order';
 import { userSlice } from './user';
 import { webSocketSlice } from './websocket';
 import { Ingredient } from '../../utils/types';
-import { combineReducers } from '@reduxjs/toolkit';
 
 interface IngredientsState {
 	ingredients: Ingredient[];
@@ -51,11 +50,3 @@ export const rootReducer = combineSlices(
 	userSlice,
 	webSocketSlice
 );
-
-/*export const rootReducer = combineReducers({
-	ingredients: ingredientsReducer,
-	constructor: constructorSlice.reducer,
-	order: orderSlice.reducer,
-	user: userSlice.reducer,
-	webSocket: webSocketReducer,
-  });*/

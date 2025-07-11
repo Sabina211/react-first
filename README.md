@@ -3,7 +3,6 @@
 Посмотреть проект можно по ссылке https://sabina211.github.io/react-first/
 
  ## Запуск:
-=======
 Учебный проект по React
 Посмотреть можно по адресу https://sabina211.github.io/react-first
 Запуск:

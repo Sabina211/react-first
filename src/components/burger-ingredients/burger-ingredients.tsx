@@ -55,6 +55,7 @@ const BurgerIngredients= ()=>  {
 				return { key, offset: Math.abs(section.getBoundingClientRect().top - containerTop) };
 			});
 
+
 			// Находим ближайший к верху контейнера заголовок
 			const nearest = sections.sort((a, b) => a.offset - b.offset)[0].key;
 

@@ -32,7 +32,7 @@ interface AuthResponse {
 	user: User;
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
 	user: null,
 	isLoading: false,
 	isFailed: false,
@@ -172,7 +172,7 @@ export const userSlice = createSlice({
 				state.isLoading = false;
 				state.user = action.payload.user;
 				state.isAuthChecked = true;
-				console.log('ПОлучение пользователя прошло успешно');
+				console.log('Получение пользователя прошло успешно');
 			})
 			.addCase(postUser.fulfilled, (state, action) => {
 				state.isLoading = false;

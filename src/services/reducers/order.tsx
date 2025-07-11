@@ -15,19 +15,19 @@ export interface OrderResponse {
 }
 
 export interface OrderState {
-	//order: OrderResponse | null;
 	createdOrder: OrderResponse | null; // Для postOrder
 	getOrder: GetOrderResponse | null;
 	isLoading: boolean;
 	isFailed: boolean;
 	error: string | null;
 	open: boolean;
+	data: GetOrderResponse | null;
 }
 
 export interface IOrder {
 	_id: string;
-	//name: string;
 	ingredients: Array<string>;
+	name: string;
 	number: number;
 	status: string;
 	updatedAt: string;
@@ -35,14 +35,14 @@ export interface IOrder {
 	page?: string;
 }
 
-const initialState: OrderState = {
-	//order: null,
+export const initialState: OrderState = {
 	createdOrder: null, // Для postOrder
 	getOrder: null,
 	isLoading: false,
 	isFailed: false,
 	error: null,
 	open: false,
+	data: null
 };
 
 export const postOrder = createAsyncThunk<

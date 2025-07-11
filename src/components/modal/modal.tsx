@@ -32,10 +32,10 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children, header }) => {
 
 	return ReactDOM.createPortal(
 		<>
-			<div className={styles.container} onClick={(e) => e.stopPropagation()}>
+			<div className={styles.container} onClick={(e) => e.stopPropagation()} data-testid='modal'>
 				<div className={styles.headerBlock}>
 					<h2 className={`${styles.header} text text_type_main-large`}>{header}</h2>
-					<div className={styles.closeBtn}>
+					<div className={styles.closeBtn} data-testid='modal-close'>
 						<CloseIcon onClick={onClose} type='primary' />
 					</div>
 				</div>

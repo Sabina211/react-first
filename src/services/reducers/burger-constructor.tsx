@@ -7,7 +7,7 @@ interface ConstructorState {
 	totalPrice: number;
 }
 
-const initialState: ConstructorState = {
+export const initialState: ConstructorState = {
 	bun: null,
 	mains: [],
 	totalPrice: 0,

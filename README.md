@@ -1,7 +1,12 @@
+
 # Учебный проект по React
 Посмотреть проект можно по ссылке https://sabina211.github.io/react-first/
 
  ## Запуск:
+=======
+Учебный проект по React
+Посмотреть можно по адресу https://sabina211.github.io/react-first
+Запуск:
 ```
 git clone https://github.com/Sabina211/react-first.git
 npm i
@@ -9,6 +14,8 @@ npm start
 ```
 
 Запуск веб сервера вместе с тестами cyprus:
+=======
+Запуск вместе с тестами cyprus:
 ```
 npm run test:ui
 ```
@@ -17,6 +24,7 @@ npm run test:ui
 ```
 npm run test
 ```
+
 
 ## О проекте
 Веб приложение Космическая бургерная. Разработано на курсе React-разработчик.
@@ -45,5 +53,4 @@ npm run deploy
 ```
 
 Если нужно развернуть проект на своей странице в GitHub Pages, то инструкция по ссылке https://pages.github.com/
-
 
